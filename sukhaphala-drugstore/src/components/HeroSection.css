@@ -1,0 +1,69 @@
+img{
+    
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+	
+  /* Set up proportionate scaling */
+  width: 120%;
+  height: auto;
+	
+  /* Set up positioning */
+  position: fixed;
+  top: 50px;
+  right: -80px;
+
+}
+
+h1 {
+    position: relative;
+    top: 150px;
+
+    font-family: 'EB Garamond', serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 96px;
+    text-align: center;
+}
+
+p {
+    position: relative;
+    top: 100px;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 24px;
+    text-align: center;
+}
+
+.Hero-container{
+  align-items: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn{
+    position: relative;
+    top: 120px;
+    left: 550px;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    padding: 16px 30px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+    
+}
+
+.btn:hover,
+.btn-focus{
+    background: navy;
+    color: azure;
+}
+
+.btn-active{
+    background: darkblue;
+}
+
