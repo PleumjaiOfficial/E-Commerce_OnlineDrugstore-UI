@@ -1,8 +1,6 @@
-//rfce
-import React from 'react';
-import HeroSection from '../../components/HeroSection';
+import HeroSection from '../../components/HeroSection/HeroSection';
 
-function Home() {
+const Home = () => {
     return (
         <>
             {/* <Navbar /> */}
