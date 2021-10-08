@@ -4,10 +4,10 @@ import '../components/HeroSection.css';
 
 function HeroSection(){
     return(
-        <div className="Hero">
-            <img src={image} className="background-img" />
+        <div className="hero">
+            <img src={image} className="background-img" alt="background"/>
             
-            <div className="Hero-Container">
+            <div className="hero-container">
                 <h1> SUKhaphala </h1>
                 <p> Online Drugstore, Pharmacy, Prescriptions & Health </p>
                 <button className="btn">Get your health back</button>
