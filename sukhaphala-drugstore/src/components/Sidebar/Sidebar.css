@@ -1,0 +1,42 @@
+.Sidebar{
+    padding: 50px 50px 25px 200px;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;    
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-family: 'Montserrat'; 
+    font-size: 18px;    
+    margin-bottom: 10px;
+}
+
+.Side-menu{
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  grid-gap: 24px;
+  /* overflow-y: scroll; */
+}
+
+.menu-item{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.vertical-line{
+    position: absolute;
+    width: 1px; /* Line width */
+    background-color: gainsboro; /* Line color */
+    height: 45%; /* Override in-line if you want specific height. */
+    display: inline-block;
+    left: 500px;
+     /* Causes the line to float to left of content. 
+        You can instead use position:absolute or display:inline-block
+        if this fits better with your design */
+    }

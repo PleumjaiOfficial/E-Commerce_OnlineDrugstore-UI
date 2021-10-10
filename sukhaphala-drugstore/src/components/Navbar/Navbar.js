@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
-import { IconName } from "react-icons/hi";
-//https://react-icons.github.io/react-icons
+// import { IconName } from "react-icons/hi";
+// https://react-icons.github.io/react-icons
 
 import Button from "../Button/Button";
 
