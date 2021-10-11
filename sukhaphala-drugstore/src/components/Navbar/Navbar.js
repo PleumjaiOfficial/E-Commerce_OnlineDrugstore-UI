@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import './Navbar.css';
+import classes from './Navbar.module.css';
+
 
 // import { IconName } from "react-icons/hi";
 // https://react-icons.github.io/react-icons
@@ -15,22 +16,22 @@ const Navbar = () => {
   const closeMenu = () => setclick(!click);
 
   return(
-    <nav className="navbar">
+    <nav className={classes["navbar"]}>
         
       {/* links */}
-      <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+      <ul className={classes[click ? "nav-menu active" : "nav-menu"]}>
                     
-        <li className='nav-item'>
+        <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
-          className='nav-links'
+          className={classes["nav-links"]}
           onClick={closeMenu}>
             <span>HOME</span>
           </NavLink>
         </li>
         
-        <li className='nav-item'>
+        <li className={classes["nav-item"]}>
           <NavLink  to='/Shop' 
-          className='nav-links'
+          className={classes["nav-links"]}
           onClick={closeMenu}>
             <span>SHOP</span>
           </NavLink>
@@ -39,24 +40,24 @@ const Navbar = () => {
       </ul>
 
 
-    <div className={click ? 'nav-button active' : 'nav-button'} >
+    <div className={classes[click ? "nav-button active" : "nav-button"]}>
       <NavLink  to='/Login'>
         <Button
-            Button_style="btn_nav"
+            Button_style={classes["btn_nav"]}
             Button_text="LOGIN" />
       </NavLink> 
 
       <NavLink  to='/Register'>
         <Button
-            Button_style="btn_nav"
+            Button_style={classes["btn_nav"]}
             Button_text="REGISTER" />
       </NavLink> 
     </div>
 
       
       {/* burger menu bar */}
-      <div className='nav-burger' onClick={holdClick}>
-        <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
+      <div className={classes['nav-burger']} onClick={holdClick}>
+        <i className={classes[click ? 'fas fa-times' : 'fa fa-bars']}></i>
       </div>
 
     </nav>

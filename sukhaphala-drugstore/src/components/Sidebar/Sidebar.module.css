@@ -1,4 +1,4 @@
-.Sidebar{
+.sidebar{
     padding: 50px 50px 25px 200px;
 }
 
@@ -15,7 +15,7 @@ h3 {
     margin-bottom: 10px;
 }
 
-.Side-menu{
+.side-menu{
   display: flex;
   flex-direction: column;
   list-style: none;

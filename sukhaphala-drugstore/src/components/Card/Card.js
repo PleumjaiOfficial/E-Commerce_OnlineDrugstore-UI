@@ -1,16 +1,16 @@
 import React from 'react'
-import './Card.css';
+import classes from './Card.module.css';
 
 const Card = (props) => {
     return (
-        <div className="Card">
-            <div className="Card_body">
+        <div className={classes["card"]}>
+            <div className={classes["card_body"]}>
                     <img src={props.img} />
-                    <h2 className="Card_title">
+                    <h2 className={classes["card_title"]}>
                         วัยรุ้นทำไรอะ
                     </h2>
                     
-                    <p className="Card_desc">
+                    <p className={classes["card_desc"]}>
                         ทำยาก้าบบบบ
                     </p>
 

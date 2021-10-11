@@ -10,14 +10,10 @@ function HeroSection() {
       <div className={classes["hero-container"]}>
         <h1> SUKhaphala </h1>
         <p> Online Drugstore, Pharmacy, Prescriptions & Health </p>
-        {/* <button className="btn">Get your health back</button> */}
+        <button className={classes["btn"]}>Get your health back</button>
         
        <NavLink to='/Shop' >
-        <Button
-          Button_style="btn"
-          Button_text="Get your health back" 
-        />
-        </NavLink>
+       </NavLink>
           
       </div>
     </>

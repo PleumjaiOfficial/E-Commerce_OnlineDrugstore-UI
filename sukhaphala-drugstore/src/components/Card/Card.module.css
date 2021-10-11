@@ -1,4 +1,4 @@
-.Card{
+.card{
     overflow: hidden;
     box-shadow: 0 15px 18px rgba(179, 179, 179, .6);
     border-radius: 5px;
@@ -8,7 +8,7 @@
     transition: transform 200ms ease-in;
 }
 
-.Card:hover{
+.card:hover{
   animation: shake 0.5s;
   animation-iteration-count: infinite;
 }
@@ -28,13 +28,13 @@
 }
 
 
-.Card_body img{
+.card_body img{
     height: 12rem;
     width: 100%;
     object-fit: cover;
 }
 
-.Card_body{
+.card_body{
     text-align: center;
 }
 

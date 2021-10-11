@@ -1,39 +1,37 @@
 import React from 'react'
-import './Sidebar.css';
+import classes from './Sidebar.module.css';
 
 const Sidebar = () => {
     return (
-        <div className="Sidebar">
-            <div className="vertical-line"></div>
+        <div className={classes["sidebar"]}>
+            <div className={classes["vertical-line"]}></div>
 
             <h3>Shop All </h3>
             <h2>HEALTH GOAL</h2>
 
-            <ul className="Side-menu">
+            <ul className={classes["side-menu"]}>
                 <li>
-                    <span className="menu-item">fever</span>
+                    <span className={classes["menu-item"]}>fever</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Happy</span>
+                    <span className={classes["menu-item"]} >Happy</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Stress</span>
+                    <span className={classes["menu-item"]}>Stress</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Beauty</span>
+                    <span className={classes["menu-item"]}>Beauty</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Smart</span>
+                    <span className={classes["menu-item"]}>Smart</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Weed</span>
+                    <span className={classes["menu-item"]}>Weed</span>
                 </li>
                 <li>
-                    <span className="menu-item" >Lover</span>
+                    <span className={classes["menu-item"]}>Lover</span>
                 </li>
             </ul>
-
-
         </div>
     )
 }
