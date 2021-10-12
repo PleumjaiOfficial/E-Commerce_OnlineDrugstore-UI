@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 const app = express();
 const productAPI = require('./routes/product');
@@ -20,7 +21,7 @@ try {
 
 
 
-
+app.use(cors());
 app.use('/products', productAPI);
 
 //start running application's backend
