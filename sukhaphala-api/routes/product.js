@@ -2,9 +2,6 @@ const router = require('express').Router();
 
 const Product = require('../models/Product');
 
-//test data. delete this when integrated with database
-// const products = require('../data_test/products');
-
 //get all products
 router.get('/', async (req, res) => {
   try {

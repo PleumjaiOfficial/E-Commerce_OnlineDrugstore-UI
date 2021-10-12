@@ -1,9 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
 const app = express();
 const productAPI = require('./routes/product');
 
-const url = 'mongodb+srv://winnr:4myteam@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority'
+dotenv.config();
+const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
 
+//connect to the database
 try {
   mongoose.connect(url);
   console.log('Connected correctly to server');
