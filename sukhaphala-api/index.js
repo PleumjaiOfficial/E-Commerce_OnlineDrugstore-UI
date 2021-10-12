@@ -2,9 +2,14 @@ const express = require('express');
 const app = express();
 const productAPI = require('./routes/product');
 
+const url = 'mongodb+srv://winnr:4myteam@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority'
 
-
-
+try {
+  mongoose.connect(url);
+  console.log('Connected correctly to server');
+} catch (error) {
+  console.log('Failed to connected');
+}
 
 
 
