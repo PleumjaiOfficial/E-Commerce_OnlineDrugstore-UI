@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import './Shop.css'
+import classes from './Shop.module.css'
 import Navbar from '../../components/Navbar/Navbar';
 import image from '../../image/HeaderBackground.jpg';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Product from '../../components/Product/Product';
+import Axios from 'axios';
+
 
 const Shop = () => {
 
@@ -17,26 +19,46 @@ const Shop = () => {
     //         setNavbar(false);
     //     }
     // }
+    
+    const [data, setData] = useState([]);
+
+    useEffect(()=>{
+        Axios.get('http://localhost:5000/products')
+        .then(res=>{
+            console.log(res)
+            setData(res.data)
+        })
+        .catch(err =>{
+            console.log(err)
+        });
+    },[])
 
     return (
         <>
             <Navbar />
 
-            <div className="Shop-container">
+            <img src={image} className={classes["background-img"]} />
 
-                <img src={image} className="Headerbackground-img" alt="background" />
-
-                <div className='Shop-content'>
+            <div className={classes["shop-container"]}>
+                <div className={classes["shop-content"]}>
                 <h1> more healthy more happy </h1>
-                <p> Vitamins, protein, and more, made from the best ingredients on earth and personalized just for you.
-                    NO time To die Adjust your delivery or cancel at any time.
-                </p>
+                <p> Vitamins, protein, and more, made from the best ingredients on earth and personalized just for you.</p>
+                <p>NO time To die Adjust your delivery or cancel at any time.</p>
                 </div>
-                
             </div>
 
-            <div className="Shop-product">
-                <Product />
+            <div className={classes["shop-product"]}>
+                {
+                data.map(i=>(
+                    <Product 
+                        id={i._id}
+                        title={i.name}
+                        price={i.price}
+                        img={i.image}
+                        desc={i.description}
+                    />
+                ))
+                }
             </div>
 
             <Sidebar />

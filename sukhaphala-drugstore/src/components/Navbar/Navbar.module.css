@@ -24,6 +24,11 @@
   padding: 5px 10px;
 }
 
+.nav-links:hover{
+  color: orangered;
+  transition: all 0.3s linear;
+}
+
 .nav-burger {
   display: none;
   font-size: x-large;

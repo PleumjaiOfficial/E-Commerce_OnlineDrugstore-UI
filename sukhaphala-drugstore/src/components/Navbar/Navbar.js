@@ -23,16 +23,14 @@ const Navbar = () => {
                     
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
-          className={classes["nav-links"]}
-          onClick={closeMenu}>
+          className={classes["nav-links"]}>
             <span>HOME</span>
           </NavLink>
         </li>
         
         <li className={classes["nav-item"]}>
           <NavLink  to='/Shop' 
-          className={classes["nav-links"]}
-          onClick={closeMenu}>
+          className={classes["nav-links"]}>
             <span>SHOP</span>
           </NavLink>
         </li>

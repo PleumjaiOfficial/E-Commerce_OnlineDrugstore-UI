@@ -1,11 +1,13 @@
+//rafce
 import React from 'react'
 
 const Register = () => {
     return (
-        <>
-            สมัคร สุนทรเวศ
-        </>
+        <div>
+            สมัครรรรรร
+        </div>
     )
 }
 
-export default Register;
+export default Register
+
