@@ -20,7 +20,7 @@ try {
 
 
 
-
+app.use(express.static('public'));
 app.use(cors());
 app.use('/products', productAPI);
 
