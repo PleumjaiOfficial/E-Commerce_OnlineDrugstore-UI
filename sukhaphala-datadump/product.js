@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -18,7 +17,7 @@ const dumpData = [
   {
     name: 'red pills',
     image: 'http://localhost:5000/images/redpill.jpg',
-    description: `red is hot`,
+    description: 'red is hot',
     price: 320,
     remain: 100,
     health_goal: ['brain', 'stress'],
@@ -26,7 +25,7 @@ const dumpData = [
   {
     name: 'blue pills',
     image: 'http://localhost:5000/images/bluepill.png',
-    description: `blue is cool.`,
+    description: 'blue is cool',
     price: 400,
     remain: 90,
     health_goal: ['face', 'sleep'],
@@ -34,7 +33,7 @@ const dumpData = [
   {
     name: 'black pills',
     image: 'http://localhost:5000/images/blackpill.jpg',
-    description: `black is heavy`,
+    description: 'black is heavy',
     price: 500,
     remain: 10,
     health_goal: ['power', 'strength'],
@@ -42,7 +41,7 @@ const dumpData = [
   {
     name: 'white pills',
     image: 'http://localhost:5000/images/whitepill.jpg',
-    description: `white is bright`,
+    description: 'white is bright',
     price: 320,
     remain: 100,
     health_goal: ['brain', 'stress'],
@@ -50,7 +49,7 @@ const dumpData = [
   {
     name: 'purple pills',
     image: 'http://localhost:5000/images/purplepill.jpg',
-    description: `purple is mystic `,
+    description: 'purple is mystic',
     price: 400,
     remain: 90,
     health_goal: ['face', 'sleep'],
@@ -58,15 +57,15 @@ const dumpData = [
   {
     name: 'rainbow pills',
     image: 'http://localhost:5000/images/rainbowpill.jpg',
-    description: `rainbow is pride`,
+    description: 'rainbow is pride',
     price: 500,
     remain: 10,
     health_goal: ['power', 'strength'],
   },
 ];
 
-main().catch(err => console.log(err));
-async function main() {
+Main().catch(err => console.log(err));
+async function Main() {
   //connect database
   try {
     await mongoose.connect(url);
@@ -93,5 +92,4 @@ async function main() {
   }catch(error){
     console.log('failed to create');
   }
-
 }
