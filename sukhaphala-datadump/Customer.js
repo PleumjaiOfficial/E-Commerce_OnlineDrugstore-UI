@@ -8,7 +8,7 @@ const customerSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   username: String,
-  password: String,
+  password: String, //simplify with string
   email: String,
   address: [
     {
@@ -17,7 +17,7 @@ const customerSchema = new mongoose.Schema({
       country: String,
       postcode: Number
     }
-  ],
+  ]
 });
 
 const dumpData = [{

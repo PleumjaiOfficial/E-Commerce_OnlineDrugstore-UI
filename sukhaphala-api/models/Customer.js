@@ -4,7 +4,7 @@ const customerSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   username: String,
-  password: String,
+  password: String, //simplify with string
   email: String,
   address: [
     {
