@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import classes from './Shop.module.css'
+import Axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import image from '../../image/HeaderBackground.jpg';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Product from '../../components/Product/Product';
-import Axios from 'axios';
+import classes from './Shop.module.css'
 
 
 const Shop = () => {

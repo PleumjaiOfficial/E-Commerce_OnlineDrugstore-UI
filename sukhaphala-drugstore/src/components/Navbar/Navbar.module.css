@@ -35,6 +35,8 @@
 }
 
 
+
+
 .nav-button{
   display: flex;
   grid-gap: 20px;
@@ -57,9 +59,14 @@
 }
 
 
+
 @media screen and (max-width: 960px) {
 
 .nav-button{
+    display: none;
+  }
+
+.nav-button-active{
   display: none;
 }
 
@@ -71,17 +78,13 @@
     align-items: center;
     padding: 1rem 1rem;
     transition: all 0.5s ease-in;
-}
+  }
   
-  .nav-burger {
+.nav-burger {
     display: flex;
   }
 
-  /* .fa-times {
-    //หมุนๆ
-  } */
-
-  .nav-menu {
+.nav-menu {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -91,10 +94,9 @@
     transition: all 0.5s ease-out;
     top: 50px;
     right: 100%;
-
   }
 
-  .nav-menu.active {
+.nav-menu-active {
     background: whitesmoke;
     right: 0;
     opacity: 5;
@@ -102,12 +104,13 @@
     z-index: 1;
   }
   
-  .nav-links {
-    text-align: left;
+.nav-links {
     display: table;
+    text-align: left;
+    
   }
 
- .nav-links:hover {
+.nav-links:hover {
     color: pink;
     transition: all 0.2s ease-in;
   }

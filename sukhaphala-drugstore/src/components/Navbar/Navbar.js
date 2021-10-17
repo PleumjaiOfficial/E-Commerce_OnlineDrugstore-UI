@@ -13,13 +13,14 @@ const Navbar = () => {
   const [click,setclick] = useState(false);
 
   const holdClick = () => setclick(!click);
-  const closeMenu = () => setclick(!click);
+
+  console.log(click);
 
   return(
     <nav className={classes["navbar"]}>
         
       {/* links */}
-      <ul className={classes[click ? "nav-menu active" : "nav-menu"]}>
+      <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
                     
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
@@ -37,8 +38,12 @@ const Navbar = () => {
 
       </ul>
 
+    <div className={classes[click ? "nav-button-active" : "nav-button"]}>
 
-    <div className={classes[click ? "nav-button active" : "nav-button"]}>
+      <NavLink  to='/Cart'>
+        <i class="fas fa-shopping-cart"></i>
+      </NavLink>
+      
       <NavLink  to='/Login'>
         <Button
             Button_style={classes["btn_nav"]}
@@ -55,7 +60,7 @@ const Navbar = () => {
       
       {/* burger menu bar */}
       <div className={classes['nav-burger']} onClick={holdClick}>
-        <i className={classes[click ? 'fas fa-times' : 'fa fa-bars']}></i>
+        <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
       </div>
 
     </nav>
