@@ -6,6 +6,7 @@ const customerSchema = new mongoose.Schema({
   username: String,
   password: String, //simplify with string
   email: String,
+  phone: String,
   address: [
     {
       location: String,

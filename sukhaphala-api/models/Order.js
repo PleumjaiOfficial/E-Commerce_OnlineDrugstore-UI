@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Customer'
   }, 
-  updatetime: {
+  update_time: {
     type: Date,
     default: Date.now(),
   },

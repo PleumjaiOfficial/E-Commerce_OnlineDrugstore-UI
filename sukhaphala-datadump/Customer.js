@@ -10,6 +10,7 @@ const customerSchema = new mongoose.Schema({
   username: String,
   password: String, //simplify with string
   email: String,
+  phone: String,
   address: [
     {
       location: String,
@@ -26,6 +27,7 @@ const dumpData = [{
   username: 'Gold Stand',
   password: 'password123',
   email: 'mudamudamuda@ororaora.com',
+  phone: '0123456789',
   address: 
     {
       location: 'nowhere',
