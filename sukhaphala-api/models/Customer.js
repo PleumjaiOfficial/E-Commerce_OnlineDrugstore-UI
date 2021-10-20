@@ -7,14 +7,12 @@ const customerSchema = new mongoose.Schema({
   password: String, //simplify with string
   email: String,
   phone: String,
-  address: [
-    {
-      location: String,
-      district: String,
-      country: String,
-      postcode: Number
-    }
-  ],
+  address: {
+    location: String,
+    district: String,
+    country: String,
+    postcode: Number
+  }
 });
 
 const Customer = mongoose.model('Customer', customerSchema);

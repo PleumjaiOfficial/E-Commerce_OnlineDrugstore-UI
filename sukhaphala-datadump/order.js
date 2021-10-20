@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-//const Customer = require('./customer');
 
 dotenv.config();
 const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
 
 const orderSchema = new mongoose.Schema({
+  _id: mongoose.Types.ObjectId,
   customer: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Customer'
   }, 
@@ -13,7 +13,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  status: String, //inCart and orderPlaced
+  status: String, //inCart, orderPlaced, purchased, cancel
   total_money: Number,
   order_line: [
     {
@@ -24,22 +24,6 @@ const orderSchema = new mongoose.Schema({
     }
   ]
 });
-
-// const dumpData = [{
-//   customer_id: 123456789, 
-//   order_status: 'cart',
-//   total_money: 1000,
-//   order_line: [
-//     {
-//       product_id: 321,
-//       amount: 1
-//     },
-//     {
-//       product_id: 322,
-//       amount: 3
-//     }
-//   ]
-// }];
 
 Main().catch(err => console.log(err));
 async function Main() {
@@ -61,15 +45,5 @@ async function Main() {
   } catch (error) {
     console.log('fail to delete');
   }
-
-  //Customer.findOne({firstname: 'Joruno'})
-
-  // //create document
-  // try{
-  //   Order.create(dumpData);
-  //   console.log('create correctly');
-  // }catch(error){
-  //   console.log('failed to create');
-  // }
   
 }

@@ -5,36 +5,35 @@ dotenv.config();
 const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
 
 const customerSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   firstName: String,
   lastName: String,
   username: String,
   password: String, //simplify with string
   email: String,
   phone: String,
-  address: [
-    {
-      location: String,
-      district: String,
-      country: String,
-      postcode: Number
-    }
-  ]
+  address:{
+    location: String,
+    district: String,
+    country: String,
+    postcode: Number
+  }
 });
 
 const dumpData = [{
+  _id: new mongoose.Types.ObjectId(),
   firstName: 'Joruno',
   lastName: 'Jobana',
   username: 'Gold Stand',
   password: 'password123',
   email: 'mudamudamuda@ororaora.com',
   phone: '0123456789',
-  address: 
-    {
+  address: {
       location: 'nowhere',
       district: 'Venice',
       country: 'Italy',
       postcode: 12345
-    }
+  }
 }];
 
 Main().catch(err => console.log(err));

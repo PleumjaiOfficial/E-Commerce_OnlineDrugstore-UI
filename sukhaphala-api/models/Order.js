@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  status: String, //inCart and orderPlaced
+  status: String, //inCart, orderPlaced, purchased, cancel
   total_money: Number,
   order_line: [
     {
