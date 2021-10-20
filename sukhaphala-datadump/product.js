@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const fs = require('fs');
 const dotenv = require('dotenv');
 
 dotenv.config();
 const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
 
 const productSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
   name: String,
   image: String,
   description: String,
@@ -16,57 +16,63 @@ const productSchema = new mongoose.Schema({
 
 const dumpData = [
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'red pills',
     image: 'http://localhost:5000/images/redpill.jpg',
-    description: `red is hot`,
+    description: 'red is hot',
     price: 320,
     remain: 100,
     health_goal: ['brain', 'stress'],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'blue pills',
     image: 'http://localhost:5000/images/bluepill.png',
-    description: `blue is cool.`,
+    description: 'blue is cool',
     price: 400,
     remain: 90,
     health_goal: ['face', 'sleep'],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'black pills',
     image: 'http://localhost:5000/images/blackpill.jpg',
-    description: `black is heavy`,
+    description: 'black is heavy',
     price: 500,
     remain: 10,
     health_goal: ['power', 'strength'],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'white pills',
     image: 'http://localhost:5000/images/whitepill.jpg',
-    description: `white is bright`,
+    description: 'white is bright',
     price: 320,
     remain: 100,
     health_goal: ['brain', 'stress'],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'purple pills',
     image: 'http://localhost:5000/images/purplepill.jpg',
-    description: `purple is mystic `,
+    description: 'purple is mystic',
     price: 400,
     remain: 90,
     health_goal: ['face', 'sleep'],
   },
   {
+    _id: new mongoose.Types.ObjectId(),
     name: 'rainbow pills',
     image: 'http://localhost:5000/images/rainbowpill.jpg',
-    description: `rainbow is pride`,
+    description: 'rainbow is pride',
     price: 500,
     remain: 10,
     health_goal: ['power', 'strength'],
   },
 ];
 
-main().catch(err => console.log(err));
-async function main() {
+Main().catch(err => console.log(err));
+async function Main() {
   //connect database
   try {
     await mongoose.connect(url);
@@ -93,5 +99,4 @@ async function main() {
   }catch(error){
     console.log('failed to create');
   }
-
 }
