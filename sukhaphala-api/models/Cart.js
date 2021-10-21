@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
 
-const OrderLineSchema = new mongoose.Schema({
+const CartSchema = new mongoose.Schema({
   customerId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Customer'
   },
   productId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Product'
   },
-  productAmount: {
+  amount: {
     type: Number,
     default: 1
-  }
+  },
+  subtotal: Number
 });
 
-const OrderLine = mongoose.model('OrderLine', OrderLineSchema);
+const Cart = mongoose.model('Cart', CartSchema);
 
-module.exports = OrderLine;
+module.exports = Cart;

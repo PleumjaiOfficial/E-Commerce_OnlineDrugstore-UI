@@ -1,17 +1,23 @@
 const Customer = require('../models/Customer');
-const OrderLine = require('./orderLine');
+const cartInterface = require('./cart');
 
 // const createCustomer = ({customer}) => {
   
 // };
 
-const addProductToCart = (wantedProduct, customer) => {
-  const product = OrderLine.checkAmount(wantedProduct);
-
-  if (product) {
-     OrderLine.calculatePrice(wantedProduct, product);
-
+const addProductToCart = async (wantedProduct, customerId) => {
+  const cart = {
+    customerId: customerId,
+    productId: wantedProduct.productId,
+    amount: wantedProduct.amount
+  };
+  console.log(cart);
+  const createdCart = await cartInterface.createCart(cart);
+  if (createdCart) {
+    return createdCart;
+  } else {
+    return null;
   }
+};
 
-  
-}
+module.exports = { addProductToCart: addProductToCart };
