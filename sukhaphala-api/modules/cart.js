@@ -2,37 +2,51 @@ const productInterface = require('./product');
 const Cart = require('../models/Cart');
 
 //check amount of product
-const checkAmount = (product, amount) => {
+const checkAmount = async (productId, amount) => {
+  const product = await productInterface.getProduct(productId);
   if (product.remain >= amount) {
     return true;
   } else {
     return false;
   }
-}
+};
 
 //calculate subtotal of the orderline
-const calculatePrice = async (productId, amount) => {
-  const product = await productInterface.getProduct(productId);
-  if (checkAmount(product, amount)) {
-    return product.price * amount;
-  } else {
+// const calculatePrice = async (productId, amount) => {
+//   const product = await productInterface.getProduct(productId);
+//   if (checkAmount(product, amount)) {
+//     return product.price * amount;
+//   } else {
+//     return null;
+//   }
+// };
+
+//get carts
+const getCarts = async (customerId) => {
+  try {
+    const carts = await Cart.find({ customerId: customerId });
+    return carts;
+  } catch (err) {
     return null;
   }
-}
+};
 
-//create order line
+//create cart
 const createCart = async (cart) => {
-  const subtotal = await calculatePrice(cart.productId, cart.amount);
-  if (subtotal) {
+  const isEnough = checkAmount(cart.productId, cart.amount);
+  if (isEnough) {
     try {
-      const newCart = await new Cart({
-        customerId: cart.customerId,
-        productId: cart.productId,
-        amount: cart.amount
-      });
+      const newCart = await Cart.findOneAndUpdate(
+        { productId: cart.productId },
+        {
+          customerId: cart.customerId,
+          productId: cart.productId,
+          amount: cart.amount,
+        },
+        { new: true, upsert: true}
+      );
 
-      const savedCart = await newCart.save();
-      return savedCart;
+      return newCart;
     } catch (err) {
       return null;
     }
@@ -42,4 +56,35 @@ const createCart = async (cart) => {
   }
 };
 
-module.exports = { createCart: createCart };
+//update cart
+const updateCart = async (cartId, cart) => {
+  try {
+    const updatedCart = await Cart.findByIdAndUpdate(
+      cartId,
+      {
+        $set: { amount: cart.amount },
+      },
+      { new: true }
+    );
+    return updatedCart;
+  } catch (err) {
+    return null;
+  }
+};
+
+//delete cart
+const deletedCart = async (cartId) => {
+  try {
+    await Cart.findByIdAndDelete(cartId);
+    return { message: "successfully removed cart" };
+  } catch (err) {
+    return null;
+  }
+};
+
+module.exports = {
+  getCarts: getCarts,
+  createCart: createCart,
+  updateCart: updateCart,
+  deletedCart: deletedCart,
+};

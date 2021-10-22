@@ -10,8 +10,7 @@ const CartSchema = new mongoose.Schema({
   amount: {
     type: Number,
     default: 1
-  },
-  subtotal: Number
+  }
 });
 
 const Cart = mongoose.model('Cart', CartSchema);
