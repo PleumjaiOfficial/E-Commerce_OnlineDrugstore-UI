@@ -9,4 +9,18 @@ const getProduct = async (productId) => {
   }
 };
 
-module.exports = { getProduct: getProduct }
+const updateProduct = async (productId, product) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(productId, 
+      { ...product },
+      { new: true });
+    return updatedProduct;
+  } catch (err) {
+    return null;
+  }
+};
+
+module.exports = { 
+  getProduct: getProduct, 
+  updateProduct: updateProduct 
+}

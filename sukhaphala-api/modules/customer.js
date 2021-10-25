@@ -1,5 +1,6 @@
 const Customer = require('../models/Customer');
 const cartInterface = require('./cart');
+const orderInterface = require('./order');
 
 // const createCustomer = ({customer}) => {
   
@@ -53,9 +54,24 @@ const deleteCustomerCart = async(cartId, customerId) => {
   };
 };
 
+const placeOrder = async (customerId) => {
+  try {
+    const result = await orderInterface.createOrder(customerId);
+    //maybe replace this hard code string later
+    if (result) {
+      return result;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return null;
+  };
+};
+
 module.exports = {
   getCustomerCarts: getCustomerCarts,
   addProductToCart: addProductToCart, 
   updateProductAmountInCart: updateProductAmountInCart,
-  deleteCustomerCart: deleteCustomerCart
+  deleteCustomerCart: deleteCustomerCart,
+  placeOrder: placeOrder
 };

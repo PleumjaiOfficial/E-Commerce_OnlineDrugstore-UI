@@ -11,16 +11,6 @@ const checkAmount = async (productId, amount) => {
   }
 };
 
-//calculate subtotal of the orderline
-// const calculatePrice = async (productId, amount) => {
-//   const product = await productInterface.getProduct(productId);
-//   if (checkAmount(product, amount)) {
-//     return product.price * amount;
-//   } else {
-//     return null;
-//   }
-// };
-
 //get carts
 const getCarts = async (customerId) => {
   try {
@@ -82,9 +72,20 @@ const deletedCart = async (cartId) => {
   }
 };
 
+const deleteAllCart = async () => {
+  try {
+    await Cart.deleteMany({});
+    return { message: "successfully removed all carts" };
+  } catch (err) {
+    return null;
+  }
+}
+
 module.exports = {
   getCarts: getCarts,
   createCart: createCart,
   updateCart: updateCart,
   deletedCart: deletedCart,
+  deleteAllCart: deleteAllCart,
+  checkAmount: checkAmount
 };
