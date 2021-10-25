@@ -2,20 +2,18 @@
     position: relative;
     height: 550px;
     width: 500px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     display: table;
     justify-content: space-evenly;
     overflow: hidden;
     cursor: pointer;
     margin-left: 800px;
-    padding: 40px;
-    background-color: #FEF4EC;
+    padding: 20px;
+     border: 1px solid black;
 }
 
 .biling-topic h1{
     font-family: 'Montserrat';
     font-size: 48px;
-    text-align: left;
 }
 
 .btn_cart {
@@ -25,7 +23,7 @@
 	width: 150px;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    padding: 5px 5px;
+    padding: 2px 20px;
     border-radius: 30px;
     cursor: pointer;
     transition: all 0.3s linear;

@@ -3,18 +3,22 @@ import Navbar from '../../components/Navbar/Navbar';
 import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import {useParams} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import {add2Cart} from '../../redux/actions/cartActions'
 
 const ProductDetail = () => {
 
     const { id } = useParams();
-
     const [data, setData] = useState([]);
+
+    //in displace have action
+    const dispatch = useDispatch();
 
     useEffect(()=>{
         Axios.get('http://localhost:5000/products/' + id)
         .then(res=>{
-            console.log(res)
-            setData(res.data)
+            console.log(res);
+            setData(res.data);
         })
         .catch(err =>{
             console.log(err)
@@ -26,7 +30,7 @@ const ProductDetail = () => {
 
     return (
     <>
-      <Navbar />
+    <Navbar />
     
         <div className={classes["productdetail-container"]}>
 
@@ -60,7 +64,10 @@ const ProductDetail = () => {
                     <span product-qty-unit> pack </span>
                 </h3>
 
-                <button className={classes["btn"]}>Add to cart</button>
+                {/* <button className={classes["btn"]}>Add to cart</button> */}
+
+                <button className={classes["btn"]}
+                 onClick = {() => dispatch(add2Cart({...data,amount: 1}))}>Add to cart</button>
 
             </div>
         </div>

@@ -30,7 +30,7 @@ const Card = (props) => {
                             {props.desc}
                         </p>
 
-                        <h3> add #demo </h3>
+                        <h3> Expore more... </h3>
                         {/* <h3>on left eye icon can open</h3>
                         <h3>on right chart icon can ปรื้นๆ</h3> */}
 

@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './Cart.module.css';
 import Billing from '../../components/Billing/Billing';
+import CartList from '../../components/CartList/CartList';
 
 const Cart = () => {
-
+ 
     return (
         <>
             <Navbar />
-            
-            <div className={classes["cart-container"]}>
-                <h1>Your Medicines</h1>
-            </div>
+        
+            <h1>Your Medicines</h1>
 
-            <Billing />
-            
+            <div className={classes["cart-container"]}>
+
+                <div className={classes["cartlist-container"]}>
+                    <CartList />
+                </div>
+
+                <div className={classes["billing-container"]}>
+                    <Billing />
+                </div>
+
+            </div>
         </>
     )
 }
