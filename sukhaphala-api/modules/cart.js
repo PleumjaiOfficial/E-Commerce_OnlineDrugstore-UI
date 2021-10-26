@@ -31,6 +31,7 @@ const createCart = async (cart) => {
         {
           customerId: cart.customerId,
           productId: cart.productId,
+          price: cart.price,
           amount: cart.amount,
         },
         { new: true, upsert: true}
