@@ -35,7 +35,6 @@ const createCart = async (cart) => {
         },
         { new: true, upsert: true}
       );
-
       return newCart;
     } catch (err) {
       return null;
@@ -52,7 +51,7 @@ const updateCart = async (cartId, cart) => {
     const updatedCart = await Cart.findByIdAndUpdate(
       cartId,
       {
-        $set: { amount: cart.amount },
+        ...cart
       },
       { new: true }
     );
@@ -63,10 +62,13 @@ const updateCart = async (cartId, cart) => {
 };
 
 //delete cart
-const deletedCart = async (cartId) => {
+const deleteCart = async (cartId) => {
   try {
     await Cart.findByIdAndDelete(cartId);
-    return { message: "successfully removed cart" };
+    return { 
+      type: 'SUCCESS',
+      message: 'successfully removed cart'
+    };
   } catch (err) {
     return null;
   }
@@ -75,7 +77,10 @@ const deletedCart = async (cartId) => {
 const deleteAllCart = async () => {
   try {
     await Cart.deleteMany({});
-    return { message: "successfully removed all carts" };
+    return {
+      type: 'SUCCESS', 
+      message: 'successfully removed all carts' 
+    };
   } catch (err) {
     return null;
   }
@@ -85,7 +90,7 @@ module.exports = {
   getCarts: getCarts,
   createCart: createCart,
   updateCart: updateCart,
-  deletedCart: deletedCart,
+  deleteCart: deleteCart,
   deleteAllCart: deleteAllCart,
   checkAmount: checkAmount
 };
