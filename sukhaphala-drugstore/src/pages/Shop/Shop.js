@@ -49,15 +49,15 @@ const Shop = () => {
 
             <div className={classes["shop-product"]}>
                 {
-                data.map(i=>(
-                    <Product 
-                        id={i._id}
-                        title={i.name}
-                        price={i.price}
-                        img={i.image}
-                        desc={i.description}
-                    />
-                ))
+                    data.map(i=>(
+                        <Product 
+                            id={i._id}
+                            title={i.name}
+                            price={i.price}
+                            img={i.image}
+                            desc={i.description}
+                        />
+                    ))
                 }
             </div>
 

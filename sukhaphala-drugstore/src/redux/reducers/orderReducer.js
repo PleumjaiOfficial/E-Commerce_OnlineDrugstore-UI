@@ -1,18 +1,26 @@
-import { CLEAR_ORDER, CREATE_ORDER } from "../actions/orderAction";
+import {CREATE_ORDER } from "../actions/orderAction";
 
 
 const iniState = {
     order: [],
 };
 
-export const orderReducer = (state = iniState , action) => {
+export const orderReducer = (state = iniState, action) => {
     switch (action.type) {
         case CREATE_ORDER:
-            let userOrder = action.payload;
-            return {order: userOrder};
+            // let currentOrder;
+            // // let feedback = action.payload;
 
-        case CLEAR_ORDER:
-            return {order: null};            
+            // if(action.payload === "signal"){
+            //     currentOrder = iniState;
+            // } else{
+            //     currentOrder = state;
+            // }
+
+            // return {
+            //     ...state,
+            //     order:currentOrder
+            // }; 
     
         default:
             return state;

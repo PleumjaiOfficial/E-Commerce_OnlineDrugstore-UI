@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classes from './Navbar.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 
 // import { IconName } from "react-icons/hi";
 // https://react-icons.github.io/react-icons
-
 import Button from "../Button/Button";
+import { getCart } from '../../redux/actions/cartActions';
 
 const Navbar = () => {
+
+   const dispatch = useDispatch();
 
   const [click,setclick] = useState(false);
   const holdClick = () => setclick(!click);
@@ -49,6 +51,7 @@ const Navbar = () => {
           {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
           {/* sum start in 0 and plus with item.amount*/}
           {cart.reduce((sum, current) =>  sum + current.amount, 0)}
+
           
         </span>
       </NavLink>

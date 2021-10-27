@@ -1,25 +1,24 @@
-import { DELETE_CART } from "./cartActions";
-
+import axios from 'axios'
 export const CREATE_ORDER = "CREATE_ORDER";
-export const CLEAR_ORDER = "CLEAR_ORDER";
 
-// export const createOrder = (order) => (dispatch) => {
 
-//         fetch("api path" , 
-//         {
-//             method: "POST", //insert
-//         },
+export const placeOrder = (feedback) => {
+    console.log(feedback);
 
-//     }) .then((data) =>{
-//             dispatch({
-//                 type: CREATE_ORDER,
-//                 payload: data
-//             });
-//         });
+    return {
+        type: CREATE_ORDER,
+        payload: feedback,
+    }
+}
 
-// export const clearOrder = () =>  (dispatch) => {
-//     dispatch({
-//         type: DELETE_CART
-//     });
-// }
+export function placeOrderAsync(userProduct) {
+
+    console.log(userProduct);
+    return async function(dispatch) {
+        await axios.post('http://localhost:5000/orders/', userProduct).then(res => {
+            console.log(res.data)
+            dispatch(placeOrder(res.data))
+        })
+    }
+}
 

@@ -2,11 +2,17 @@ import React from 'react'
 import classes from './Billing.module.css';
 import Button from "../Button/Button";
 import { useSelector,useDispatch } from 'react-redux';
+import { placeOrderAsync } from '../../redux/actions/orderAction'; 
 
 const Billing = () => {
 
     const cart = useSelector((state) => state.cart.cart);
     console.log(cart);
+
+    const order = useSelector((state) => state.order.order);
+    console.log(order);
+
+    const dispatch = useDispatch();
 
     return (
         <div>
@@ -41,7 +47,9 @@ const Billing = () => {
 
                 <Button
                     Button_style={classes["btn_cart"]}
-                    Button_text="Place order" />
+                    Button_text="Place order" 
+                    Button_onclick={()=> dispatch(placeOrderAsync(cart))}
+                />
 
             </div>
         </div>
