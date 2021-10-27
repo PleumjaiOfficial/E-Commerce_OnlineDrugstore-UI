@@ -1,3 +1,4 @@
+const { Promise } = require('mongoose');
 const Order = require('../models/Order');
 const cartInterface = require('./cart');
 const productInterface = require('./product');
@@ -41,20 +42,21 @@ const reduceProductAmount = (carts) => {
 const calculateTotal = async (carts) => {
   try {
     //find price of each product and add to cart object
-    const cartWithSubtotals = await carts.map( async cart => {
+    const cartWithSubtotals = await Promise.all(carts.map( async cart => {
       const { price } = await productInterface.getProduct(cart.productId);
       const subtotal = price * cart.amount;
       // const cartWithSubtotal = { ...cart, subtotal };
       // return cartWithSubtotal;
       return subtotal;
-    });
+    }));
 
     //find total price by add all subtotal together
     //reducer function
     const reducer = (prev, cur) => {
       return prev + cur;
     }
-    const total = cartWithSubtotals.reduce(reducer);
+    // console.log(cartWithSubtotals);
+    const total = await cartWithSubtotals.reduce(reducer);
     return total;
 
   } catch (err) {
