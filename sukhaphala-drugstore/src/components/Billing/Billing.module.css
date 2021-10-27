@@ -1,0 +1,30 @@
+.billing{
+    position: relative;
+    height: 550px;
+    width: 500px;
+    display: table;
+    justify-content: space-evenly;
+    overflow: hidden;
+    cursor: pointer;
+    margin-left: 800px;
+    padding: 20px;
+     border: 1px solid black;
+}
+
+.biling-topic h1{
+    font-family: 'Montserrat';
+    font-size: 48px;
+}
+
+.btn_cart {
+    /* position: relative;
+    top: 120px;
+    left: 550px; */
+	width: 150px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    padding: 2px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s linear;
+}

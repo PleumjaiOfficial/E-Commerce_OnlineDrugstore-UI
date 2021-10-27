@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import classes from './Navbar.module.css';
-
+import { useSelector, useDispatch} from 'react-redux';
 
 // import { IconName } from "react-icons/hi";
 // https://react-icons.github.io/react-icons
-
 import Button from "../Button/Button";
+import { getCart } from '../../redux/actions/cartActions';
 
 const Navbar = () => {
 
-  const [click,setclick] = useState(false);
+   const dispatch = useDispatch();
 
+  const [click,setclick] = useState(false);
   const holdClick = () => setclick(!click);
-  const closeMenu = () => setclick(!click);
+  console.log(click);
+
+  //useSelector คือ การดึง state ที่อยู่ใน redux store มา
+  //cart is array of qty
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
 
   return(
     <nav className={classes["navbar"]}>
         
       {/* links */}
-      <ul className={classes[click ? "nav-menu active" : "nav-menu"]}>
+      <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
                     
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
@@ -37,8 +43,19 @@ const Navbar = () => {
 
       </ul>
 
+    <div className={classes[click ? "nav-button-active" : "nav-button"]}>
 
-    <div className={classes[click ? "nav-button active" : "nav-button"]}>
+      <NavLink  to='/Cart'>
+        <span>
+          <i class="fas fa-shopping-cart"></i>
+          {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
+          {/* sum start in 0 and plus with item.amount*/}
+          {cart.reduce((sum, current) =>  sum + current.amount, 0)}
+
+          
+        </span>
+      </NavLink>
+      
       <NavLink  to='/Login'>
         <Button
             Button_style={classes["btn_nav"]}
@@ -55,7 +72,7 @@ const Navbar = () => {
       
       {/* burger menu bar */}
       <div className={classes['nav-burger']} onClick={holdClick}>
-        <i className={classes[click ? 'fas fa-times' : 'fa fa-bars']}></i>
+        <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
       </div>
 
     </nav>

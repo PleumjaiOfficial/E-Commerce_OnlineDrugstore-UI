@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  customer: {
+  customerId: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Customer'
   }, 
-  update_time: {
+  updateTime: {
     type: Date,
     default: Date.now(),
   },
   status: String, //inCart, orderPlaced, purchased, cancel
-  total_money: Number,
-  order_line: [
+  totalMoney: Number,
+  orderLine: [
     {
-      product: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId, ref: 'Product'
       }, 
       amount: Number
@@ -20,6 +20,6 @@ const orderSchema = new mongoose.Schema({
   ]
 });
 
-const Order = mongoose.model('Product', orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

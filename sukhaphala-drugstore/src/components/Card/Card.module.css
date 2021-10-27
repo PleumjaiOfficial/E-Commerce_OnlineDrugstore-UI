@@ -10,7 +10,6 @@
     cursor: pointer;
     margin: 8px;
     background-color: whitesmoke;
-    
 }
 
 .card-image{
@@ -101,7 +100,7 @@
   width: 100%;
 }
 
-.card:hover{
+/* .card:hover{
   animation: shake 0.5s;
   animation-iteration-count: infinite;
 }
@@ -118,6 +117,6 @@
   80% { transform: translate(-1px, -1px) rotate(1deg); }
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
-}
+} */
 
 

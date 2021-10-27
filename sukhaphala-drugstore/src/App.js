@@ -7,6 +7,8 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Card from './components/Card/Card';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
+import Cart from './pages/Cart/Cart';
+import CartList from './components/CartList/CartList';
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
           <Route path='/Register' component={Register} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
           <Route path='/Card' component={Card} />
+          <Route path='/Cart' component={Cart} />
+          <Route path='/CartList' component={CartList} />
           
         
         </Switch>
