@@ -92,6 +92,9 @@ const updateCart = async (cartId, cart) => {
       },
       { new: true }
     );
+    if (updatedCart.amount === 0) {
+      await Cart.findByIdAndDelete(updatedCart._id);
+    }
     return updatedCart;
   } catch (err) {
     return null;
@@ -104,6 +107,7 @@ const deleteCart = async (cartId) => {
     await Cart.findByIdAndDelete(cartId);
     return { 
       type: 'SUCCESS',
+      cartId: cartId,
       message: 'successfully removed cart'
     };
   } catch (err) {
