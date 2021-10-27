@@ -115,9 +115,9 @@ const deleteCart = async (cartId) => {
   }
 };
 
-const deleteAllCart = async () => {
+const deleteAllCustomerCart = async (customerId) => {
   try {
-    await Cart.deleteMany({});
+    await Cart.deleteMany({customerId: customerId});
     return {
       type: 'SUCCESS', 
       message: 'successfully removed all carts' 
@@ -132,6 +132,6 @@ module.exports = {
   createCart: createCart,
   updateCart: updateCart,
   deleteCart: deleteCart,
-  deleteAllCart: deleteAllCart,
+  deleteAllCustomerCart: deleteAllCustomerCart,
   checkAmount: checkAmount
 };
