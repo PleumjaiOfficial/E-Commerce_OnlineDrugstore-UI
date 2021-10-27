@@ -1,16 +1,17 @@
 const router = require('express').Router();
 const cartInterface = require('../modules/cart');
 
-// not use this interface
-// router.get('/', async (req, res) => {
-//   const customerId = '6170242430c0c7d0539f8610';
-//   try {
-//     const carts = await customerInterface.getCustomerCarts(customerId);
-//     res.status(200).json(carts);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   };
-// });
+//get all carts
+router.get('/', async (req, res) => {
+  //fix customerId tempolary
+  const customerId = '6170242430c0c7d0539f8610';
+  try {
+    const carts = await cartInterface.getCarts(customerId);
+    res.status(200).json(carts);
+  } catch (err) {
+    res.status(500).json(err);
+  };
+});
 
 //create cart api
 router.post('/', async (req, res) => {
