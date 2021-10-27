@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const productAPI = require('./routes/product');
 const cartAPI = require('./routes/cart');
+const orderAPI = require('./routes/order');
 
 dotenv.config();
 const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
@@ -26,6 +27,7 @@ app.use(express.static('public'));
 app.use(cors());
 app.use('/products', productAPI);
 app.use('/carts', cartAPI);
+app.use('/orders', orderAPI);
 
 //start running application's backend
 app.listen(process.env.PORT || 5000, () => {

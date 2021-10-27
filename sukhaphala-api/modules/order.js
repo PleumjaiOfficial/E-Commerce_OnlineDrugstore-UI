@@ -2,11 +2,21 @@ const Order = require('../models/Order');
 const cartInterface = require('./cart');
 const productInterface = require('./product');
 
-const checkStock = (carts) => {
+const checkProductAmount = async (productId, amount) => {
+  const product = await productInterface.getProduct(productId);
+  if (product.remain >= amount) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+const checkStock = async (carts) => {
   const outOfStockCart = [];
   //check stock before place order
-  carts.foreach(cart => {
-    if (!cartInterface.checkAmount(cart._id)) {
+  carts.forEach( async cart => {
+    const isEnough = await checkProductAmount(cart.productId, cart.amount);
+    if (!isEnough) {
       outOfStockCart.push(cart);
     }
   });
@@ -15,12 +25,12 @@ const checkStock = (carts) => {
 
 const reduceProductAmount = (carts) => {
   //reduce product remaining
-  carts.foreach(async cart => {
+  carts.forEach(async cart => {
     try {
       let product = await productInterface.getProduct(cart.productId);
       const remaining = product.remain - cart.amount;
       product = { ...product, remain: remaining };
-      await productInterface.updateProduct(product);
+      await productInterface.updateProduct(product._id, product);
     } catch (err) {
       //may be manage this error another time
       console.log('cannot reduce amount of product...');
@@ -34,8 +44,9 @@ const calculateTotal = async (carts) => {
     const cartWithSubtotals = await carts.map( async cart => {
       const { price } = await productInterface.getProduct(cart.productId);
       const subtotal = price * cart.amount;
-      const cartWithSubtotal = { ...cart, subtotal };
-      return cartWithSubtotal;
+      // const cartWithSubtotal = { ...cart, subtotal };
+      // return cartWithSubtotal;
+      return subtotal;
     });
 
     //find total price by add all subtotal together
@@ -51,34 +62,62 @@ const calculateTotal = async (carts) => {
   };
 };
 
-const createOrder = async (customerId) => {
-  const customerCarts = await cartInterface.getCarts(customerId);
-  const outOfStockCart = checkStock(customerCarts);
+const createOrder = async (order) => {
   //recheck before place order
-  if (outOfStockCart) {
+  const outOfStockCart = await checkStock(order);
+  if (outOfStockCart.length > 0) {
     return { 
+      type: 'FAIL',
       message: 'there are some products don\'t have enought quantity',
       problemCart: outOfStockCart
     };
   }
-  //update product remaining
-  reduceProductAmount(customerCarts);
-  //calculate total money
-  const totalMoney = await calculateTotal(customerCarts);
 
+  //calculate total money
+  const totalMoney = await calculateTotal(order);
   //create order
+  let savedOrder;
+  const orderLine = order.map(orderItem => {
+    return {
+      productId: orderItem.productId,
+      amount: orderItem.amount
+    };
+  });
+  // console.log(orderLine);
   try {
     const newOrder = await new Order({
-      customerId: customerId,
+      customerId: order[0].customerId,
       status: 'pending',
       totalMoney: totalMoney,
-      orderLine: [ ...customerCarts ]
+      orderLine: orderLine
     });
-    const savedOrder = await newOrder.save();
-    return savedOrder;
+    savedOrder = await newOrder.save();
   } catch (err) {
-    return null;
+    //do something
+    // console.log(err);
+    savedOrder = null;
   }
+  
+  if (savedOrder) {
+    //update product remaining
+    reduceProductAmount(order);
+    const result = await cartInterface.deleteAllCustomerCart(order[0].customerId);
+    if (result.type === 'SUCCESS') {
+      return savedOrder;
+    } else {
+      return {
+        type: 'FAIL',
+        message: 'success created order, but cannot delete carts',
+        ...savedOrder
+      }
+    }
+  } else {
+    return {
+      type: 'FAIL',
+      message: 'cannot create order'
+    }
+  }
+
 };
 
 module.exports = {

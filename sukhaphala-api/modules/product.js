@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 const getProduct = async (productId) => {
   try {
     const product =  await Product.findById(productId);
-    return product;
+    return product._doc;
   } catch (err) {
     return null;
   }
