@@ -9,6 +9,9 @@ import Card from './components/Card/Card';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Cart from './pages/Cart/Cart';
 import CartList from './components/CartList/CartList';
+import AdminCreateProduct from './pages/Admin/AdminCreateProduct/AdminCreateProduct';
+import { AdminShop } from './pages/Admin/AdminShop/AdminShop';
+import AdminEditShop from './pages/Admin/AdminEditShop/AdminEditShop';
 
 const App = () => {
   return (
@@ -29,7 +32,9 @@ const App = () => {
           <Route path='/Card' component={Card} />
           <Route path='/Cart' component={Cart} />
           <Route path='/CartList' component={CartList} />
-          
+          <Route path='/AdminCreateProduct' component={AdminCreateProduct} />
+          <Route path='/AdminShop' component={AdminShop} />
+          <Route path='/AdminEditShop' component={AdminEditShop} />
         
         </Switch>
 
