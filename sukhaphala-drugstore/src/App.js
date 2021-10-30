@@ -34,7 +34,7 @@ const App = () => {
           <Route path='/CartList' component={CartList} />
           <Route path='/AdminCreateProduct' component={AdminCreateProduct} />
           <Route path='/AdminShop' component={AdminShop} />
-          <Route path='/AdminEditShop' component={AdminEditShop} />
+          <Route path='/AdminEditShop/:id' component={AdminEditShop} />
         
         </Switch>
 

@@ -8,8 +8,7 @@ const ProductAdmin = (props) => {
 
     return (
         <>
-        {/* <NavLink to={`/ProductDetail/${props.id}`}> */}
-        <NavLink to='/AdminEditShop'>
+        <NavLink to={`/AdminEditShop/${props.id}`}>
             <CardAdmin
                 id={props.id}
                 title={props.title}

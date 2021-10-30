@@ -41,9 +41,22 @@ const Navbar = () => {
           </NavLink>
         </li>
 
+        <li className={classes["nav-item"]}>
+          <NavLink  to='/AdminCreateProduct' 
+          className={classes["nav-links"]}>
+            <span>ADD PRODUCT</span>
+          </NavLink>
+        </li>
+
       </ul>
 
     <div className={classes[click ? "nav-button-active" : "nav-button"]}>
+
+    <NavLink  to='/AdminShop'>
+      <span>
+        <i class="fas fa-poo"></i>
+      </span>
+     </NavLink>
 
       <NavLink  to='/Cart'>
         <span>
@@ -51,10 +64,9 @@ const Navbar = () => {
           {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
           {/* sum start in 0 and plus with item.amount*/}
           {cart.reduce((sum, current) =>  sum + current.amount, 0)}
-
-          
         </span>
       </NavLink>
+      
       
       <NavLink  to='/Login'>
         <Button

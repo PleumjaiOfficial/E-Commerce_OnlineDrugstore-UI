@@ -1,4 +1,6 @@
 import {useState} from 'react'
+
+import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
 import image from '../../../image/image-default';
 
@@ -15,6 +17,9 @@ const AdminCreateProduct = () => {
 
     return (
         <div>
+
+             <Navbar />
+             
             <div className={classes["create-img"]}>
                 <button>Add image</button>
                 <img src={image} />
