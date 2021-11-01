@@ -63,7 +63,7 @@ const getProduct = async (productId) => {
 //add new product
 const addProduct = async (product) => {
   const savedImageResult = await createImage(product.file);
-  if (savedImageResult.status === 'SUCCESS') {
+  if (savedImageResult.type === 'SUCCESS') {
     try {
       const newProduct = new Product({
         name: product.name,

@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: Number,
   remain: Number,
-  health_goal: [String]
+  healthGoal: [String]
 });
 
 const Product = mongoose.model('Product', productSchema);

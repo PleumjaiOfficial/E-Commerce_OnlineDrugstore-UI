@@ -14,12 +14,12 @@ const Navbar = () => {
 
   const [click,setclick] = useState(false);
   const holdClick = () => setclick(!click);
-  console.log(click);
+  // console.log(click);
 
   //useSelector คือ การดึง state ที่อยู่ใน redux store มา
   //cart is array of qty
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
+  // console.log(cart);
 
   return(
     <nav className={classes["navbar"]}>
