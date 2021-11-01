@@ -21,6 +21,7 @@ const AdminCreateProduct = () => {
         console.log(newproduct)
 
         const CreateProduct = () => {
+
             axios.post('http://localhost:5000/products/',
             {
                 "name": data.ProductName,
@@ -31,6 +32,7 @@ const AdminCreateProduct = () => {
                 "healthGoal":data.HealthGoal
             })
             .then(res => console.log(res) )
+            
     }
     CreateProduct();
 }

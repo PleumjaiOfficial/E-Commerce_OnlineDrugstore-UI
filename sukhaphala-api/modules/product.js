@@ -4,7 +4,7 @@ const fs = require('fs');
 //write file to harddisk
 const createImage =  async (imageFile) => {
   const fileData = imageFile.data;
-  const decodedFileData = Buffer.from(fileData, 'base64');
+  const decodedFileData = Buffer.from(fileData, 'base64').toString();
   //rename image
   const date = new Date().getTime();
   const names = await imageFile.name.split('.');
@@ -25,6 +25,7 @@ const createImage =  async (imageFile) => {
       message: 'successfully create a file'
     });
   } catch (err) {
+    console.log(err)
     return ({
       type: 'FAIL',
       message: 'Fail to write a file'
