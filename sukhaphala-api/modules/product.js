@@ -1,14 +1,94 @@
 const Product = require('../models/Product');
+const fs = require('fs');
 
+//write file to harddisk
+const createImage =  async (imageFile) => {
+  const fileData = imageFile.data;
+
+  //rename image
+  const date = new Date().getTime();
+  const names = await imageFile.name.split('.');
+  const extension = '.'.concat(names.pop());
+  await names.push(date.toString());
+  await names.push(extension);
+  const fileName = await names.join('');
+
+  //write image to harddisk
+  try {
+    //filter only binary data
+    const base64Image = fileData.split(';base64,').pop();
+    fs.writeFileSync(__dirname + '../public/images' + fileName, base64Image, { encoding: 'base64' });
+    const filePath = 'http://localhost:5000/images/' + fileName;
+    return ({
+      type: 'SUCCESS',
+      path: filePath,
+      message: 'successfully create a file'
+    });
+  } catch (err) {
+    return ({
+      type: 'FAIL',
+      message: 'Fail to write a file'
+    });
+  };
+
+};
+
+//get all products
+const getAllProducts = async () => {
+  try {
+    const products = await Product.find();
+    return products;
+  } catch (err) {
+    return {
+      type: 'FAIL',
+      message: 'cannot get all products'
+    };
+  }
+};
+
+//get individual product
 const getProduct = async (productId) => {
   try {
     const product =  await Product.findById(productId);
     return product._doc;
   } catch (err) {
-    return null;
+    return {
+      type: 'FAIL',
+      productId: productId,
+      message: 'cannot get this product detail'
+    };
   }
 };
 
+//add new product
+const addProduct = async (product) => {
+  const savedImageResult = await createImage(product.file);
+  if (savedImageResult.status === 'SUCCESS') {
+    try {
+      const newProduct = new Product({
+        name: product.name,
+        image: savedImageResult.path,
+        description: product.description,
+        price: product.price,
+        remain: product.remain,
+        healthGoal: product.healthGoal
+      });
+
+      const saveProduct = await newProduct.save();
+      return saveProduct;
+    } catch (err) {
+      return {
+        type: 'FAIL',
+        message: 'Cannot add new product'
+      };
+    }
+  } else {
+    return savedImageResult;
+  }
+};
+
+
+//update product details
 const updateProduct = async (productId, product) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(productId, 
@@ -20,7 +100,28 @@ const updateProduct = async (productId, product) => {
   }
 };
 
+//delete product from database
+const deleteProduct = async (productId) => {
+  try {
+    await Product.findByIdAndDelete(productId);
+    return {
+      type: 'SUCCESS',
+      productId: productId,
+      message: 'successfully removed product'
+    }
+  } catch (err) {
+    return {
+      type: 'FAIL',
+      productId: productId,
+      message: 'cannot delete this product'
+    }
+  }
+}
+
 module.exports = { 
+  getAllProducts: getAllProducts,
   getProduct: getProduct, 
-  updateProduct: updateProduct 
+  addProduct: addProduct,
+  updateProduct: updateProduct,
+  deleteProduct: deleteProduct
 }
