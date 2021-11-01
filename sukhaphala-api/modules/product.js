@@ -104,7 +104,9 @@ const updateProduct = async (productId, product) => {
 //delete product from database
 const deleteProduct = async (productId) => {
   try {
+    const product = await getProduct(productId);
     await Product.findByIdAndDelete(productId);
+    fs.unlinkSync(product.image);
     return {
       type: 'SUCCESS',
       productId: productId,
