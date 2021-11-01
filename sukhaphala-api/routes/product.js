@@ -23,6 +23,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//add new product
+router.post('/', async (req, res) => {
+  const newProduct=  req.body;
+  try {
+     const savedProduct = await productInterface.addProduct(newProduct);
+     res.status(200).json(savedProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   const productId = req.params.id;
   try {
