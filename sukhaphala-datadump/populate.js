@@ -50,7 +50,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: Number,
   remain: Number,
-  health_goal: [String]
+  healthGoal: [String]
 });
 const Product = mongoose.model('Product', productSchema);
 
@@ -77,7 +77,7 @@ const proddoc = new Product({
   description: 'test is test',
   price: 320,
   remain: 100,
-  health_goal: ['nobrainer']
+  healthGoal: ['nobrainer']
 });
 
 const orderdoc = new Order({

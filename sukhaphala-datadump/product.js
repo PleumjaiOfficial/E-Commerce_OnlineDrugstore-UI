@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   description: String,
   price: Number,
   remain: Number,
-  health_goal: [String]
+  healthGoal: [String]
 });
 
 const dumpData = [
@@ -22,7 +22,7 @@ const dumpData = [
     description: 'red is hot',
     price: 320,
     remain: 100,
-    health_goal: ['brain', 'stress'],
+    healthGoal: ['brain', 'stress'],
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -31,7 +31,7 @@ const dumpData = [
     description: 'blue is cool',
     price: 400,
     remain: 90,
-    health_goal: ['face', 'sleep'],
+    healthGoal: ['face', 'sleep'],
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -40,7 +40,7 @@ const dumpData = [
     description: 'black is heavy',
     price: 500,
     remain: 10,
-    health_goal: ['power', 'strength'],
+    healthGoal: ['power', 'strength'],
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -49,7 +49,7 @@ const dumpData = [
     description: 'white is bright',
     price: 320,
     remain: 100,
-    health_goal: ['brain', 'stress'],
+    healthGoal: ['brain', 'stress'],
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -58,7 +58,7 @@ const dumpData = [
     description: 'purple is mystic',
     price: 400,
     remain: 90,
-    health_goal: ['face', 'sleep'],
+    healthGoal: ['face', 'sleep'],
   },
   {
     _id: new mongoose.Types.ObjectId(),
@@ -67,7 +67,7 @@ const dumpData = [
     description: 'rainbow is pride',
     price: 500,
     remain: 10,
-    health_goal: ['power', 'strength'],
+    healthGoal: ['power', 'strength'],
   },
 ];
 
