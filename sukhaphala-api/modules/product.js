@@ -4,7 +4,7 @@ const fs = require('fs');
 //write file to harddisk
 const createImage =  async (imageFile) => {
   const fileData = imageFile.data;
-
+  const decodedFileData = Buffer.from(fileData, 'base64');
   //rename image
   const date = new Date().getTime();
   const names = await imageFile.name.split('.');
@@ -16,7 +16,7 @@ const createImage =  async (imageFile) => {
   //write image to harddisk
   try {
     //filter only binary data
-    const base64Image = fileData.split(';base64,').pop();
+    const base64Image = decodedFileData.split(';base64,').pop();
     fs.writeFileSync(__dirname + '../public/images' + fileName, base64Image, { encoding: 'base64' });
     const filePath = 'http://localhost:5000/images/' + fileName;
     return ({
