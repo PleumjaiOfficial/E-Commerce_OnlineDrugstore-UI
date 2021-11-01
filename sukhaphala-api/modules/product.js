@@ -107,7 +107,10 @@ const deleteProduct = async (productId) => {
   try {
     const product = await getProduct(productId);
     await Product.findByIdAndDelete(productId);
-    fs.unlinkSync(product.image);
+    //also delete image on disk 
+    const imageName = product.image.split('/').pop();
+    const imagePath = path.resolve('public', 'images', imageName);
+    fs.unlinkSync(imagePath);
     return {
       type: 'SUCCESS',
       productId: productId,
