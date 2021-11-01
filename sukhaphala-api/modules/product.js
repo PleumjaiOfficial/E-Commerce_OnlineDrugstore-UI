@@ -1,5 +1,6 @@
-const Product = require('../models/Product');
 const fs = require('fs');
+const path = require('path');
+const Product = require('../models/Product');
 
 //write file to harddisk
 const createImage =  async (imageFile) => {
@@ -17,7 +18,7 @@ const createImage =  async (imageFile) => {
   try {
     //filter only binary data
     const base64Image = decodedFileData.split(';base64,').pop();
-    fs.writeFileSync(__dirname + '../public/images' + fileName, base64Image, { encoding: 'base64' });
+    fs.writeFileSync(path.resolve("..", "public", "images", fileName), base64Image, { encoding: 'base64' });
     const filePath = 'http://localhost:5000/images/' + fileName;
     return ({
       type: 'SUCCESS',
