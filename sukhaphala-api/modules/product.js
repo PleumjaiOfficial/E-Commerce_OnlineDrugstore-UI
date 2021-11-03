@@ -31,7 +31,17 @@ const createImage =  async (imageFile) => {
       message: 'Fail to write a file'
     });
   };
+};
 
+//delete image from disk
+const deleteImageFromPath = async (imagePath) => {
+  try {
+    const imageName = imagePath.split('/').pop();
+    const imagePath = path.resolve('public', 'images', imageName);
+    fs.unlinkSync(imagePath);
+  } catch (err) {
+    throw err;
+  }
 };
 
 //get all products
@@ -88,16 +98,37 @@ const addProduct = async (product) => {
   }
 };
 
-
 //update product details
 const updateProduct = async (productId, product) => {
   try {
-    const updatedProduct = await Product.findByIdAndUpdate(productId, 
-      { ...product },
-      { new: true });
-    return updatedProduct;
+    //update product with new image
+    if (product.file) {
+      //create new image
+      const savedImageResult = await createImage(product.file);
+      if (savedImageResult.type === 'SUCCESS') {
+        deleteImageFromPath(product.image);
+        const updatedProduct = Product.findByIdAndUpdate(productId,
+          { ...product,
+            image: savedImageResult.path }, //update new image path
+          { new: true }
+        );
+        return updatedProduct;
+      }
+      return savedImageResult;
+
+    } else { //update product without new image
+      const updatedProduct = await Product.findByIdAndUpdate(productId, 
+        { ...product },
+        { new: true });
+      return updatedProduct;
+    }
+
   } catch (err) {
-    return null;
+    return {
+      type: 'FAIL',
+      productId: productId,
+      message: 'cannot update this product'
+    };
   }
 };
 
@@ -107,9 +138,7 @@ const deleteProduct = async (productId) => {
     const product = await getProduct(productId);
     await Product.findByIdAndDelete(productId);
     //also delete image on disk 
-    const imageName = product.image.split('/').pop();
-    const imagePath = path.resolve('public', 'images', imageName);
-    fs.unlinkSync(imagePath);
+    deleteImageFromPath(product.image);
     return {
       type: 'SUCCESS',
       productId: productId,
