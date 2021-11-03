@@ -8,6 +8,7 @@ export const AdminEditShop = () => {
 
     const { id } = useParams();
     const [data, setData] = useState([]);
+    const [healthgoals,setHealthGoals] = useState([]);
     const [loading, setLoading] = useState(true);
 
         // //fix
@@ -25,6 +26,15 @@ export const AdminEditShop = () => {
         HealthGoal: []
     })
     console.log(product)
+
+    useEffect(()=>{
+        axios.get('http://localhost:5000/healthgoals/')
+        .then(res =>{
+            console.log(res.data)
+            setHealthGoals(res.data);
+            console.log(healthgoals);
+        })
+    },[])
     
     useEffect(()=>{
         axios.get('http://localhost:5000/products/' + id)
@@ -57,6 +67,7 @@ export const AdminEditShop = () => {
     },[])
     console.log(data); 
     console.log(product); 
+
 
 
     async function delProduct() {
@@ -214,10 +225,9 @@ return (
                     <span>Add heathgoal</span>
 
                     <select  onChange={handleAddHealthGoal} >
-                                <option > fever </option>
-                                <option > Happy </option>
-                                <option > Stress </option>
-                                <option > Beauty </option>
+                        {healthgoals.map(heath =>{
+                            <option key={heath._id}> {heath.name} </option>
+                        })}
                     </select> 
                 {/* </div> */}
             </div>

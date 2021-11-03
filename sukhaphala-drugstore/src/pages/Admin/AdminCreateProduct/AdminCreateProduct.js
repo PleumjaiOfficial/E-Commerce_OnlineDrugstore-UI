@@ -1,26 +1,29 @@
 import {useState,useEffect} from 'react'
 import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
-import image from '../../../image/image-default';
+import defaultImage from '../../../image/image-default';
 import axios from 'axios';
 
 const AdminCreateProduct = () => {
 
     const handleSubmit = () => {
-       
+
         //test
-        const newproduct = {
-                "name": data.ProductName,
-                "file": data.file,
-                "description": data.ProductDesc,
-                "price":data.Price,
-                "remain":data.Remaining,
-                "healthGoal":data.HealthGoal
-            }
+        // const newproduct = {
+        //         "name": data.ProductName,
+        //         "file": data.file,
+        //         "description": data.ProductDesc,
+        //         "price":data.Price,
+        //         "remain":data.Remaining,
+        //         "healthGoal":data.HealthGoal
+        //     }
+        // console.log(newproduct)
 
-        console.log(newproduct)
-
-        const CreateProduct = () => {
+        if(checkEmply() === false)
+        {
+            alert("Don't filled out");
+        }else{
+            const CreateProduct = () => {
 
             axios.post('http://localhost:5000/products/',
             {
@@ -33,8 +36,10 @@ const AdminCreateProduct = () => {
             })
             .then(res => console.log(res) )
             
-    }
-    CreateProduct();
+        }
+        CreateProduct();
+
+        }
 }
 
     const [data, setData] = useState({
@@ -74,7 +79,6 @@ const AdminCreateProduct = () => {
                         data: btoa(binaryString)
                     }
                 })
-
                 SetimagePreview(reader.result) 
              }
              reader.readAsDataURL(file)
@@ -97,14 +101,31 @@ const AdminCreateProduct = () => {
                 })
     }
 
-
+    const checkEmply = () => {
+        if (data.ProductName == "") {
+            return false;
+        }
+        if (data.ProductDesc == "") {
+            return false;
+        }
+        if (data.Price == "") {
+            return false;
+        }
+        if (data.Remaining == "") {
+            return false;
+        }
+        if (data.HealthGoal == "") {
+            return false;
+        }
+        return true;
+    }
 
     return (
         <div>
              <Navbar />
              {/* <form onSubmit={handleSubmit}>     */}
                 <div className={classes["create-img"]}>
-                    <img src={imagePreview ? imagePreview : image }/>
+                    <img src={imagePreview ? imagePreview : defaultImage }/>
                     <input 
                         type="file"
                         onChange={handleUploadImage}
@@ -118,6 +139,7 @@ const AdminCreateProduct = () => {
                         placeholder="Product Name:"
                         value={data.ProductName}
                         onChange={e => setData({...data, ProductName: e.target.value})} 
+                        required
                     />
                 </div>
 
@@ -128,26 +150,33 @@ const AdminCreateProduct = () => {
                         placeholder="Product Description:"
                         value={data.ProductDesc}
                         onChange={e => setData({...data, ProductDesc: e.target.value})} 
+                        required
                     />
                 </div>
 
                 <div className={classes["create-formgroup"]}>
                     <label for="Price">Price:</label>
                     <input type="number" name="Price" id="Price"
+                        min="1"
                         className={classes["create-formgroup-price"]}
                         placeholder="Price:"
                         value={data.Price}
-                        onChange={e => setData({...data, Price: parseInt(e.target.value)})} />
+                        onChange={e => setData({...data, Price: parseInt(e.target.value)})} 
+                        required
+                        />
                     <span>Bath</span>
                 </div>
 
                 <div className={classes["create-formgroup"]}>
                     <label for="Remain">Product Remaining:</label>
                     <input type="number" name="Remain" id="Remain"
+                        min="1"
                         className={classes["create-formgroup-remain"]}
                         placeholder="Remain:"
                         value={data.Remaining}
-                        onChange={e => setData({...data, Remaining: parseInt(e.target.value)})} />
+                        onChange={e => setData({...data, Remaining: parseInt(e.target.value)})} 
+                        required
+                        />
                     <span>Package</span>
                 </div>
 
