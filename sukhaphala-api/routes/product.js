@@ -34,6 +34,19 @@ router.post('/', async (req, res) => {
   }
 });
 
+//update product details
+router.put('/:id', async (req, res) => {
+  const productId = req.params.id;
+  const product = req.body;
+  try {
+    const updatedProduct = await productInterface.updateProduct(productId, product);
+    res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+//delete product
 router.delete('/:id', async (req, res) => {
   const productId = req.params.id;
   try {
