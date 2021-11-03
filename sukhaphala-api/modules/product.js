@@ -18,7 +18,7 @@ const createImage =  async (imageFile) => {
   try {
     //filter only binary data
     const base64Image = decodedFileData.split(';base64,').pop();
-    fs.writeFileSync(path.resolve("..", "public", "images", fileName), base64Image, { encoding: 'base64' });
+    fs.writeFileSync(path.resolve("public", "images", fileName), base64Image, { encoding: 'base64' });
     const filePath = 'http://localhost:5000/images/' + fileName;
     return ({
       type: 'SUCCESS',
@@ -26,6 +26,7 @@ const createImage =  async (imageFile) => {
       message: 'successfully create a file'
     });
   } catch (err) {
+    console.log(err)
     return ({
       type: 'FAIL',
       message: 'Fail to write a file'
@@ -34,9 +35,10 @@ const createImage =  async (imageFile) => {
 };
 
 //delete image from disk
-const deleteImageFromPath = (imageUrl) => {
-  const imageName = imageUrl.split('/').pop();
-  const imagePath = path.resolve('public', 'images', imageName);
+const deleteImageFromPath = async (imageUrl) => {
+  
+    const imageName = imageUrl.split('/').pop();
+    const imagePath = path.resolve('public', 'images', imageName);
   try {
     fs.unlinkSync(imagePath);
   } catch (err) {
@@ -106,6 +108,7 @@ const updateProduct = async (productId, product) => {
       //create new image
       const savedImageResult = await createImage(product.file);
       if (savedImageResult.type === 'SUCCESS') {
+        console.log(product.image);
         deleteImageFromPath(product.image);
         const updatedProduct = Product.findByIdAndUpdate(productId,
           { ...product,
