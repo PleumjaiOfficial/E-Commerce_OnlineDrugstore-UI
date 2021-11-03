@@ -3,6 +3,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
 import defaultImage from '../../../image/image-default';
 import axios from 'axios';
+import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 
 const AdminCreateProduct = () => {
 
@@ -102,19 +103,16 @@ const AdminCreateProduct = () => {
     }
 
     const checkEmply = () => {
-        if (data.ProductName == "") {
+        if (data.ProductName) {
             return false;
         }
-        if (data.ProductDesc == "") {
+        if (data.Price) {
             return false;
         }
-        if (data.Price == "") {
+        if (data.Remaining) {
             return false;
         }
-        if (data.Remaining == "") {
-            return false;
-        }
-        if (data.HealthGoal == "") {
+        if (data.HealthGoal) {
             return false;
         }
         return true;
@@ -185,12 +183,7 @@ const AdminCreateProduct = () => {
                     {/* <div className={classes["create-formgroup-heathgoal"]}>  */}
                         <span>Add heathgoal</span>
 
-                        <select  onChange={handleAddHealthGoal} >
-                                    <option > fever </option>
-                                    <option > Happy </option>
-                                    <option > Stress </option>
-                                    <option > Beauty </option>
-                        </select> 
+                        <HealthGoal onChange={handleAddHealthGoal}/>
                     {/* </div> */}
                 </div>
                 
