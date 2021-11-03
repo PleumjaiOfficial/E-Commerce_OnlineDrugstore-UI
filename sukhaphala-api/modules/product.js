@@ -35,10 +35,11 @@ const createImage =  async (imageFile) => {
 };
 
 //delete image from disk
-const deleteImageFromPath = async (imagePath) => {
-  try {
-    const imageName = imagePath.split('/').pop();
+const deleteImageFromPath = async (imageUrl) => {
+  
+    const imageName = imageUrl.split('/').pop();
     const imagePath = path.resolve('public', 'images', imageName);
+  try {
     fs.unlinkSync(imagePath);
   } catch (err) {
     throw err;
@@ -103,10 +104,11 @@ const addProduct = async (product) => {
 const updateProduct = async (productId, product) => {
   try {
     //update product with new image
-    if (product.file) {
+    if (product.file.data) {
       //create new image
       const savedImageResult = await createImage(product.file);
       if (savedImageResult.type === 'SUCCESS') {
+        console.log(product.image);
         deleteImageFromPath(product.image);
         const updatedProduct = Product.findByIdAndUpdate(productId,
           { ...product,

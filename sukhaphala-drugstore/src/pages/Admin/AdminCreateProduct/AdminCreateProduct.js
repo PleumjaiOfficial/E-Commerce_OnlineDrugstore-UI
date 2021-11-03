@@ -49,7 +49,7 @@ const AdminCreateProduct = () => {
         ProductDesc: '',
         Price: '',
         Remaining: '',
-        HealthGoal: ''
+        HealthGoal: []
     });
 
     const [imagePreview,SetimagePreview] = useState(null);
@@ -78,6 +78,23 @@ const AdminCreateProduct = () => {
                 SetimagePreview(reader.result) 
              }
              reader.readAsDataURL(file)
+    }
+
+    const handleAddHealthGoal = (e) => {
+        if(!data.HealthGoal.includes(e.target.value)){
+            setData( (old) => 
+                {return {...old, HealthGoal:[...old.HealthGoal,e.target.value]} }
+            )}
+    }
+
+    const handleDelHealthGoal = (e) => {
+        setData( (old) => 
+                {
+                    const newHealth = old.HealthGoal.filter(
+                        item => item !== e.target.value
+                    )
+                    return {...old, HealthGoal: newHealth } 
+                })
     }
 
 
@@ -139,7 +156,7 @@ const AdminCreateProduct = () => {
                     {/* <div className={classes["create-formgroup-heathgoal"]}>  */}
                         <span>Add heathgoal</span>
 
-                        <select onChange={e => setData({...data, HealthGoal:e.target.value})} >
+                        <select  onChange={handleAddHealthGoal} >
                                     <option > fever </option>
                                     <option > Happy </option>
                                     <option > Stress </option>
@@ -149,6 +166,15 @@ const AdminCreateProduct = () => {
                 </div>
                 
                 <div className={classes["create-formgroup"]}>
+                        <span>Heathgoal: </span>
+                        {data.HealthGoal.map(item => 
+                            <button key={item} onClick={handleDelHealthGoal} value={item}> 
+                                {item} x 
+                            </button>
+                        )}
+                </div>
+
+                  <div className={classes["create-formgroup"]}>
 
                     <button className={classes["cancel"]} >cancel</button>
                     {/* click save ปุ๊ป ก็ส่งไปยัง database */}
