@@ -28,7 +28,7 @@ app.use(express.static('public'));
 app.use('/products', productAPI);
 app.use('/carts', cartAPI);
 app.use('/orders', orderAPI);
-app.use('/healgoals', healthGoalAPI);
+app.use('/healthgoals', healthGoalAPI);
 
 //start running application's backend
 app.listen(process.env.PORT || 5000, () => {
