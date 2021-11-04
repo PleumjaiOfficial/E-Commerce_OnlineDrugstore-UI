@@ -75,8 +75,31 @@ const getProduct = async (productId) => {
 
 //add new product
 const addProduct = async (product) => {
-  const savedImageResult = await createImage(product.file);
-  if (savedImageResult.type === 'SUCCESS') {
+  if (product.file.data !== '') {
+    const savedImageResult = await createImage(product.file);
+    if (savedImageResult.type === 'SUCCESS') {
+      try {
+        const newProduct = new Product({
+          name: product.name,
+          image: savedImageResult.path,
+          description: product.description,
+          price: product.price,
+          remain: product.remain,
+          healthGoal: product.healthGoal
+        });
+
+        const saveProduct = await newProduct.save();
+        return saveProduct;
+      } catch (err) {
+        return {
+          type: 'FAIL',
+          message: 'Cannot add new product'
+        };
+      }
+    } else {
+      return savedImageResult;
+    }
+  } else {
     try {
       const newProduct = new Product({
         name: product.name,
@@ -86,7 +109,6 @@ const addProduct = async (product) => {
         remain: product.remain,
         healthGoal: product.healthGoal
       });
-
       const saveProduct = await newProduct.save();
       return saveProduct;
     } catch (err) {
@@ -94,9 +116,7 @@ const addProduct = async (product) => {
         type: 'FAIL',
         message: 'Cannot add new product'
       };
-    }
-  } else {
-    return savedImageResult;
+    ;}
   }
 };
 
@@ -104,7 +124,7 @@ const addProduct = async (product) => {
 const updateProduct = async (productId, product) => {
   try {
     //update product with new image
-    if (product.file.data !== '') {
+    if (product.file.data) {
       //create new image
       const savedImageResult = await createImage(product.file);
       if (savedImageResult.type === 'SUCCESS') {
