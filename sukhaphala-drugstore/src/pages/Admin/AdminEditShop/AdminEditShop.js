@@ -1,5 +1,6 @@
 import React, {Profiler, useEffect, useState} from 'react'
 import {useParams} from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import axios from 'axios';
 import classes from './AdminEditShop.module.css'
@@ -70,7 +71,7 @@ export const AdminEditShop = () => {
     }
 
     function handleSubmit(e) {
-        e.preventDefault();
+        // e.preventDefault();
         if(product.HealthGoal.length === 0) {
             alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
         }
@@ -228,9 +229,19 @@ return (
             </div>
             
             <div className={classes["create-formgroup"]}>
-                <button className={classes["cancel"]} >cancel</button>
-                <button onClick={handleSubmit} className={classes["save"]} >save</button>
-                <button onClick={delProduct} className={classes["btn"]}>Remove</button>
+                
+                <NavLink  to='/AdminShop'>
+                    <button className={classes["cancel"]} >cancel</button>
+                 </NavLink>
+
+                <NavLink  to='/AdminShop'>
+                    <button onClick={handleSubmit} className={classes["save"]} >save</button>
+                </NavLink>
+
+                
+                    <button onClick={delProduct} className={classes["btn"]}>Remove</button>
+  
+
             </div>
         {/* </form> */}
 

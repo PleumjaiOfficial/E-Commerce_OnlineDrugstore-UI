@@ -1,7 +1,7 @@
 import {useState,useEffect} from 'react'
+import { NavLink } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
-import defaultImage from '../../../image/image-default';
 import axios from 'axios';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 
@@ -103,19 +103,12 @@ const AdminCreateProduct = () => {
     }
 
     const checkEmply = () => {
-        if (data.ProductName) {
+        if (data.ProductName && data.Price && data.Remaining && data.HealthGoal) {
+            return true;
+        }
+        else{
             return false;
         }
-        if (data.Price) {
-            return false;
-        }
-        if (data.Remaining) {
-            return false;
-        }
-        if (data.HealthGoal) {
-            return false;
-        }
-        return true;
     }
 
     return (
@@ -123,7 +116,7 @@ const AdminCreateProduct = () => {
              <Navbar />
              {/* <form onSubmit={handleSubmit}>     */}
                 <div className={classes["create-img"]}>
-                    <img src={imagePreview ? imagePreview : defaultImage }/>
+                    <img src={imagePreview ? imagePreview : 'http://localhost:5000/images/default-image.jpg' }/>
                     <input 
                         type="file"
                         onChange={handleUploadImage}
@@ -196,14 +189,17 @@ const AdminCreateProduct = () => {
                         )}
                 </div>
 
-                  <div className={classes["create-formgroup"]}>
+                <div className={classes["create-formgroup"]}>
 
-                    <button className={classes["cancel"]} >cancel</button>
+                    <NavLink  to='/AdminShop'>
+                        <button className={classes["cancel"]} >cancel</button>
+                    </NavLink>
                     {/* click save ปุ๊ป ก็ส่งไปยัง database */}
 
                     <button onClick={handleSubmit} className={classes["save"]}>
                         save
                     </button>
+                    
                 </div>
 
             {/* </form> */}
@@ -216,7 +212,7 @@ const AdminCreateProduct = () => {
                 {data.Remaining}    <br/>
                 {data.HealthGoal}   <br/>
                 {data.file.name}    <br/>
-                {data.file.data} <br />
+                {data.file.data}    <br/>
             </p>
         </div>
 

@@ -103,7 +103,6 @@ const addProduct = async (product) => {
     try {
       const newProduct = new Product({
         name: product.name,
-        image: savedImageResult.path,
         description: product.description,
         price: product.price,
         remain: product.remain,
