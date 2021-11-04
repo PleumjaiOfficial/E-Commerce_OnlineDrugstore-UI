@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
   name: String,
-  image: String,
+  image: {
+    type: String,
+    default: 'http://localhost:5000/images/default-image.jpg'
+  },
   description: String,
   price: Number,
   remain: Number,

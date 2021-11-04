@@ -104,7 +104,7 @@ const addProduct = async (product) => {
 const updateProduct = async (productId, product) => {
   try {
     //update product with new image
-    if (product.file.data) {
+    if (product.file.data !== '') {
       //create new image
       const savedImageResult = await createImage(product.file);
       if (savedImageResult.type === 'SUCCESS') {
