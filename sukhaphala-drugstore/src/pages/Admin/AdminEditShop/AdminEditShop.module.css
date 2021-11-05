@@ -1,0 +1,38 @@
+.create-img{
+    display: flex;
+}
+
+.create-img img{
+   position: absolute;
+   max-width: 50%;
+   max-height: 50%;
+   width: 30%;
+   height: auto;
+   z-index: -1;
+}
+
+.create-formgroup{
+    margin-left: 60vh;
+    margin-bottom: 3vh;
+}
+
+.create-formgroup input ,span ,select ,button{
+    margin-left: 10px
+}
+
+.create-formgroup-name{
+    width: 300px;
+    display:inline-block
+}
+
+.create-formgroup-description{
+    width: 300px;
+    height: 100px;
+    display: inline-block;
+}
+
+.create-formgroup-price{
+    width: 50px;
+    height: 30px;
+    display: inline-block;
+}
