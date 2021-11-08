@@ -12,6 +12,7 @@ import CartList from './components/CartList/CartList';
 import AdminCreateProduct from './pages/Admin/AdminCreateProduct/AdminCreateProduct';
 import { AdminShop } from './pages/Admin/AdminShop/AdminShop';
 import AdminEditShop from './pages/Admin/AdminEditShop/AdminEditShop';
+import Footer from './components/Footer/Footer';
 
 const App = () => {
   return (
@@ -35,6 +36,8 @@ const App = () => {
           <Route path='/AdminCreateProduct' component={AdminCreateProduct} />
           <Route path='/AdminShop' component={AdminShop} />
           <Route path='/AdminEditShop/:id' component={AdminEditShop} />
+          
+          <Route path='/Footer' component={Footer} />
         
         </Switch>
 
