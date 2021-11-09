@@ -55,7 +55,6 @@ const createCart = async (cart) => {
     if (existCart) {
       cart.amount = cart.amount + existCart.amount;
     }
-
     //check amount of that product
     const isEnough = checkAmount(cart.productId, cart.amount);
     if (isEnough) {
