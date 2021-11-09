@@ -1,16 +1,4 @@
-// import React from 'react'
-
-// const Login = () => {
-//     return (
-//         <>
-//             เข้าไม่ได้ครับมีคนจองแล้ว
-//         </>
-//     )
-// }
-
-// export default Login;
-
-import * as React from 'react';
+import React, {Profiler, useEffect, useState} from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -74,6 +62,12 @@ const ValidationTextField = styled(TextField)({
 
 
 const Login = () => {
+
+    const [login,setLogin] = useState({
+      email: '',
+      password: '',
+    });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -86,109 +80,98 @@ const Login = () => {
 
   return (
     <>
-    <Navbar />
-    
-    <video
-        autoPlay
-        loop
-        muted
-        style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: "-1",
-            opacity: "90%"
-        }}
-    >
-        <source src={DrugVdo} type="video/mp4" />
-    </video>
+      <Navbar />
+      
+      <video
+          autoPlay
+          loop
+          muted
+          style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: "-1",
+              opacity: "80%",
+          }}
+      >
+          <source src={DrugVdo} type="video/mp4" />
+      </video>
 
-        <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
+              sx={{
+                  marginTop: 20,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+              }}
             >
-
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                <LockOutlinedIcon />
-            </Avatar> */}
 
             <Typography 
                 component="h2" 
-                variant="h1"
+                variant="h2"
                 color='white'
-            >
-                Sign in
+              >
+                  Hello ~
             </Typography>
 
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
 
-                <ValidationTextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="EMAIL"
-                    label="EMAIL ADDRESS"
-                    name="EMAIL"
-                    autoComplete="email"
-                    autoFocus
-                />
+               <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="EMAIL"
+                  label="EMAIL ADDRESS"
+                  name="EMAIL"
+                  autoComplete="email"
+                  autoFocus
+                  value={login.email}
+                  onChange={e => setLogin({...login, email: e.target.value})}
+              />
 
-                <ValidationTextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="PASSWORD"
-                    label="PASSWORD"
-                    type="PASSWORD"
-                    id="PASSWORD"
-                    autoComplete="current-password"
-                />
+              <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="PASSWORD"
+                  label="PASSWORD"
+                  type="PASSWORD"
+                  id="PASSWORD"
+                  autoComplete="current-password"
+                  value={login.password}
+                  onChange={e => setLogin({...login, password: e.target.value})}
+              />
 
-                {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-                /> */}
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                  color="standard"
+              >
+                  Sign In
+              </Button>
 
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                    color="standard"
-                >
-                    Sign In
-                </Button>
-
-                <Grid container>
-                {/* <Grid item xs>
-                    <Link href="#" variant="body2">
-                    Forgot password?
-                    </Link>
-                </Grid> */}
-                
+              <Grid container>  
                 <Grid item>
                     <NavLink  to='/Register'>
                         {"Don't have an account? Sign Up"}
                     </NavLink>
-                    
                 </Grid>
+              </Grid>
 
-                </Grid>
             </Box>
-            </Box>
-
-            {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
-
+          </Box>
         </Container>
-        </ThemeProvider>
+      </ThemeProvider>
+
+      <p>Check value</p>
+      <p>email = {login.email}</p>
+      <p>password = {login.password}</p>
     </>
   );
 }

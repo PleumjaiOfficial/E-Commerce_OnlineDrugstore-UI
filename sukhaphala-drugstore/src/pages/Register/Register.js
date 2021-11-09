@@ -1,5 +1,5 @@
 //rafce
-import * as React from 'react';
+import React, {Profiler, useEffect, useState} from 'react'
 import classes from './Register.module.css'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -8,29 +8,17 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { alpha, styled } from '@mui/material/styles';
-
 import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
 
 const theme = createTheme({
   palette: {
@@ -42,33 +30,36 @@ const theme = createTheme({
 });
 
 const Register = () =>  {
+
+  const [basicInfo,setBasicInfo] = useState({
+    firstname:'',
+    lastname: '',
+    password: '',
+    email:    '',
+    phone:    '',
+  })
+
+  const [address,setAddress] = useState({
+    location: '',
+    district: '',
+    country: '',
+    postcode: '',
+  });
+
+  const [credential,setCredential] = useState({
+    password: '',
+    re_password: '',
+  });
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
+
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
   };
-
-const ValidationTextField = styled(TextField)({
-  '& input:valid + fieldset': {
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-
-  '& input:invalid + fieldset': {
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-
-  '& input:valid:focus + fieldset': {
-    borderLeftWidth: 6,
-    padding: '4px !important', // override inline-style
-  },
-  
-});
 
   return (
     <>
@@ -85,7 +76,7 @@ const ValidationTextField = styled(TextField)({
             height: "130%",
             objectFit: "cover",
             zIndex: "-1",
-            opacity: "80%"
+            opacity: "20%"
         }}
       >
         <source src={DrugVdo} type="video/mp4" />
@@ -131,6 +122,8 @@ const ValidationTextField = styled(TextField)({
                     id="FIRSTNAME"
                     label="FIRSTNAME"
                     autoFocus
+                    value={basicInfo.firstname}
+                    onChange={e => setBasicInfo({...basicInfo, firstname: e.target.value})}
                   />
                 </Grid>
 
@@ -142,6 +135,8 @@ const ValidationTextField = styled(TextField)({
                     label="SURNAME"
                     name="SURNAME"
                     autoComplete="family-name"
+                    value={basicInfo.lastname}
+                    onChange={e => setBasicInfo({...basicInfo, lastname: e.target.value})}
                   />
                 </Grid>
 
@@ -153,6 +148,8 @@ const ValidationTextField = styled(TextField)({
                     label="EMAIL ADDRESS"
                     name="EMAIL"
                     autoComplete="email"
+                    value={basicInfo.email}
+                    onChange={e => setBasicInfo({...basicInfo, email: e.target.value})}
                   />
                 </Grid>
 
@@ -163,6 +160,8 @@ const ValidationTextField = styled(TextField)({
                     id="PHONE NUMBER"
                     label="PHONE NUMBER"
                     name="PHONE NUMBER"
+                    value={basicInfo.phone}
+                    onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
                   />
                 </Grid>
               </Grid>
@@ -186,6 +185,8 @@ const ValidationTextField = styled(TextField)({
                     id="LOCATION"
                     label="LOCATION"
                     name="LOCATION"
+                    value={address.location}
+                    onChange={e => setAddress({...address, location: e.target.value})}
                   />
                 </Grid>
 
@@ -196,17 +197,26 @@ const ValidationTextField = styled(TextField)({
                     id="DISTRICT"
                     label="DISTRICT"
                     name="DISTRICT"
+                    value={address.district}
+                    onChange={e => setAddress({...address, district: e.target.value})}
                   />
                 </Grid>
 
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="COUNTRY"
-                    label="COUNTRY"
-                    name="COUNTRY"
-                  />
+                  <FormControl sx={{ width: 400 }}>
+                    <InputLabel id="demo-multiple-checkbox-label">COUNTRY</InputLabel>
+                    <Select 
+                      required
+                      fullWidth
+                      labelId="select-label"
+                      id="select"
+                      value={address.country}
+                      label="COUNTRY"
+                      onChange={e => setAddress({...address, country: e.target.value})}
+                    >
+                      <MenuItem value='thailand'> Thailand </MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -216,6 +226,8 @@ const ValidationTextField = styled(TextField)({
                     id="POSTCODE"
                     label="POSTCODE"
                     name="POSTCODE"
+                    value={address.postcode}
+                    onChange={e => setAddress({...address, postcode: e.target.value})}
                   />
                 </Grid>
               </Grid>
@@ -240,6 +252,8 @@ const ValidationTextField = styled(TextField)({
                     type="PASSWORD"
                     id="PASSWORD"
                     autoComplete="new-password"
+                    value={credential.password}
+                    onChange={e => setCredential({...credential, password: e.target.value})}
                   />
                 </Grid>
 
@@ -251,7 +265,9 @@ const ValidationTextField = styled(TextField)({
                     label="RE-ENTER PASSWORD"
                     type="RE-ENTER PASSWORD"
                     id="RE-ENTER PASSWORD"
-                    // autoComplete=
+                    autoComplete="re-new-password"
+                    value={credential.re_password}
+                    onChange={e => setCredential({...credential, re_password: e.target.value})}
                   />
                 </Grid>
               </Grid>
@@ -273,19 +289,25 @@ const ValidationTextField = styled(TextField)({
               >
                 Sign Up
               </Button>
-
-              {/* <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
-              </Grid> */}
-
           </Box>
-          {/* <Copyright sx={{ mt: 5 }} /> */}
         </Container>
       </ThemeProvider>
+
+      <p>Check value</p>
+      <p>firstname = {basicInfo.firstname}</p>
+      <p>lastname = {basicInfo.lastname}</p>
+      <p>password = {basicInfo.password}</p>
+      <p>email = {basicInfo.email}</p>
+      <p>phone = {basicInfo.phone}</p>
+
+      <p>location = {address.location}</p>
+      <p>district = {address.district}</p>
+      <p>country = {address.country}</p>
+      <p>postcode = {address.postcode}</p>
+
+      <p>passaword = {credential.password}</p>
+      <p>checkpassword = {credential.re_password}</p>
+
     </>
   );
 }
