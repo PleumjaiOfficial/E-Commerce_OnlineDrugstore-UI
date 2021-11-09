@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import classes from './Cart.module.css';
 import Billing from '../../components/Billing/Billing';
 import CartList from '../../components/CartList/CartList';
+import Footer from '../../components/Footer/Footer';
 
 const Cart = () => {
  
@@ -23,6 +24,7 @@ const Cart = () => {
                 </div>
 
             </div>
+            <Footer />
         </>
     )
 }

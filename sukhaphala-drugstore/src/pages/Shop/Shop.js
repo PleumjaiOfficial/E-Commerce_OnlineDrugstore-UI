@@ -5,7 +5,7 @@ import image from '../../image/HeaderBackground.jpg';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Product from '../../components/Product/Product';
 import classes from './Shop.module.css'
-
+import Footer from '../../components/Footer/Footer';
 
 const Shop = () => {
 
@@ -62,6 +62,7 @@ const Shop = () => {
             </div>
 
             <Sidebar />
+            <Footer />
 
         </>
     )

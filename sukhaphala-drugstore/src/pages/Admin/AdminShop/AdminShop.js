@@ -4,7 +4,8 @@ import Navbar from '../../../components/Navbar/Navbar';
 import image from '../../../image/HeaderBackground.jpg';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import ProductAdmin from '../AdminComponent/ProductAdmin/ProductAdmin';
-import classes from './AdminShop.module.css'
+import classes from './AdminShop.module.css';
+import Footer from '../../../components/Footer/Footer';
 
 export const AdminShop = () => {
     
@@ -50,6 +51,7 @@ export const AdminShop = () => {
             </div>
 
             <Sidebar />
+            <Footer />
 
         </>
     )

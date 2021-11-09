@@ -5,6 +5,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import axios from 'axios';
 import classes from './AdminEditShop.module.css'
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
+import Footer from '../../../components/Footer/Footer';
 
 export const AdminEditShop = () => {
 
@@ -255,6 +256,7 @@ return (
             </p>
 
         </div>
+        <Footer />
     </>
     )
 }

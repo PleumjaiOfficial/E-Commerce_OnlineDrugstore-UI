@@ -4,7 +4,8 @@ import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import {useParams} from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import {add2Cart, add2CartAsync} from '../../redux/actions/cartActions'
+import {add2Cart, add2CartAsync} from '../../redux/actions/cartActions';
+import Footer from '../../components/Footer/Footer';
 
 const ProductDetail = () => {
 
@@ -77,6 +78,7 @@ const ProductDetail = () => {
 
             </div>
         </div>
+    <Footer />
     </>
     )
 }

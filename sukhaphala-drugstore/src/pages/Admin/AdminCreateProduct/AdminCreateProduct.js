@@ -4,6 +4,7 @@ import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
 import axios from 'axios';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
+import Footer from '../../../components/Footer/Footer';
 
 const AdminCreateProduct = () => {
 
@@ -214,6 +215,8 @@ const AdminCreateProduct = () => {
                 {data.file.name}    <br/>
                 {data.file.data}    <br/>
             </p>
+
+            <Footer />
         </div>
 
     )
