@@ -6,16 +6,23 @@ import { NavLink } from 'react-router-dom';
 function HeroSection() {
   return (
     <>
-      <img src={image} className={classes["background-img"]} alt="background" />
       <div className={classes["hero-container"]}>
-        <h1> SUKhaphala </h1>
-        <p> Online Drugstore, Pharmacy, Prescriptions & Health </p>
-        <button className={classes["btn"]}>Get your health back</button>
-        
-       <NavLink to='/Shop' >
-       </NavLink>
-          
+        <img src={image} className={classes["background-img"]} alt="background" />
+        <div className={classes["info-container"]}>
+          <div className={classes["center-header"]}>SUKhaphala</div>
+          <p> Online Drugstore, Pharmacy, Prescriptions & Health </p>
+          <button className={classes["btn"]}>Get your health back</button>
+        </div>
+
+        {/* <div className={classes["info-container"]}>
+          <p> test</p>
+        </div> */}
+
+        <NavLink to='/Shop' >
+        </NavLink>
+            
       </div>
+
     </>
   );
 }

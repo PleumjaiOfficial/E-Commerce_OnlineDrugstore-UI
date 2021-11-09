@@ -4,10 +4,10 @@ import {AiOutlineCopyright, AiFillFacebook, AiFillTwitterSquare, AiFillInstagram
 
 const Footer = () => {
   return (
-      <footer className={classes["footer"]}>
+      <div className={classes["footer"]}>
           <div className={classes["footer-left"]}>
             <div className={classes["foot-header"]}>SUKhaphala</div>
-            <det className={classes["details"]}>Term of services</det>
+            <div className={classes["details"]}>Term of services</div>
             <div className={classes["copyright"]}>
               <AiOutlineCopyright />
               <det className={classes["details"]}>   2021 SUKhaphala. All rights reserved.</det>
@@ -29,7 +29,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-      </footer>
+      </div>
   )
 }
 

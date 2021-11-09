@@ -1,71 +1,65 @@
-.background-img {  
-  /* Set rules to fill background */
-  min-height: 100%;
-  min-width: 1024px;
-	
-  /* Set up proportionate scaling */
-  width: 120%;
-  height: auto;
-	
-  /* Set up positioning */
-  position: fixed;
-  top: 50px;
-  right: -80px;
-	z-index: -1;
+.hero-container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  min-height: 50vh;
+  position: relative;
 }
 
-h1 {
-    /* position: relative;
-    top: 150px; */
-		margin: 0;
-    font-family: 'EB Garamond', serif;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 96px;
-    text-align: center;
+.background-img {  
+  width: 100%;
+  height: 700px;
+  object-fit: cover;
+  object-position: 0% 1%;
+}
+
+.info-container {
+  display: flex;
+  margin-top: 200px;
+	flex-flow: column wrap;
+  justify-content: center;
+	align-items: center; 
+  position: absolute;
+  text-align: center;
+}
+
+.center-header {
+  font-family: 'EB Garamond';
+  font-size: 72px;
+  font-weight: 300;
+  text-align: left;
 }
 
 p {
-    /* position: relative;
-    top: 100px; */
-		margin-top: 15px;
-		margin-bottom: 35px;
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 24px;
-    text-align: center;
-}
-
-.hero-container {
-	min-height: 70vh;
-	margin: 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	margin-top: 15px;
+	margin-bottom: 35px;
+  font-family: Montserrat;
+  font-weight: 500;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: 0 1px 0 black;
 }
 
 .btn {
-    /* position: relative;
-    top: 120px;
-    left: 550px; */
-		width: 350px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 18px;
-    padding: 16px 30px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s linear;
+  /* position: relative;
+  top: 120px;
+  left: 550px; */
+	width: 350px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  padding: 16px 30px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s linear;
 }
 
 .btn:hover,
 .btn-focus {
-    background: navy;
-    color: azure;
+  background: navy;
+  color: azure;
 }
 
 .btn-active {
-    background: darkblue;
+  background: darkblue;
 }
 
