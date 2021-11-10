@@ -63,3 +63,9 @@ p {
   background: darkblue;
 }
 
+@media screen and (max-width: 1150px){
+  .info-container {
+    height: auto;
+    margin-top: 150px;
+  }
+}

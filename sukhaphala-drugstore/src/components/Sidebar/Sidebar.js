@@ -4,8 +4,9 @@ import classes from './Sidebar.module.css';
 const Sidebar = () => {
     return (
         <div className={classes["sidebar"]}>
-            <div className={classes["vertical-line"]}></div>
-
+            {/* <div className={classes["vertical-line"]}></div>            
+            
+             */}
             <div className={classes["side-top"]}>
                 <div className={classes["all-item"]}>Shop All</div>
             </div>
@@ -58,6 +59,7 @@ const Sidebar = () => {
                     <span className={classes["menu-item"]}>Fitness</span>
                 </li>
             </ul>
+            
         </div>
     )
 }
