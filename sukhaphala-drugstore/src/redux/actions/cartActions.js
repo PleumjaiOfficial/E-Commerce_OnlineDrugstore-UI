@@ -64,7 +64,6 @@ export function add2CartAsync(aimProduct) {
         })
     }
 }
-// test space
 
 // test space
 export const updateCart = (aimcartItem) => {

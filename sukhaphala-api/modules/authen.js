@@ -27,6 +27,7 @@ const login = async (credential) => {
   const { email, password } = credential;
 
   const targetCustomer = await customerInterface.getCustomerByEmail(email);
+  console.log(targetCustomer);
 
   if (targetCustomer.type === 'FAIL' || targetCustomer === null) {
     return {

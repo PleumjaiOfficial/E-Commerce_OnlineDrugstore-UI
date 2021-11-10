@@ -19,6 +19,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
+import axios from 'axios';
 
 const theme = createTheme({
   palette: {
@@ -34,7 +35,6 @@ const Register = () =>  {
   const [basicInfo,setBasicInfo] = useState({
     firstname:'',
     lastname: '',
-    password: '',
     email:    '',
     phone:    '',
   })
@@ -51,15 +51,29 @@ const Register = () =>  {
     re_password: '',
   });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handleSubmit = () => {
+    //check 
 
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const createCustomer = () => {
+      axios.post('http://localhost:5000/auth/register',
+      {
+        "firstname": basicInfo.firstname,
+        "lastname": basicInfo.lastname,
+        "password": credential.password,
+        "email": basicInfo.email,
+        "phone": basicInfo.phone,
+          "address": {
+              "location": address.location,
+              "district": address.district,
+              "country": address.country,
+              "postcode": address.postcode
+          }
+      })
+      .then(res => console.log(res) )
+    }
+    createCustomer();
   };
+
 
   return (
     <>
@@ -102,7 +116,7 @@ const Register = () =>  {
               Sign up
             </Typography>
 
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 8}}>
+            <Box component="form" noValidate sx={{ mt: 8}}>
               
               <Typography 
                 component="h2" 
@@ -168,7 +182,7 @@ const Register = () =>  {
             </Box>
 
 
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 8}}>              
+            <Box component="form" noValidate sx={{ mt: 8}}>              
               <Typography 
                 component="h2" 
                 variant="h6"
@@ -233,7 +247,7 @@ const Register = () =>  {
               </Grid>
             </Box>
 
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 8}}>              
+            <Box component="form" noValidate sx={{ mt: 8}}>              
               <Typography 
                 component="h2" 
                 variant="h6"
@@ -273,19 +287,13 @@ const Register = () =>  {
               </Grid>
             </Box>
 
-                {/* <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid> */}
-
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2,borderRadius: 5  }}
                 color="standard"
+                onClick={handleSubmit}
               >
                 Sign Up
               </Button>

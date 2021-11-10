@@ -19,19 +19,7 @@ import { NavLink } from 'react-router-dom';
 
 import DrugVdo from '../../Video/demo-vdo.mp4';
 import { positions } from '@mui/system';
-
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
+import axios from 'axios';
 
 const theme = createTheme({
   palette: {
@@ -68,14 +56,16 @@ const Login = () => {
       password: '',
     });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const handleSubmit = () => {
+    
+    const getLogin = () => {
+      axios.post('http://localhost:5000/auth/login',
+      {
+        "email": login.email,
+        "password": login.password
+      }).then(res => console.log(res) )
+    }
+    getLogin();
   };
 
   return (
@@ -118,7 +108,7 @@ const Login = () => {
                   Hello ~
             </Typography>
 
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
 
                <TextField
                   margin="normal"
@@ -152,6 +142,7 @@ const Login = () => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2,borderRadius: 5  }}
                   color="standard"
+                  onClick={handleSubmit}
               >
                   Sign In
               </Button>
