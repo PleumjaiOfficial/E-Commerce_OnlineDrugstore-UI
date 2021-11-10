@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
   if (loggedInUser.type === 'FAIL') {
     res.status(401).json(loggedInUser);
   } else {
-    res.cookie('token', loggedInUser.token, {httpOnly: true});
+    // res.cookie('token', loggedInUser.token, {httpOnly: true});
     res.status(200).json(loggedInUser);
   }
 
