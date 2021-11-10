@@ -28,8 +28,11 @@ const login = async (credential) => {
 
   const targetCustomer = await customerInterface.getCustomerByEmail(email);
 
-  if (targetCustomer.type === 'FAIL') {
-    return targetCustomer;
+  if (targetCustomer.type === 'FAIL' || targetCustomer === null) {
+    return {
+      type: 'FAIL',
+      message: 'invalid credential'
+    };
   }
   const passwordCheck = bcrypt.compareSync(password, targetCustomer.password);
   //if password is the same in DB
