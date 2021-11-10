@@ -6,7 +6,7 @@ const verifyMiddleware = require('../middlewares/verifyToken');
 router.get('/:id', verifyMiddleware.cartAuthorization, async (req, res) => {
   const customerId = req.params.id;
   try {
-    const carts = await cartInterface.getCarts(customerId);
+    const carts = await cartInterface.getCustomerCarts(customerId);
     res.status(200).json(carts);
   } catch (err) {
     res.status(500).json(err);
@@ -55,11 +55,20 @@ router.put('/:id', verifyMiddleware.cartAuthorization ,async (req, res) => {
   };
 });
 
-router.delete('/:id', verifyMiddleware.cartAuthorization, async (req, res) => {
+router.delete('/:id', verifyMiddleware.verifyToken, async (req, res) => {
     const cartId = req.params.id;
+    const customerId = req.customer.id;
     try {
-      const result = await cartInterface.deleteCart(cartId);
-      res.status(200).json(result);
+      const targetCart = await cartInterface.getCart();
+      if (targetCart.customerId === customerId){
+        const result = await cartInterface.deleteCart(cartId);
+        res.status(200).json(result);
+      } else {
+        res.status(403).json({
+          type: 'FAIL',
+          message: 'authorization failed'
+        });
+      }
     } catch (err) {
       res.status(500).json(err);
     }
