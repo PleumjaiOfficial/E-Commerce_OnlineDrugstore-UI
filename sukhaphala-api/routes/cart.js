@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const cartInterface = require('../modules/cart');
+const verifyMiddleware = require('../middlewares/verifyToken');
 
 //get all carts
-router.get('/', async (req, res) => {
-  //fix customerId tempolary
-  const customerId = '6170242430c0c7d0539f8610';
+router.get('/:id', verifyMiddleware.cartAuthorization, async (req, res) => {
+  const customerId = req.params.id;
   try {
     const carts = await cartInterface.getCarts(customerId);
     res.status(200).json(carts);
@@ -14,9 +14,8 @@ router.get('/', async (req, res) => {
 });
 
 //create cart api
-router.post('/', async (req, res) => {
-  //fix customerId tempolary
-  const customerId = '6170242430c0c7d0539f8610';
+router.post('/', verifyMiddleware.verifyToken, async (req, res) => {
+  const customerId = req.customer.id;
   const requestCart = { 
     customerId: customerId,
     productId: req.body._id,
@@ -37,7 +36,7 @@ router.post('/', async (req, res) => {
 });
 
 //update cart api
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyMiddleware.cartAuthorization ,async (req, res) => {
   const cartId = req.params.id;
   const cart = req.body;
 
@@ -56,7 +55,7 @@ router.put('/:id', async (req, res) => {
   };
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyMiddleware.cartAuthorization, async (req, res) => {
     const cartId = req.params.id;
     try {
       const result = await cartInterface.deleteCart(cartId);
