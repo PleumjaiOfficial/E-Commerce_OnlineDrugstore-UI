@@ -4,7 +4,7 @@ const verifyToken = (req, res, next) => {
   const jwtToken = req.cookies.token; //read token from cookie
   if (!jwtToken) {
     //no token
-    res.status(401).json({
+    res.status(200).json({
       type: 'FAIL',
       message: 'please authenticate first'
     }); 
