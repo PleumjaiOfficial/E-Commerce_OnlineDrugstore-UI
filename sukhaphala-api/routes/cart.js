@@ -18,7 +18,7 @@ router.post('/', verifyMiddleware.verifyToken, async (req, res) => {
   const customerId = req.customer.id;
   const requestCart = { 
     customerId: customerId,
-    productId: req.body.productId,
+    productId: req.body._id,
     price: req.body.price,
     amount: req.body.amount
   };
