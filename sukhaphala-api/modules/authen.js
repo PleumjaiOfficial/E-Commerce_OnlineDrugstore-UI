@@ -1,3 +1,4 @@
+const Cookies = require('js-cookie');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const customerInterface = require('../modules/customer');
@@ -50,6 +51,7 @@ const login = async (credential) => {
     
     const { password, ...otherInfo } = targetCustomer._doc;
     otherInfo.token = token;
+    Cookies.set('token',token);
     return otherInfo;
   } else {
     return {

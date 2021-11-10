@@ -20,6 +20,7 @@ import { NavLink } from 'react-router-dom';
 import DrugVdo from '../../Video/demo-vdo.mp4';
 import { positions } from '@mui/system';
 import axios from 'axios';
+import Cookies from 'js-cookie'
 
 const theme = createTheme({
   palette: {
@@ -56,14 +57,17 @@ const Login = () => {
       password: '',
     });
 
-  const handleSubmit = () => {
-    
+  const handleSubmit = (e) => {
+  
+    e.preventDefault();
     const getLogin = () => {
       axios.post('http://localhost:5000/auth/login',
       {
         "email": login.email,
         "password": login.password
-      }).then(res => console.log(res) )
+      })
+      .then(res => Cookies.set('token',res.data.token) )
+      .catch((error) => alert('บ่ถูก'))
     }
     getLogin();
   };

@@ -58,7 +58,8 @@ export const add2Cart = (aimProduct) => {
 
 export function add2CartAsync(aimProduct) {
     return async function(dispatch) {
-        await axios.post('http://localhost:5000/carts/',aimProduct).then(res => {
+        await axios.post('http://localhost:5000/carts/',aimProduct, {withCredentials: true})
+        .then(res => {
             console.log(res.data)
             dispatch(add2Cart(res.data))
         })
@@ -78,7 +79,8 @@ export const updateCart = (aimcartItem) => {
 
 export function updateCartAsync(aimcartItem) {
     return async function(dispatch) {
-        await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem).then(res => {
+        await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem, {withCredentials: true})
+        .then(res => {
             console.log(aimcartItem)
             console.log(res.data)
             dispatch(updateCart(res.data))
@@ -99,7 +101,8 @@ export const updateSubCart = (aimcartItem) => {
 
 export function updateSubCartAsync(aimcartItem) {
     return async function(dispatch) {
-        await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem).then(res => {
+        await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem , {withCredentials: true})
+        .then(res => {
             console.log(aimcartItem)
             console.log(res.data)
             dispatch(updateSubCart(res.data))
@@ -122,7 +125,8 @@ export const deleteFromCart = (id) => {
 
 export function deleteFromCartAsync(aimcartItemDel) {
     return async function(dispatch) {
-        await axios.delete('http://localhost:5000/carts/' + aimcartItemDel).then(res => {
+        await axios.delete('http://localhost:5000/carts/' + aimcartItemDel , {withCredentials: true})
+        .then(res => {
             console.log(aimcartItemDel)
             console.log(res.data)
             dispatch(deleteFromCart(res.data))
