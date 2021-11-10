@@ -11,7 +11,7 @@ const Cart = () => {
         <>
             <Navbar />
         
-            <h1>Your Medicines</h1>
+            <h2>Your Medicines</h2>
 
             <div className={classes["cart-container"]}>
 
