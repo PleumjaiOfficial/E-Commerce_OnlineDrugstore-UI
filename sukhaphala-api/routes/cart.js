@@ -59,8 +59,8 @@ router.delete('/:id', verifyMiddleware.verifyToken, async (req, res) => {
     const cartId = req.params.id;
     const customerId = req.customer.id;
     try {
-      const targetCart = await cartInterface.getCart();
-      if (targetCart.customerId === customerId){
+      const targetCart = await cartInterface.getCart(cartId);
+      if (targetCart.customerId.toString() === customerId){
         const result = await cartInterface.deleteCart(cartId);
         res.status(200).json(result);
       } else {

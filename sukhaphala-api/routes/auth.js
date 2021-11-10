@@ -35,10 +35,18 @@ router.post('/login', async (req, res) => {
   if (loggedInUser.type === 'FAIL') {
     res.status(401).json(loggedInUser);
   } else {
-    // res.cookie('token', loggedInUser.token, {httpOnly: true});
+    res.cookie('token', loggedInUser.token, {httpOnly: true});
     res.status(200).json(loggedInUser);
   }
 
 });
+
+router.get('/logout', (req, res) => {
+  // const result = authenInterface.logout();
+  res.clearCookie('token');
+  res.status(200).json({
+    type: 'SUCCESS'
+  })
+})
 
 module.exports = router;

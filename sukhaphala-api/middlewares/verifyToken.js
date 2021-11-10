@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
-  // const jwtToken = req.cookies.token; //read token from cookie
-  const authenHeader = req.headers.token;
-  if (!authenHeader) {
+  const jwtToken = req.cookies.token; //read token from cookie
+  // const authenHeader = req.headers.token;
+  if (!jwtToken) {
     //no token
     res.status(401).json({
       type: 'FAIL',
@@ -11,7 +11,7 @@ const verifyToken = (req, res, next) => {
     }); 
   } else {
     //verify token
-    const jwtToken = authenHeader.split(' ')[1];
+    // const jwtToken = authenHeader.split(' ')[1];
     jwt.verify(jwtToken, process.env.JWT_SECRET, (err, customer) => {
       //if token is not valid
       if (err) {

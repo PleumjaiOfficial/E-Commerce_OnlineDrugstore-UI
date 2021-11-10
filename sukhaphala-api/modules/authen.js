@@ -1,4 +1,4 @@
-const Cookies = require('js-cookie');
+// const Cookies = require('js-cookie');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const customerInterface = require('../modules/customer');
@@ -28,7 +28,7 @@ const login = async (credential) => {
   const { email, password } = credential;
 
   const targetCustomer = await customerInterface.getCustomerByEmail(email);
-  console.log(targetCustomer);
+  // console.log(targetCustomer);
 
   if (targetCustomer.type === 'FAIL' || targetCustomer === null) {
     return {
@@ -51,7 +51,7 @@ const login = async (credential) => {
     
     const { password, ...otherInfo } = targetCustomer._doc;
     otherInfo.token = token;
-    Cookies.set('token',token);
+    // Cookies.set('token',token, {expires: 1});
     return otherInfo;
   } else {
     return {
@@ -61,7 +61,17 @@ const login = async (credential) => {
   }
 }
 
+const logout = () => {
+  // Cookies.remove('token');
+  
+  return {
+    type: 'SUCCESS',
+    message: 'successfully logout'
+  };
+}
+
 module.exports = {
   register: register,
-  login: login
+  login: login,
+  logout: logout
 };
