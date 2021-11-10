@@ -23,7 +23,14 @@ try {
 }
 
 
-app.use(cors());
+const origin = "http://localhost:3000" 
+
+app.use(
+  cors({
+    credentials: true,
+    origin
+  }))
+
 app.use(express.json({ limit: 2097152 }))
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
@@ -33,6 +40,7 @@ app.use('/products', productAPI);
 app.use('/carts', cartAPI);
 app.use('/orders', orderAPI);
 app.use('/healthgoals', healthGoalAPI);
+
 
 //start running application's backend
 app.listen(process.env.PORT || 5000, () => {

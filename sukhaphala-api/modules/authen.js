@@ -1,3 +1,4 @@
+const Cookies = require('js-cookie');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const customerInterface = require('../modules/customer');
@@ -27,9 +28,13 @@ const login = async (credential) => {
   const { email, password } = credential;
 
   const targetCustomer = await customerInterface.getCustomerByEmail(email);
+  console.log(targetCustomer);
 
-  if (targetCustomer.type === 'FAIL') {
-    return targetCustomer;
+  if (targetCustomer.type === 'FAIL' || targetCustomer === null) {
+    return {
+      type: 'FAIL',
+      message: 'invalid credential'
+    };
   }
   const passwordCheck = bcrypt.compareSync(password, targetCustomer.password);
   //if password is the same in DB
@@ -46,6 +51,7 @@ const login = async (credential) => {
     
     const { password, ...otherInfo } = targetCustomer._doc;
     otherInfo.token = token;
+    Cookies.set('token',token);
     return otherInfo;
   } else {
     return {
