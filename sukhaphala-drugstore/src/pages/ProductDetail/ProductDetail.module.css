@@ -1,56 +1,113 @@
 .productdetail-container{
-    display: flex;
-    max-width: 1300px;
-    margin: 5rem 10rem;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  margin: 100px 200px 100px 200px;
+}
+
+.productdetail-image{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  min-height: 500px;
+  min-width: 500px;
+  background-color: #FEF4EC;
 }
 
 .productdetail-image img{
-    height: auto; 
-    width: auto; 
-    max-width: 600px; 
-    max-height: 670px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
 }
 
 .productdetail-content{
-    padding: 1rem 2rem 0rem 5rem;
+  display: flex;
+  flex-flow: column nowrap;
+  width: 450px;
+  margin-left: 150px;
+  align-items: left;
 }
 
-.productdetail-desc{
-    text-align: justify;
-    font-size: 16px;
+.content-info{
+  display: flex;
+  flex-flow: column nowrap;
+  height: 300px;
 
+  /*show border for test*/
+  border: 2px solid black;
 }
 
-
-.productdetail-topic{
-    display: grid;
-    grid-gap: 1rem;
-    text-align: center;
+.info-name{
+  display: flex;
+  padding-bottom: 30px;
+  font-family: 'Montserrat';
+  font-size: 40px;
+  font-weight: bold;
+  text-align: left;
 }
 
-
-.product-price-value{
-    margin-left: 50px;
+.info-desc{
+  display: flex;
+  padding-bottom: 10px;
+  font-family: 'Montserrat';
+  font-size: 20px;
+  text-align: left;
 }
 
-.product-price-unit{
-    margin-left: 10px;
+.content-buy{
+  display: flex;
+  flex-flow: column nowrap;
+  height: 200px;
+
+  /*show border for test*/
+  border: 2px solid black;
 }
 
-.product-qty select{
-    margin-left: 30px;
+.buy-price{
+  display: flex;
+  padding-top: 28px;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.product-qty-unit{
-    margin-left: 10px;
+.price-value{
+  margin-left: 60px;
+}
+
+.price-unit{
+  margin-left: 10px;
+}
+
+.buy-qty{
+  display: flex;
+  padding-top: 28px;
+  font-family: 'Montserrat';
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.buy-qty select{
+  margin-left: 30px;
+}
+
+.buy-unit{
+  margin-left: 15px;
+}
+
+.buy-number{
+  height: 100px;
 }
 
 .btn {
-    background: transparent;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    padding: 10px 55px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s linear;
+  margin-top: 30px;
+  margin-left: 0;
+  background: transparent;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  padding: 10px 55px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s linear;
 }
