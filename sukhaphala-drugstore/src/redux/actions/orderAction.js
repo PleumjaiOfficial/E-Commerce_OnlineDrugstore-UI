@@ -15,7 +15,7 @@ export function placeOrderAsync(userProduct) {
 
     console.log(userProduct);
     return async function(dispatch) {
-        await axios.post('http://localhost:5000/orders/', userProduct).then(res => {
+        await axios.post('http://localhost:5000/orders/', userProduct, {withCredentials: true}).then(res => {
             console.log(res.data)
             dispatch(placeOrder(res.data))
         })

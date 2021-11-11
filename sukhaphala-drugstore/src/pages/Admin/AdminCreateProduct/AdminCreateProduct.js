@@ -37,7 +37,6 @@ const AdminCreateProduct = () => {
                 "healthGoal":data.HealthGoal
             })
             .then(res => console.log(res) )
-            
         }
         CreateProduct();
 

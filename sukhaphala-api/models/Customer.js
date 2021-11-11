@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const customerSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
-  username: String,
   password: String, //simplify with string
   email: String,
   phone: String,
@@ -12,6 +11,10 @@ const customerSchema = new mongoose.Schema({
     district: String,
     country: String,
     postcode: Number
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   }
 });
 

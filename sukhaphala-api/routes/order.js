@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const orderInterface = require('../modules/order');
+const verifyMiddleware = require('../middlewares/verifyToken');
 
-router.post('/', async (req, res) => {
-  const customerId = '6170242430c0c7d0539f8610';
+router.post('/', verifyMiddleware.orderAuthorization, async (req, res) => {
   //order is the list of carts
   const order = req.body;
   if (order) {

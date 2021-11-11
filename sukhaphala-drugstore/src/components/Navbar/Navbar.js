@@ -7,6 +7,8 @@ import { useSelector, useDispatch} from 'react-redux';
 // https://react-icons.github.io/react-icons
 import Button from "../Button/Button";
 import { getCart } from '../../redux/actions/cartActions';
+import Axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Navbar = () => {
 
@@ -20,6 +22,17 @@ const Navbar = () => {
   //cart is array of qty
   const cart = useSelector((state) => state.cart.cart);
   // console.log(cart);
+
+  //logout test
+  const handleLogout = () => {
+    Axios.get('http://localhost:5000/auth/logout')
+    .then(res=>{
+        console.log(res);
+        if (res.data.type === 'SUCCESS') {
+          Cookies.remove('token');
+        }
+    })
+  }
 
   return(
     <nav className={classes["navbar"]}>
@@ -79,6 +92,10 @@ const Navbar = () => {
             Button_style={classes["btn_nav"]}
             Button_text="REGISTER" />
       </NavLink> 
+        <Button 
+            Button_style={classes["btn_nav"]}
+            Button_text="Logout" 
+            Button_onclick={handleLogout}/>
     </div>
 
       
