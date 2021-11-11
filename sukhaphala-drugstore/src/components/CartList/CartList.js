@@ -1,13 +1,16 @@
-import {useEffect} from 'react'
+import {useEffect,useState} from 'react'
 import classes from './CartList.module.css'
 import { useSelector,useDispatch } from 'react-redux';
-import {getCart, updateCartAsync, updateSubCartAsync, deleteFromCartAsync, getCartAsync } from '../../redux/actions/cartActions';
+import {getCart, updateAddCartAsync, updateSubCartAsync, deleteFromCartAsync, getCartAsync } from '../../redux/actions/cartActions';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
 
 const CartList = () => {
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
+//   console.log(cart);
 
   const dispatch = useDispatch();
 
@@ -15,6 +18,24 @@ const CartList = () => {
         let res = await axios.get("http://localhost:5000/carts/")
         dispatch(getCart(res.data))
     },[])
+
+    //Loading and click
+    function simulateNetworkRequest() {
+        return new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+
+    const [isLoading, setLoading] = useState(false);
+    useEffect(() => {
+        console.log('loadding before delay=> ' + isLoading)
+        if (isLoading === true) {
+            simulateNetworkRequest().then(() => {
+                setLoading(false);
+                console.log('loadding after delay=> ' + isLoading)
+            });
+        }
+    }, [isLoading]);   
+    const handleClick = () => setLoading(true);
+    //
 
 //   https://medium.com/how-to-react/how-to-use-redux-with-react-hooks-and-axios-a78d942fbe9c
 //   https://www.positronx.io/react-axios-tutorial-make-http-get-post-requests/
@@ -33,11 +54,18 @@ const CartList = () => {
                     <span> <h3> qty </h3></span>
                     
                     <div className={classes["amount-container"]}>
-                        <button onClick={() => dispatch(updateSubCartAsync({...cartItem,amount: cartItem.amount - 1}))}> - </button>
+                        <Button onClick = {isLoading ? () => {dispatch(updateSubCartAsync({...cartItem,amount: cartItem.amount - 1}))} : handleClick }>
+                            {isLoading ?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
+                        </Button>
 
-                            <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div>
+                        {/* <button 
+                            onClick = {() =>dispatch(updateSubCartAsync({...cartItem,amount: cartItem.amount - 1}))}> 
+                        - 
+                        </button> */}
 
-                        <button onClick={() => dispatch(updateCartAsync({...cartItem,amount: cartItem.amount + 1}))}> + </button>
+                        <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div>
+
+                        <button onClick={() => dispatch(updateAddCartAsync({...cartItem,amount: cartItem.amount + 1}))}> + </button>
                     </div>
                 </div>
                     
