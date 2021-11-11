@@ -25,16 +25,23 @@ const CartList = () => {
     }
 
     const [isLoading, setLoading] = useState(false);
+    const [cartBuffer, setCartBuffer] = useState({});
+
     useEffect(() => {
         console.log('loadding before delay=> ' + isLoading)
         if (isLoading === true) {
             simulateNetworkRequest().then(() => {
                 setLoading(false);
-                console.log('loadding after delay=> ' + isLoading)
+                console.log('loadding after delay=> ' + isLoading);
+                dispatch(updateSubCartAsync({...cartBuffer,amount: cartBuffer.amount - 1}));
             });
-        }
-    }, [isLoading]);   
-    const handleClick = () => setLoading(true);
+        } 
+    }, [isLoading]); 
+
+    const handleClick = (cartItem) => {
+        setLoading(true);
+        setCartBuffer(cartItem);
+    };
     //
 
 //   https://medium.com/how-to-react/how-to-use-redux-with-react-hooks-and-axios-a78d942fbe9c
@@ -54,7 +61,7 @@ const CartList = () => {
                     <span> <h3> qty </h3></span>
                     
                     <div className={classes["amount-container"]}>
-                        <Button onClick = {isLoading ? () => {dispatch(updateSubCartAsync({...cartItem,amount: cartItem.amount - 1}))} : handleClick }>
+                        <Button onClick = { () => {handleClick(cartItem)} }>
                             {isLoading ?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
                         </Button>
 
