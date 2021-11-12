@@ -63,7 +63,7 @@ export const AdminEditShop = () => {
 
     async function delProduct() {
         try{
-            const res = await axios.delete('http://localhost:5000/products/' + id)
+            const res = await axios.delete('http://localhost:5000/products/' + id, {withCredentials: true})
             console.log(res)
         } catch(err) {
             console.log(err)
@@ -87,7 +87,7 @@ export const AdminEditShop = () => {
                     "price":product.Price,
                     "remain":product.Remaining,
                     "healthGoal":product.HealthGoal
-                })
+                }, {withCredentials: true})
                 console.log(res)
                 } catch(err) {
                     console.log(err)

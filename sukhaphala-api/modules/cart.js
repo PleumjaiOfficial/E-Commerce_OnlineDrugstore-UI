@@ -12,7 +12,7 @@ const checkAmount = async (productId, amount) => {
 };
 
 //get carts
-const getCarts = async (customerId) => {
+const getCustomerCarts = async (customerId) => {
   try {
     const carts = await Cart.find({ customerId: customerId });
     return carts;
@@ -21,30 +21,18 @@ const getCarts = async (customerId) => {
   }
 };
 
-//create cart
-// const createCart = async (cart) => {
-//   const isEnough = checkAmount(cart.productId, cart.amount);
-//   if (isEnough) {
-//     try {
-//       const newCart = await Cart.findOneAndUpdate(
-//         { productId: cart.productId },
-//         {
-//           customerId: cart.customerId,
-//           productId: cart.productId,
-//           price: cart.price,
-//           amount: cart.amount,
-//         },
-//         { new: true, upsert: true}
-//       );
-//       return newCart;
-//     } catch (err) {
-//       return null;
-//     }
-//   } else {
-//     //actual amount less than wanted amount
-//     return null;
-//   }
-// };
+//get individual cart
+const getCart = async (cartId) => {
+  try {
+    const cart = await Cart.findById(cartId);
+    return cart._doc;
+  } catch (err) {
+    return {
+      type: 'FAIL',
+      message: 'cannot get this cart'
+    };
+  }
+};
 
 //create cart
 const createCart = async (cart) => {
@@ -55,7 +43,6 @@ const createCart = async (cart) => {
     if (existCart) {
       cart.amount = cart.amount + existCart.amount;
     }
-
     //check amount of that product
     const isEnough = checkAmount(cart.productId, cart.amount);
     if (isEnough) {
@@ -128,7 +115,8 @@ const deleteAllCustomerCart = async (customerId) => {
 }
 
 module.exports = {
-  getCarts: getCarts,
+  getCart: getCart,
+  getCustomerCarts: getCustomerCarts,
   createCart: createCart,
   updateCart: updateCart,
   deleteCart: deleteCart,

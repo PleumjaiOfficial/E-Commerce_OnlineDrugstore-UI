@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const verifyMiddleware = require('../middlewares/verifyToken');
 const productInterface = require('../modules/product');
 
 //get all products
@@ -24,7 +25,7 @@ router.get('/:id', async (req, res) => {
 });
 
 //add new product
-router.post('/', async (req, res) => {
+router.post('/', verifyMiddleware.adminAuthorization, async (req, res) => {
   const newProduct=  req.body;
   try {
      const savedProduct = await productInterface.addProduct(newProduct);
@@ -35,7 +36,7 @@ router.post('/', async (req, res) => {
 });
 
 //update product details
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyMiddleware.adminAuthorization, async (req, res) => {
   const productId = req.params.id;
   const product = req.body;
   try {
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 });
 
 //delete product
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyMiddleware.adminAuthorization, async (req, res) => {
   const productId = req.params.id;
   try {
     const result = await productInterface.deleteProduct(productId);

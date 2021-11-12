@@ -34,9 +34,8 @@ const AdminCreateProduct = () => {
                 "price":data.Price,
                 "remain":data.Remaining,
                 "healthGoal":data.HealthGoal
-            })
+            }, {withCredentials: true})
             .then(res => console.log(res) )
-            
         }
         CreateProduct();
 
