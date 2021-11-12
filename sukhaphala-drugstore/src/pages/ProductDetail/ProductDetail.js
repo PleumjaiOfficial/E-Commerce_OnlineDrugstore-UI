@@ -32,6 +32,13 @@ const ProductDetail = () => {
 	}, [])
 	console.log(data);
 
+
+	//object map healthgoal
+	// console.log(typeof data.healthGoal);
+	// console.log(data.healthGoal);
+	// const [healthgoals, setHealthgoals] = useState(data.healthGoal);
+	// console.log(Object.entries(data.healthGoal));
+
 	// useEffect(() => {
 	//     dispatch(addadd()) 
 	// }, [dispatch])

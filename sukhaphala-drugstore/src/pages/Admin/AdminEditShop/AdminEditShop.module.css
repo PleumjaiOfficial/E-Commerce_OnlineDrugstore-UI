@@ -1,4 +1,65 @@
-.create-img{
+.productdetail-container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  position: relative;
+  padding: 100px 40px 100px 40px;
+  background-color: #FEF4EC;
+}
+
+.edit-image{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: left;
+  height: 500px;
+  width: 500px;
+  min-width: 500px;
+  margin: 0px 60px 100px 60px;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.edit-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  overflow: hidden;
+}
+
+.edit-content{
+  display: flex;
+  flex-flow: column wrap;
+  height: 750px;
+  width: 500px;
+  margin: 0px 60px 0px 60px;
+  padding: 0px 50px 0px 50px;
+  min-width: 500px;
+  align-items: left;
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.create-formgroup{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* .create-formgroup h1{
+  display: flex;
+  padding-top: 10px;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: bold;
+
+} */
+
+
+
+
+/* .create-img{
     display: flex;
 }
 
@@ -11,10 +72,6 @@
    z-index: -1;
 }
 
-.create-formgroup{
-    margin-left: 60vh;
-    margin-bottom: 3vh;
-}
 
 .create-formgroup input ,span ,select ,button{
     margin-left: 10px
@@ -35,4 +92,4 @@
     width: 50px;
     height: 30px;
     display: inline-block;
-}
+} */
