@@ -49,8 +49,13 @@ const ProductDetail = () => {
 					<div className={classes["content-info"]}>
 						<div className={classes["info-name"]}> {data.name} </div>
 						<p className={classes["info-desc"]}> {data.description} </p>
-					</div>
 
+						<div className={classes["info-healthgoal"]}> 
+							<p>Health Goal :</p>
+							<div className={classes["healthgoal-list"]}> {data.healthGoal} </div>
+						</div>
+					</div>
+					
 					<div className={classes["content-buy"]}>
 						<div className={classes["buy-price"]}>
 							<p>Price :</p>

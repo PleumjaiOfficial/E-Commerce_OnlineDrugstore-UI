@@ -1,16 +1,20 @@
 .productdetail-container{
   display: flex;
   flex-flow: row wrap;
-  justify-content: left;
-  margin: 100px 200px 100px 200px;
+  justify-content: center;
+  position: relative;
+  margin: 100px auto 100px auto;
+  padding: 0px 40px 0px 40px;
 }
 
 .productdetail-image{
   display: flex;
   flex-flow: row wrap;
-  justify-content: left;
-  min-height: 500px;
+  justify-content: center;
+  height: 500px;
+  width: 500px;
   min-width: 500px;
+  margin: 0px 50px 100px 50px;
   background-color: #FEF4EC;
 }
 
@@ -23,9 +27,11 @@
 
 .productdetail-content{
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: column wrap;
   width: 450px;
-  margin-left: 150px;
+  margin-left: 50px;
+  margin-right: 50px;
+  min-width: 500px;
   align-items: left;
 }
 
@@ -35,7 +41,7 @@
   height: 300px;
 
   /*show border for test*/
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }
 
 .info-name{
@@ -55,13 +61,22 @@
   text-align: left;
 }
 
+.info-healthgoal{
+  display: flex;
+  padding-top: 20px;
+  font-family: 'Montserrat';
+  font-size: 20px;
+  text-align: left;
+}
+
+
 .content-buy{
   display: flex;
   flex-flow: column nowrap;
   height: 200px;
 
   /*show border for test*/
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }
 
 .buy-price{
@@ -110,4 +125,10 @@
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s linear;
+}
+
+@media screen and (max-width: 800px){
+  .productdetail-container{
+    min-width: 750px;
+  }
 }
