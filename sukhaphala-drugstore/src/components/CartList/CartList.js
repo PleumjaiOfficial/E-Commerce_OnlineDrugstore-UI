@@ -24,25 +24,67 @@ const CartList = () => {
         return new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    const [isLoading, setLoading] = useState(false);
-    const [cartBuffer, setCartBuffer] = useState({});
+    const [isLoadingSub, setLoadingSub] = useState(false);
+    const [isLoadingAdd, setLoadingAdd] = useState(false);
+    const [cartBufferSub, setCartBufferSub] = useState({});
+    const [cartBufferAdd, setCartBufferAdd] = useState({});
+    // const [cartBuffer, setCartBuffer] = useState({});
+    // const [operation,setOperation] = useState("")
 
+    //loading sub
     useEffect(() => {
-        console.log('loadding before delay=> ' + isLoading)
-        if (isLoading === true) {
+        if (isLoadingSub === true) {
             simulateNetworkRequest().then(() => {
-                setLoading(false);
-                console.log('loadding after delay=> ' + isLoading);
-                dispatch(updateSubCartAsync({...cartBuffer,amount: cartBuffer.amount - 1}));
+                setLoadingSub(false);
+                dispatch(updateSubCartAsync({...cartBufferSub,amount: cartBufferSub.amount - 1}));
+                //dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
             });
         } 
-    }, [isLoading]); 
+    }, [isLoadingSub]); 
 
-    const handleClick = (cartItem) => {
-        setLoading(true);
-        setCartBuffer(cartItem);
+    const handleClickSub = (cartItem) => {
+        setLoadingSub(true);
+        setCartBufferSub(cartItem);
     };
-    //
+
+    //loading add
+    useEffect(() => {
+        if (isLoadingAdd === true) {
+            simulateNetworkRequest().then(() => {
+                setLoadingAdd(false);
+                dispatch(updateAddCartAsync({...cartBufferAdd,amount: cartBufferAdd.amount + 1}));
+            });
+        } 
+    }, [isLoadingAdd]); 
+
+    const handleClickAdd = (cartItem) => {
+        setLoadingAdd(true);
+        setCartBufferAdd(cartItem);
+    };
+
+    // useEffect(() => {
+    //     console.log('loadding before delay=> ' + isLoading)
+    //     if (operation === "sub" ) {
+    //         setLoading(true);
+    //         simulateNetworkRequest().then(() => {
+    //             setLoading(false);
+    //             console.log('loadding after delay=> ' + isLoading);
+    //             dispatch(updateSubCartAsync({...cartBuffer,amount: cartBuffer.amount - 1}));
+    //         });
+    //     }else{
+    //         setLoading(false);
+    //         simulateNetworkRequest().then(() => {
+    //             setLoading(true);
+    //             console.log('loadding after delay=> ' + isLoading);
+    //             dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
+    //         });
+    //     }
+    // }, [isLoading]); 
+
+    // const handleClick = (cartItem,operation) => {
+    //     setCartBuffer(cartItem);
+    //     setOperation(operation);
+    // };
 
 //   https://medium.com/how-to-react/how-to-use-redux-with-react-hooks-and-axios-a78d942fbe9c
 //   https://www.positronx.io/react-axios-tutorial-make-http-get-post-requests/
@@ -61,18 +103,33 @@ const CartList = () => {
                     <span> <h3> qty </h3></span>
                     
                     <div className={classes["amount-container"]}>
-                        <Button onClick = { () => {handleClick(cartItem)} }>
-                            {isLoading ?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
+                        <Button onClick = { () => {handleClickSub(cartItem)} }>
+                            {isLoadingSub ?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
                         </Button>
 
-                        {/* <button 
-                            onClick = {() =>dispatch(updateSubCartAsync({...cartItem,amount: cartItem.amount - 1}))}> 
-                        - 
-                        </button> */}
 
                         <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div>
 
-                        <button onClick={() => dispatch(updateAddCartAsync({...cartItem,amount: cartItem.amount + 1}))}> + </button>
+            
+                        <Button onClick = { () => {handleClickAdd(cartItem)} }>
+                            {isLoadingAdd ? <i class="fa fa-spinner fa-spin"></i> : "+"  } 
+                        </Button>
+
+
+                        {/* testtttt */}
+
+                        {/* <Button onClick = { () => {handleClick(cartItem,"sub")} }>
+                            {isLoading?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
+                        </Button> */}
+
+
+                        {/* <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div> */}
+
+                        {/* <button onClick={() => dispatch(updateAddCartAsync({...cartItem,amount: cartItem.amount + 1}))}> + </button> */}
+                        {/* <Button onClick = { () => {handleClick(cartItem,"add")} }>
+                            {!isLoading? <i class="fa fa-spinner fa-spin"></i> : "+"  } 
+                        </Button> */}
+                        
                     </div>
                 </div>
                     

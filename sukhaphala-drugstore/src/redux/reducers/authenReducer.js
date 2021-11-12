@@ -11,7 +11,6 @@ export const authenReducer = (state = initState , action) => {
             return{
                 user:action.payload
             }
-    
         default:
             return initState;
     }
