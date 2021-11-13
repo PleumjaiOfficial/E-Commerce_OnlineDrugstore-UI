@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classes from './Billing.module.css';
 import Button from "../Button/Button";
+import InfoModal from '../InfoModal/InfoModal';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import { useSelector,useDispatch } from 'react-redux';
 import { placeOrderAsync } from '../../redux/actions/orderAction'; 
 
@@ -13,6 +15,20 @@ const Billing = () => {
     console.log(order);
 
     const dispatch = useDispatch();
+
+    const [ open, setOpen ] = useState(false);
+    
+    const handleClose = () => {
+        setOpen(false);
+    }
+    const handleOrder = () => {
+        setOpen(true);
+    }
+
+    const handlePlaceOrder = (cart) => {
+        dispatch(placeOrderAsync(cart));
+        setOpen(false);
+    }
 
     return (
         <div>
@@ -48,10 +64,22 @@ const Billing = () => {
                 <Button
                     Button_style={classes["btn_cart"]}
                     Button_text="Place order" 
-                    Button_onclick={()=> dispatch(placeOrderAsync(cart))}
+                    // Button_onclick={()=> dispatch(placeOrderAsync(cart))}
+                    Button_onclick={handleOrder}
                 />
 
             </div>
+
+            <ConfirmModal 
+                open={open} 
+                onClose={handleClose}
+                title='Are you sure?'
+                detail='Press confirm to continue place order'
+                buttonConfirmText='Confirm'
+                buttonCancelText='Cancel'
+                buttonConfirm={ () => handlePlaceOrder(cart)}
+                buttonCancel={handleClose}
+            />
         </div>
     )
 }
