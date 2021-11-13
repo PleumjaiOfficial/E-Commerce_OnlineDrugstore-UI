@@ -1,9 +1,13 @@
 import React, { Profiler, useEffect, useState } from 'react'
 import { useParams } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
-import Navbar from '../../../components/Navbar/Navbar';
 import axios from 'axios';
-import classes from './AdminEditShop.module.css'
+import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+import Navbar from '../../../components/Navbar/Navbar';
+import classes from './AdminEditShop.module.css';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
 
@@ -164,31 +168,76 @@ export const AdminEditShop = () => {
         <div className={classes["edit-content"]}>
           {/* Edit Name */}
           <div className={classes["create-formgroup"]}>
-            <label for="Name"><p>Product Name :</p></label>
+            <p>Product Name:</p>
+            <TextField 
+              fullWidth
+              id = "Name"
+              type="text" 
+              variant="outlined"
+              size="normal"
+              placeholder={data.name}
+              value={product.ProductName}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, ProductName: e.target.value })}
+            />
+
+            {/* <label for="Name"><p>Product Name :</p></label>
             <input type="text" name="Name" id="Name"
               className={classes["create-formgroup-name"]}
               placeholder={data.name}
               value={product.ProductName}
               onFocus={(e) => resetInput(e)}
               onChange={e => setProduct({ ...product, ProductName: e.target.value })}
-            />
+            /> */}
+
           </div>
 
           {/* Edit Description */}
           <div className={classes["create-formgroup"]}>
-            <label for="Description"><p>Product Description :</p></label>
+            <p>Product Description:</p>
+            <TextField 
+              fullWidth
+              id = "Description"
+              type="text"
+              variant="outlined"
+              size="small"
+              multiline
+              rows={2}
+              placeholder={data.description}
+              value={product.ProductDesc}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
+            />
+
+            {/* <label for="Description"><p>Product Description :</p></label>
             <input type="text" name="Description" id="Description"
               className={classes["create-formgroup-description"]}
               placeholder={data.description}
               value={product.ProductDesc}
               onFocus={(e) => resetInput(e)}
               onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
-            />
+            /> */}
           </div>
 
           {/* Edit Price */}
-          <div className={classes["create-formgroup"]}>
-            <label for="Price">Price :</label>
+          <div className={classes["create-formgroup-number"]}>
+            <p>Price:</p>
+            <TextField 
+              fullWidth
+              id = "Price"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Baht</InputAdornment>,
+              }}
+              placeholder={data.price}
+              value={product.Price}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
+            />
+
+            {/* <label for="Price">Price :</label>
             <input type="number" name="Price" id="Price"
               className={classes["create-formgroup-price"]}
               placeholder={data.price}
@@ -196,12 +245,28 @@ export const AdminEditShop = () => {
               onFocus={(e) => resetInput(e)}
               onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
             />
-            <span>Bath</span>
+            <span>Bath</span> */}
           </div>
 
           {/* Edit Product Remaining */}
-          <div className={classes["create-formgroup"]}>
-            <label for="Remain">Product Remaining :</label>
+          <div className={classes["create-formgroup-number"]}>
+            <p>Remaining Amount:</p>
+            <TextField 
+              fullWidth
+              id="Remain"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Packages</InputAdornment>,
+              }}
+              placeholder={data.remain}
+              value={product.Remaining}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, Remaining: e.target.value })}
+            />
+
+            {/* <label for="Remain">Product Remaining :</label>
             <input type="text" name="Remain" id="Remain"
               className={classes["create-formgroup-remain"]}
               placeholder={data.remain}
@@ -209,38 +274,75 @@ export const AdminEditShop = () => {
               onFocus={(e) => resetInput(e)}
               onChange={e => setProduct({ ...product, Remaining: e.target.value })}
             />
-            <span>Package</span>
+            <span>Package</span> */}
           </div>
 
           {/* Add Health Goal */}
           <div className={classes["create-formgroup"]}>
-            {/* <div className={classes["create-formgroup-heathgoal"]}>  */}
-            <span>Add heathgoal</span>
-
+            <p>Add Heath Goal:</p>
             <HealthGoal onChange={handleAddHealthGoal} />
-            {/* </div> */}
           </div>
 
-          <div className={classes["create-formgroup"]}>
-            <span>Heathgoal :</span>
-            {product.HealthGoal.map(item =>
-              <button key={item} onClick={handleDelHealthGoal} value={item}>
-                {item} x
-              </button>
-            )}
+          {/*Show Health Goal*/}
+          <div className={classes["create-formgroup-healthgoal"]}>
+            <p>Heath Goal:</p>
+            <div className={classes["healthgoal-list"]}>
+              {product.HealthGoal.map(item =>
+                // <button key={item} onClick={handleDelHealthGoal} value={item}>
+                //   {item} x
+                // </button>
+                <Button 
+                  variant="outlined"
+                  size = "small"
+                  color = "inherit"
+                  key={item}
+                  onClick={handleDelHealthGoal}
+                  value={item} >
+                    {item} X
+                </Button>
+              )}
+            </div>
           </div>
 
           {/*Submit Button*/}
-          <div className={classes["create-formgroup"]}>
-            <NavLink to='/AdminShop'>
-              <button className={classes["cancel"]} >cancel</button>
-            </NavLink>
-
-            <NavLink to='/AdminShop'>
-              <button onClick={handleSubmit} className={classes["save"]} >save</button>
-            </NavLink>
-
-            <button onClick={delProduct} className={classes["btn"]}>Remove</button>
+          <div className={classes["submit-container"]}>
+            <div className={classes["submit-save-cancel"]}>
+              <div className={classes["submit-cancel"]}>
+                <Button 
+                  component={NavLink}
+                  to='/AdminShop'
+                  variant="contained"
+                  size = "large"
+                  color = "inherit"
+                  fullWidth={true}>
+                    Cancel
+                </Button>
+              </div>
+              
+              <div className={classes["submit-save"]}>
+                  <Button 
+                    component={NavLink}
+                    to='/AdminShop'
+                    onClick={handleSubmit} 
+                    variant="contained"
+                    size = "large"
+                    color = "success"
+                    fullWidth={true} >
+                      Save
+                  </Button>
+              </div>
+            </div>
+            
+            <div className={classes["submit-remove"]}>
+              <Button 
+                onClick={delProduct}
+                variant="contained"
+                size = "large"
+                color = "error"
+                fullWidth={true}>
+                  Remove
+              </Button>
+            </div>
           </div>
         </div>
 
