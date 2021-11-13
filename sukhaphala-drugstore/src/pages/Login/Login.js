@@ -16,7 +16,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../../components/Navbar/Navbar';
 import { NavLink } from 'react-router-dom';
 import DrugVdo from '../../Video/demo-vdo.mp4';
-import { positions } from '@mui/system';
+import { display, positions } from '@mui/system';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,15 +63,25 @@ const Login = () => {
 
     //decode token function
     const decode = (codeSixFour) => {
-      // let str = {codeSixFour};
-      // let buff = new Buffer(str, 'base64');
-      // let base64ToStringNew = buff.toString('ascii');
-      // console.log(base64ToStringNew)
+      //split token
       console.log(codeSixFour)
-      let text = codeSixFour;
-      
+      var text = codeSixFour.split(".");
+        console.log(text);
+        console.log(text[1]);
+
+      //decode
+      let str = text[1];
+      let buff = new Buffer(str, 'base64');
+      let base64ToStringNew = buff.toString('ascii');
+        console.log(base64ToStringNew)
+
+      //String to object
+      console.log(JSON.parse(base64ToStringNew));
+      let tokenObject = JSON.parse(base64ToStringNew)
 
 
+      //sent object that decoded
+      return tokenObject 
     }
 
     const handleSubmit = (e) => {
@@ -86,8 +96,9 @@ const Login = () => {
             Cookies.set('token',res.data.token); 
               console.log(res.data)
               console.log(res.data.token)
-              decode(res.data.token)
-              dispatch(setAuth(res.data))
+              // decode(res.data.token)
+              // dispatch(setAuth(res.data))
+              dispatch(setAuth(decode(res.data.token)))
         })
         .catch((error) => alert('บ่ถูก'))
       }

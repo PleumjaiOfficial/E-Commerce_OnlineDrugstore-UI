@@ -2,7 +2,7 @@ import { SET_AUTH } from "../actions/authenAction";
 
 const initState = {
     //ไม่ได้ login
-    user: null 
+    user: [],
 }
 
 export const authenReducer = (state = initState , action) => {
