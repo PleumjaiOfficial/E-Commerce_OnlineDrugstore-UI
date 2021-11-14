@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import classes from './Billing.module.css';
 import Button from "../Button/Button";
 import InfoModal from '../InfoModal/InfoModal';
@@ -12,23 +12,62 @@ const Billing = () => {
     console.log(cart);
 
     const order = useSelector((state) => state.order.order);
-    console.log(order);
 
     const dispatch = useDispatch();
 
-    const [ open, setOpen ] = useState(false);
-    
-    const handleClose = () => {
-        setOpen(false);
+    //modal state of confirm modal
+    const [ openConfirm, setOpenConfirm ] = useState(false);
+    //modal state of informative modal
+    const [ openInfo, setOpenInfo ] = useState(false);
+    //info modal state
+    const [ infoModal, setInfoModal ] = useState({
+        status: '',
+        title: '',
+        detail: ''
+    });
+    //use this variable to track if it is the first render to prevent useeffect make the popup
+    const mount = useRef(false);
+
+    const handleCloseConfirm = () => {
+        setOpenConfirm(false);
     }
+
+    const handleOpenInfo = () => {
+        if (order.type === 'FAIL') {
+            setInfoModal({
+                status:'FAIL',
+                title: 'Error',
+                detail: order.message
+            });
+        } else if (order._id) {
+            setInfoModal({
+                status:'SUCCESS',
+                title: 'SUCCESS',
+                detail: 'Successfully place your order!'
+            });
+        }
+        setOpenInfo(true);
+    }
+    const handleCloseInfo = () => {
+        setOpenInfo(false);
+    }
+
     const handleOrder = () => {
-        setOpen(true);
+        setOpenConfirm(true);
     }
 
     const handlePlaceOrder = (cart) => {
         dispatch(placeOrderAsync(cart));
-        setOpen(false);
     }
+
+    useEffect(() => {
+        if (mount.current) {
+            setOpenConfirm(false);
+            handleOpenInfo();
+        } else {
+            mount.current = true;
+        }
+    }, [order]);
 
     return (
         <div>
@@ -71,14 +110,24 @@ const Billing = () => {
             </div>
 
             <ConfirmModal 
-                open={open} 
-                onClose={handleClose}
+                open={openConfirm} 
+                onClose={handleCloseConfirm}
                 title='Are you sure?'
                 detail='Press confirm to continue place order'
                 buttonConfirmText='Confirm'
                 buttonCancelText='Cancel'
                 buttonConfirm={ () => handlePlaceOrder(cart)}
-                buttonCancel={handleClose}
+                buttonCancel={handleCloseConfirm}
+            />
+
+            <InfoModal 
+                open={openInfo} 
+                onClose={handleCloseInfo}
+                status={infoModal.status}
+                title={infoModal.title}
+                detail={infoModal.detail}
+                buttonText='OK'
+                buttonAction={handleCloseInfo}
             />
         </div>
     )
