@@ -6,27 +6,31 @@ import CartList from '../../components/CartList/CartList';
 import Footer from '../../components/Footer/Footer';
 
 const Cart = () => {
- 
-    return (
-        <>
-            <Navbar />
+
+  return (
+    <>
+      <Navbar />
+      <div className={classes["cart-container"]}>
+        <div className={classes["cart-header"]}>
+          Your Medicines
+        </div>
+
+        <div className={classes["cart-info"]}>
+          <div className={classes["cartlist-container"]}>
+            <CartList />
+          </div>
+
+          <div className={classes["billing-container"]}>
+            <Billing />
+          </div>
+        </div>
+
         
-            <h2>Your Medicines</h2>
 
-            <div className={classes["cart-container"]}>
-
-                <div className={classes["cartlist-container"]}>
-                    <CartList />
-                </div>
-
-                <div className={classes["billing-container"]}>
-                    <Billing />
-                </div>
-
-            </div>
-            <Footer />
-        </>
-    )
+      </div>
+      <Footer />
+    </>
+  )
 }
 
 export default Cart;

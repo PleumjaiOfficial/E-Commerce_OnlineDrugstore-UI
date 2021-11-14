@@ -1,8 +1,41 @@
 .cart-container{
-    display: inline-block;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: left;
+  position: relative;
+  margin: 70px 100px 50px 100px;
 }
 
-h2{
+.cart-header{
+  font-family: 'Montserrat';
+  font-size: 40px;
+  font-weight: bold;
+  padding-bottom: 50px;
+  text-align: left;
+}
+
+.cart-info{
+  display: flex;
+  flex-flow: row wrap;
+  height: 750px;
+  border: 1px solid;
+}
+
+.cartlist-container{
+  display: flex;
+  justify-content: left;
+  margin: 30px;
+  max-height: 650px;
+  /* border: 1px solid; */
+}
+
+.billing-container{
+  display: flex;
+  justify-content: left;
+  margin: 30px;
+}
+
+/* h2{
     font-family: 'Montserrat';
     font-size: 48px;
     padding: 50px;
@@ -19,4 +52,4 @@ h2{
 
 .billing-container{
     margin: 1px 30px 2px 80px;
-}
+} */

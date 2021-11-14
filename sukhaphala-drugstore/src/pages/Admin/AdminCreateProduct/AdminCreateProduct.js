@@ -3,6 +3,10 @@ import { NavLink } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
 import axios from 'axios';
+import Input from '@mui/material/Input';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
 
@@ -125,31 +129,74 @@ const AdminCreateProduct = () => {
         <div className={classes["create-content"]}>
           {/* Create Product Name */}
           <div className={classes["create-formgroup"]}>
-            <label for="Name"><h3>Product Name:</h3></label>
+
+            <p>Product Name:</p>
+            <TextField
+              fullWidth
+              id="Name"
+              type="text"
+              variant="outlined"
+              size="normal"
+              value={data.ProductName}
+              onChange={e => setData({ ...data, ProductName: e.target.value })}
+              required
+            />
+
+            {/* <label for="Name"><h3>Product Name:</h3></label>
             <input type="text" name="Name" id="Name"
               className={classes["create-formgroup-name"]}
               placeholder="Product Name:"
               value={data.ProductName}
               onChange={e => setData({ ...data, ProductName: e.target.value })}
               required
-            />
+            /> */}
+
           </div>
 
           {/* Create Product Description */}
           <div className={classes["create-formgroup"]}>
-            <label for="Description"><h3>Product Description:</h3></label>
+            <p>Product Description:</p>
+            <TextField
+              fullWidth
+              id="Description"
+              type="text"
+              variant="outlined"
+              size="small"
+              multiline
+              rows={2}
+              value={data.ProductDesc}
+              onChange={e => setData({ ...data, ProductDesc: e.target.value })}
+            />
+
+            {/* <label for="Description"><h3>Product Description:</h3></label>
             <input type="text" name="Description" id="Description"
               className={classes["create-formgroup-description"]}
               placeholder="Product Description:"
               value={data.ProductDesc}
               onChange={e => setData({ ...data, ProductDesc: e.target.value })}
               required
-            />
+            /> */}
+
           </div>
 
           {/* Create Product Price */}
-          <div className={classes["create-formgroup"]}>
-            <label for="Price">Price:</label>
+          <div className={classes["create-formgroup-number"]}>
+            <p>Price:</p>
+            <TextField
+              fullWidth
+              id="Price"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Baht</InputAdornment>,
+              }}
+              value={data.Price}
+              onChange={e => setData({ ...data, Price: parseInt(e.target.value) })}
+              required
+            />
+
+            {/* <label for="Price">Price:</label>
             <input type="number" name="Price" id="Price"
               min="1"
               className={classes["create-formgroup-price"]}
@@ -158,12 +205,27 @@ const AdminCreateProduct = () => {
               onChange={e => setData({ ...data, Price: parseInt(e.target.value) })}
               required
             />
-            <span>Bath</span>
+            <span>Bath</span> */}
+
           </div>
 
           {/* Create Product Remaining */}
-          <div className={classes["create-formgroup"]}>
-            <label for="Remain">Product Remaining:</label>
+          <div className={classes["create-formgroup-number"]}>
+            <p>Remaining Amount:</p>
+            <TextField
+              fullWidth
+              id="Remain"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Packages</InputAdornment>,
+              }}
+              value={data.Remaining}
+              onChange={e => setData({ ...data, Remaining: e.target.value })}
+              required
+            />
+            {/* <label for="Remain">Product Remaining:</label>
             <input type="number" name="Remain" id="Remain"
               min="1"
               className={classes["create-formgroup-remain"]}
@@ -172,36 +234,74 @@ const AdminCreateProduct = () => {
               onChange={e => setData({ ...data, Remaining: parseInt(e.target.value) })}
               required
             />
-            <span>Package</span>
+            <span>Package</span> */}
+
           </div>
 
           {/* Create Product Health Goal */}
           <div className={classes["create-formgroup"]}>
-            {/* <div className={classes["create-formgroup-heathgoal"]}>  */}
-            <span>Add heathgoal</span>
+            <p>Add heathgoal</p>
             <HealthGoal onChange={handleAddHealthGoal} />
-            {/* </div> */}
           </div>
 
           {/* Show Health Goal */}
-          <div className={classes["create-formgroup"]}>
-            <span>Heathgoal: </span>
+          <div className={classes["create-formgroup-healthgoal"]}>
+
+            <p>Heath Goal:</p>
+            <div className={classes["healthgoal-list"]}>
+              {data.HealthGoal.map(item =>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  key={item}
+                  onClick={handleDelHealthGoal}
+                  value={item} >
+                  {item} X
+                </Button>
+              )}
+            </div>
+
+            {/* <span>Heathgoal: </span>
             {data.HealthGoal.map(item =>
               <button key={item} onClick={handleDelHealthGoal} value={item}>
                 {item} x
               </button>
-            )}
+            )} */}
           </div>
 
           {/* Submit Button */}
-          <div className={classes["create-formgroup"]}>
-            <NavLink to='/AdminShop'>
+          <div className={classes["submit-container"]}>
+            <div className={classes["submit-cancel"]}>
+              <Button
+                component={NavLink}
+                to='/AdminShop'
+                variant="contained"
+                size="large"
+                color="inherit"
+                fullWidth={true}>
+                Cancel
+              </Button>
+            </div>
+
+            <div className={classes["submit-save"]}>
+              <Button
+                onClick={handleSubmit}
+                variant="contained"
+                size="large"
+                color="primary"
+                fullWidth={true} >
+                Save
+              </Button>
+            </div>
+
+            {/* <NavLink to='/AdminShop'>
               <button className={classes["cancel"]} >cancel</button>
             </NavLink>
-            {/* click save ปุ๊ป ก็ส่งไปยัง database */}
             <button onClick={handleSubmit} className={classes["save"]}>
               save
-            </button>
+            </button> */}
+
           </div>
         </div>
 

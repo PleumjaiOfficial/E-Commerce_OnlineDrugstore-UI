@@ -29,7 +29,7 @@
 .create-content{
   display: flex;
   flex-flow: column wrap;
-  height: 750px;
+  height: 700px;
   width: 500px;
   margin: 0px 60px 0px 60px;
   padding: 0px 50px 0px 50px;
@@ -40,46 +40,70 @@
 }
 
 .create-formgroup{
-  padding-top: 10px;
-  padding-bottom: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  padding-top: 20px;
   font-family: 'Montserrat';
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
 }
 
-
-/*
-.create-img img{
-   position: absolute;
-   max-width: 50%;
-   max-height: 50%;
-   width: 30%;
-   height: auto;
-   z-index: -1;
+.create-formgroup p{
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
-.create-formgroup{
-    margin-left: 60vh;
-    margin-bottom: 3vh;
+.create-formgroup-number{
+  display: flex;
+  flex-flow: row wrap;
+  padding-top: 20px;
+  font-family: 'Montserrat';
+  font-size: 14px;
+  font-weight: bold;
+  width: 230px;
 }
 
-.create-formgroup input ,span ,select ,button{
-    margin-left: 10px
+.create-formgroup-number p{
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
-.create-formgroup-name{
-    width: 300px;
-    display:inline-block
+.create-formgroup-healthgoal{
+  display: flex;
+  flex-flow: row nowrap;
+  padding-top: 20px;
+  font-family: 'Montserrat';
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.create-formgroup-description{
-    width: 300px;
-    height: 100px;
-    display: inline-block;
+.healthgoal-list{
+  display: flex;
+  max-height: 90px;
+  max-width: 300px;
+  flex-flow: row wrap;
+  padding-left: 30px;
+  overflow: auto;
 }
 
-.create-formgroup-price{
-    width: 50px;
-    height: 30px;
-    display: inline-block;
-} */
+.healthgoal-list Button{
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.submit-container{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.submit-cancel{
+  width: 170px;
+  margin-right: 25px;
+}
+
+.submit-save{
+  width: 170px;
+  margin-left: 25px;
+}

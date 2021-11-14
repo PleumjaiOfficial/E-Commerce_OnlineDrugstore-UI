@@ -326,7 +326,7 @@ export const AdminEditShop = () => {
                     onClick={handleSubmit} 
                     variant="contained"
                     size = "large"
-                    color = "success"
+                    color = "primary"
                     fullWidth={true} >
                       Save
                   </Button>

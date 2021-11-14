@@ -4,6 +4,7 @@ import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import { useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux';
+import Button from '@mui/material/Button';
 import { add2Cart, add2CartAsync } from '../../redux/actions/cartActions';
 import Footer from '../../components/Footer/Footer';
 
@@ -59,7 +60,10 @@ const ProductDetail = () => {
 
 						<div className={classes["info-healthgoal"]}> 
 							<p>Health Goal :</p>
-							<div className={classes["healthgoal-list"]}> {data.healthGoal} </div>
+							<div className={classes["healthgoal-list"]}> 
+								{data.healthGoal} 
+							</div>
+
 						</div>
 					</div>
 					

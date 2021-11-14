@@ -1,59 +1,94 @@
 import React from 'react'
 import classes from './Billing.module.css';
-import Button from "../Button/Button";
-import { useSelector,useDispatch } from 'react-redux';
-import { placeOrderAsync } from '../../redux/actions/orderAction'; 
+import { useSelector, useDispatch } from 'react-redux';
+import Button from '@mui/material/Button';
+import { placeOrderAsync } from '../../redux/actions/orderAction';
 
 const Billing = () => {
 
-    const cart = useSelector((state) => state.cart.cart);
-    console.log(cart);
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
 
-    const order = useSelector((state) => state.order.order);
-    console.log(order);
+  const order = useSelector((state) => state.order.order);
+  console.log(order);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    return (
-        <div>
-            <div className={classes["billing"]}>
-                <div className={classes["biling-topic"]}>
-                    <h1>Billing</h1>
-                    <h2>Order summary</h2>
-                </div>
-
-                <h3 className={classes["billing-user"]}>
-                    <span>User : </span>
-                    <span>Ryo Wong</span>
-                </h3>
-
-                <h3 className={classes["billing-subtotal"]}>
-                    <span>Contact : </span>
-                    <span>บ่ฮู้</span>
-
-                </h3>
-
-                <h3 className={classes["billing-tax"]}>
-                    <span>Adress : </span>
-                    <span>บ่ฮู้</span>
-                </h3>
-
-                <h3 className={classes["billing-total"]}>
-                    <span>Total :</span>
-                    <span>
-                        {cart.reduce((sum, current) =>  sum + (current.price*current.amount), 0)} Bath
-                    </span>
-                </h3>
-
-                <Button
-                    Button_style={classes["btn_cart"]}
-                    Button_text="Place order" 
-                    Button_onclick={()=> dispatch(placeOrderAsync(cart))}
-                />
-
-            </div>
+  return (
+    <div>
+      <div className={classes["billing-container"]}>
+        <div className={classes["biling-head"]}>
+          <h1>Billing</h1>
+          <h2>Order summary</h2>
         </div>
-    )
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>User : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>Fname and Lname </p>
+          </div>
+        </div>
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>Contact : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>phone number </p>
+          </div>
+        </div>
+
+        <div className={classes["billing-info-address"]}>
+          <div className={classes["info-head"]}>
+            <p>Address : </p>
+          </div>
+          <div className={classes["info-content-address"]}>
+            <div className={classes["content-address"]}>
+              <p>Location</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>District</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>Country</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>Postcode</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>Total : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>{cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath </p>
+          </div>
+
+          {/* <span>Total :</span>
+          <span>
+            {cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath
+          </span> */}
+        </div>
+
+        <div className={classes["billing-placeorder"]}>
+          <Button
+            onclick={() => dispatch(placeOrderAsync(cart))}
+            variant="contained"
+            size="large"
+            color="primary"
+            fullWidth={true} >
+              Place Order
+          </Button>
+
+        </div>
+
+      </div>
+    </div>
+  )
 }
 
 export default Billing

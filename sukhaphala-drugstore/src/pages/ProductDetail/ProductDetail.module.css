@@ -43,7 +43,7 @@
 .content-info{
   display: flex;
   flex-flow: column nowrap;
-  height: 300px;
+  height: 230px;
 }
 
 .info-name{
@@ -59,34 +59,33 @@
 .info-desc{
   display: flex;
   padding-bottom: 10px;
+  height: 70px;
+  max-height: 70px;
   font-family: 'Montserrat';
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
+  overflow: auto;
 }
 
 .info-healthgoal{
   display: flex;
   padding-top: 20px;
   font-family: 'Montserrat';
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
 }
-
 
 .content-buy{
   display: flex;
   flex-flow: column nowrap;
   height: 200px;
-
-  /*show border for test*/
-  /* border: 2px solid black; */
 }
 
 .buy-price{
   display: flex;
   padding-top: 28px;
   font-family: 'Montserrat';
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -102,7 +101,7 @@
   display: flex;
   padding-top: 28px;
   font-family: 'Montserrat';
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -114,12 +113,12 @@
   margin-left: 15px;
 }
 
-.buy-number{
+/* .buy-number{
   height: 100px;
-}
+} */
 
 .btn {
-  margin-top: 30px;
+  margin-top: 50px;
   margin-left: 0;
   background: transparent;
   font-family: 'Montserrat', sans-serif;

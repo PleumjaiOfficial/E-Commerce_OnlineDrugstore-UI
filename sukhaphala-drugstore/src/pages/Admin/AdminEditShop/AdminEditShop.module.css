@@ -80,6 +80,7 @@
 .healthgoal-list{
   display: flex;
   max-height: 90px;
+  max-width: 300px;
   flex-flow: row wrap;
   padding-left: 30px;
   overflow: auto;
@@ -88,7 +89,6 @@
 .healthgoal-list Button{
   margin-right: 10px;
   margin-bottom: 10px;
-
 }
 
 .submit-container{
