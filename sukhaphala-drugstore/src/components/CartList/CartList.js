@@ -4,6 +4,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {getCart, updateAddCartAsync, updateSubCartAsync, deleteFromCartAsync, getCartAsync } from '../../redux/actions/cartActions';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
+import { CartListItem } from '../CartListItem/CartListItem';
 
 const CartList = () => {
 
@@ -14,53 +15,53 @@ const CartList = () => {
 
   const dispatch = useDispatch();
 
-    useEffect( async () => {
-        let res = await axios.get("http://localhost:5000/carts/")
-        dispatch(getCart(res.data))
-    },[])
+    // useEffect( async () => {
+    //     let res = await axios.get("http://localhost:5000/carts/")
+    //     dispatch(getCart(res.data))
+    // },[])
 
-    //Loading and click
-    function simulateNetworkRequest() {
-        return new Promise((resolve) => setTimeout(resolve, 1000));
-    }
+    // //Loading and click
+    // function simulateNetworkRequest() {
+    //     return new Promise((resolve) => setTimeout(resolve, 1000));
+    // }
 
-    const [isLoadingSub, setLoadingSub] = useState(false);
-    const [isLoadingAdd, setLoadingAdd] = useState(false);
-    const [cartBufferSub, setCartBufferSub] = useState({});
-    const [cartBufferAdd, setCartBufferAdd] = useState({});
-    // const [cartBuffer, setCartBuffer] = useState({});
-    // const [operation,setOperation] = useState("")
+    // const [isLoadingSub, setLoadingSub] = useState(false);
+    // const [isLoadingAdd, setLoadingAdd] = useState(false);
+    // const [cartBufferSub, setCartBufferSub] = useState({});
+    // const [cartBufferAdd, setCartBufferAdd] = useState({});
+    // // const [cartBuffer, setCartBuffer] = useState({});
+    // // const [operation,setOperation] = useState("")
 
-    //loading sub
-    useEffect(() => {
-        if (isLoadingSub === true) {
-            simulateNetworkRequest().then(() => {
-                setLoadingSub(false);
-                dispatch(updateSubCartAsync({...cartBufferSub,amount: cartBufferSub.amount - 1}));
-                //dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
-            });
-        } 
-    }, [isLoadingSub]); 
+    // //loading sub
+    // useEffect(() => {
+    //     if (isLoadingSub === true) {
+    //         simulateNetworkRequest().then(() => {
+    //             setLoadingSub(false);
+    //             dispatch(updateSubCartAsync({...cartBufferSub,amount: cartBufferSub.amount - 1}));
+    //             //dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
+    //         });
+    //     } 
+    // }, [isLoadingSub]); 
 
-    const handleClickSub = (cartItem) => {
-        setLoadingSub(true);
-        setCartBufferSub(cartItem);
-    };
+    // const handleClickSub = (cartItem) => {
+    //     setLoadingSub(true);
+    //     setCartBufferSub(cartItem);
+    // };
 
-    //loading add
-    useEffect(() => {
-        if (isLoadingAdd === true) {
-            simulateNetworkRequest().then(() => {
-                setLoadingAdd(false);
-                dispatch(updateAddCartAsync({...cartBufferAdd,amount: cartBufferAdd.amount + 1}));
-            });
-        } 
-    }, [isLoadingAdd]); 
+    // //loading add
+    // useEffect(() => {
+    //     if (isLoadingAdd === true) {
+    //         simulateNetworkRequest().then(() => {
+    //             setLoadingAdd(false);
+    //             dispatch(updateAddCartAsync({...cartBufferAdd,amount: cartBufferAdd.amount + 1}));
+    //         });
+    //     } 
+    // }, [isLoadingAdd]); 
 
-    const handleClickAdd = (cartItem) => {
-        setLoadingAdd(true);
-        setCartBufferAdd(cartItem);
-    };
+    // const handleClickAdd = (cartItem) => {
+    //     setLoadingAdd(true);
+    //     setCartBufferAdd(cartItem);
+    // };
 
     // useEffect(() => {
     //     console.log('loadding before delay=> ' + isLoading)
@@ -92,58 +93,11 @@ const CartList = () => {
 
     return (
         <div className={classes["cartlist-container"]}>
-            {cart.length === 0 ? <p> cart emply </p> : cart.map(cartItem => <div key={cartItem._id} className={classes["cartlist"]}>
-
-                <div className={classes["img-container"]}>    
-                    <span> <img src={cartItem.image} /></span>
-                </div>        
-
-                <div className={classes["detail-container"]}>             
-                    <span className={classes["name"]}> {cartItem.name} </span>
-                    <span> <h3> qty </h3></span>
-                    
-                    <div className={classes["amount-container"]}>
-                        <Button onClick = { () => {handleClickSub(cartItem)} }>
-                            {isLoadingSub ?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
-                        </Button>
-
-
-                        <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div>
-
-            
-                        <Button onClick = { () => {handleClickAdd(cartItem)} }>
-                            {isLoadingAdd ? <i class="fa fa-spinner fa-spin"></i> : "+"  } 
-                        </Button>
-
-
-                        {/* testtttt */}
-
-                        {/* <Button onClick = { () => {handleClick(cartItem,"sub")} }>
-                            {isLoading?  <i class="fa fa-spinner fa-spin"></i> : "-"} 
-                        </Button> */}
-
-
-                        {/* <div className={classes["amount"]}> <h2>{cartItem.amount} </h2> </div> */}
-
-                        {/* <button onClick={() => dispatch(updateAddCartAsync({...cartItem,amount: cartItem.amount + 1}))}> + </button> */}
-                        {/* <Button onClick = { () => {handleClick(cartItem,"add")} }>
-                            {!isLoading? <i class="fa fa-spinner fa-spin"></i> : "+"  } 
-                        </Button> */}
-                        
-                    </div>
-                </div>
-                    
-                <div className={classes["price-container"]}>
-                    <span> <h3> total </h3></span>
-                    <div className={classes["total"]}> <h2> {cartItem.price * cartItem.amount} Bath </h2> </div>
-                </div>
-
-                <div className={classes["remove-container"]}>
-                    <span> <h3> remove all </h3></span>
-                    <button onClick={() => dispatch(deleteFromCartAsync(cartItem._id))}> X </button>
-                </div>
-
-                </div>
+            {cart.length === 0 ? <p> cart emply </p> : cart.map(
+                cartItem => <CartListItem
+                                key={cartItem._id}
+                                cart={cartItem}
+                            />
                 )
             }
         </div>
