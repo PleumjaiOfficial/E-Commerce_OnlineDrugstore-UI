@@ -6,8 +6,6 @@ import { placeOrderAsync } from '../../redux/actions/orderAction';
 // import Button from "../Button/Button";
 import InfoModal from '../InfoModal/InfoModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
-import { useSelector,useDispatch } from 'react-redux';
-import { placeOrderAsync } from '../../redux/actions/orderAction'; 
 
 const Billing = () => {
 
@@ -168,4 +166,4 @@ const Billing = () => {
   )
 }
 
-export default Billing
+export default Billing;

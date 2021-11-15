@@ -12,37 +12,7 @@ import Footer from '../../../components/Footer/Footer';
 
 const AdminCreateProduct = () => {
 
-    const handleSubmit = () => {
-
-        //test
-        // const newproduct = {
-        //         "name": data.ProductName,
-        //         "file": data.file,
-        //         "description": data.ProductDesc,
-        //         "price":data.Price,
-        //         "remain":data.Remaining,
-        //         "healthGoal":data.HealthGoal
-        //     }
-        // console.log(newproduct)
-
-        if(checkEmply() === false)
-        {
-            alert("Don't filled out");
-        }else{
-            const CreateProduct = () => {
-
-            axios.post('http://localhost:5000/products/',
-            {
-                "name": data.ProductName,
-                "file": data.file,
-                "description": data.ProductDesc,
-                "price":data.Price,
-                "remain":data.Remaining,
-                "healthGoal":data.HealthGoal
-            }, {withCredentials: true})
-            .then(res => console.log(res) )
-        }
-        CreateProduct();
+  const handleSubmit = () => {
 
     //test
     // const newproduct = {
@@ -68,11 +38,10 @@ const AdminCreateProduct = () => {
             "price": data.Price,
             "remain": data.Remaining,
             "healthGoal": data.HealthGoal
-          })
+          }, { withCredentials: true })
           .then(res => console.log(res))
       }
       CreateProduct();
-
     }
   }
 
@@ -121,13 +90,15 @@ const AdminCreateProduct = () => {
 
   const handleAddHealthGoal = (e) => {
     if (!data.HealthGoal.includes(e.target.value)) {
-      setData((old) => { return { ...old, HealthGoal: [...old.HealthGoal, e.target.value] } }
+      setData((old) => 
+        { return { ...old, HealthGoal: [...old.HealthGoal, e.target.value] } }
       )
     }
   }
 
   const handleDelHealthGoal = (e) => {
-    setData((old) => {
+    setData((old) => 
+    {
       const newHealth = old.HealthGoal.filter(
         item => item !== e.target.value
       )
@@ -355,4 +326,4 @@ const AdminCreateProduct = () => {
   )
 }
 
-export default AdminCreateProduct
+export default AdminCreateProduct;
