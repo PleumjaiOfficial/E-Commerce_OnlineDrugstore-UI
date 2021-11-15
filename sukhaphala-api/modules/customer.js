@@ -30,8 +30,8 @@ const getCustomerByEmail = async (email) => {
 const createCustomer = async (customer) => {
   //create new customer
   const newCustomer = new Customer({
-    firstname: customer.firstname,
-    lastname: customer.lastname,
+    firstName: customer.firstname,
+    lastName: customer.lastname,
     password: customer.password,
     email: customer.email,
     phone: customer.phone,
