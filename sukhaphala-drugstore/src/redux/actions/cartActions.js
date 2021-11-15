@@ -67,7 +67,7 @@ export function add2CartAsync(aimProduct) {
 }
 
 // test space
-export const updateCart = (aimcartItem) => {
+export const updateAddCart = (aimcartItem) => {
 
     console.log(aimcartItem);
 
@@ -77,13 +77,13 @@ export const updateCart = (aimcartItem) => {
     }
 }
 
-export function updateCartAsync(aimcartItem) {
+export function updateAddCartAsync(aimcartItem) {
     return async function(dispatch) {
         await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem, {withCredentials: true})
         .then(res => {
             console.log(aimcartItem)
             console.log(res.data)
-            dispatch(updateCart(res.data))
+            dispatch(updateAddCart(res.data))
         })
     }
 }
@@ -133,7 +133,6 @@ export function deleteFromCartAsync(aimcartItemDel) {
         })
     }
 }
-// test space
 
 
 

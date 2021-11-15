@@ -104,3 +104,11 @@
     cursor: pointer;
 
 }
+
+.buttonload {
+  background-color: #04AA6D; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 12px /* Set a font size */
+}

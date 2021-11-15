@@ -13,14 +13,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import Navbar from '../../components/Navbar/Navbar';
 import { NavLink } from 'react-router-dom';
-
 import DrugVdo from '../../Video/demo-vdo.mp4';
-import { positions } from '@mui/system';
+import { display, positions } from '@mui/system';
 import axios from 'axios';
 import Cookies from 'js-cookie'
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '../../redux/actions/authenAction';
 
 const theme = createTheme({
   palette: {
@@ -50,35 +50,65 @@ const ValidationTextField = styled(TextField)({
 });
 
 
+
 const Login = () => {
+
+    const user = useSelector((state) => state.auth.user) //global state user
+    const dispatch = useDispatch();
 
     const [login,setLogin] = useState({
       email: '',
       password: '',
     });
 
-  const handleSubmit = (e) => {
-  
-    e.preventDefault();
-    const getLogin = () => {
-      axios.post('http://localhost:5000/auth/login',
-      {
-        "email": login.email,
-        "password": login.password
-      })
-      .then(res => {
-        Cookies.set('token',res.data.token); 
-        console.log(res.data); 
-      })
-      .catch((error) => alert('บ่ถูก'))
+    //decode token function
+    const decode = (codeSixFour) => {
+      //split token
+      console.log(codeSixFour)
+      var text = codeSixFour.split(".");
+        console.log(text);
+        console.log(text[1]);
+
+      //decode
+      let str = text[1];
+      let buff = new Buffer(str, 'base64');
+      let base64ToStringNew = buff.toString('ascii');
+        console.log(base64ToStringNew)
+
+      //String to object
+      console.log(JSON.parse(base64ToStringNew));
+      let tokenObject = JSON.parse(base64ToStringNew)
+
+
+      //sent object that decoded
+      return tokenObject 
     }
-    getLogin();
-  };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const getLogin = () => {
+        axios.post('http://localhost:5000/auth/login',
+        {
+          "email": login.email,
+          "password": login.password
+        })
+        .then(res => { alert('success')
+            Cookies.set('token',res.data.token); 
+              console.log(res.data)
+              console.log(res.data.token)
+              // decode(res.data.token)
+              // dispatch(setAuth(res.data))
+              dispatch(setAuth(decode(res.data.token)))
+        })
+        .catch((error) => alert('บ่ถูก'))
+      }
+      getLogin();
+    };
 
   return (
     <>
       <Navbar />
-      
+
       <video
           autoPlay
           loop
