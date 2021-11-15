@@ -9,10 +9,12 @@ import Button from "../Button/Button";
 import { getCart } from '../../redux/actions/cartActions';
 import Axios from 'axios';
 import Cookies from 'js-cookie';
+import { clearAuth } from '../../redux/actions/authenAction';
+import handleLogout from '../InfoModal/handleLogout/handleLogout';
 
 const Navbar = () => {
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [click,setclick] = useState(false);
   const holdClick = () => setclick(!click);
@@ -24,15 +26,17 @@ const Navbar = () => {
   // console.log(cart);
 
   //logout test
-  const handleLogout = () => {
-    Axios.get('http://localhost:5000/auth/logout')
-    .then(res=>{
-        console.log(res);
-        if (res.data.type === 'SUCCESS') {
-          Cookies.remove('token');
-        }
-    })
-  }
+  // const handleLogout = () => {
+  //   Axios.get('http://localhost:5000/auth/logout')
+  //   .then(res=>{
+  //       console.log(res);
+  //       if (res.data.type === 'SUCCESS') {
+  //         Cookies.remove('token');
+  //         localStorage.removeItem('persist:root');
+  //         dispatch(clearAuth());
+  //       }
+  //   })
+  // }
 
   return(
     <nav className={classes["navbar"]}>
@@ -92,10 +96,16 @@ const Navbar = () => {
             Button_style={classes["btn_nav"]}
             Button_text="REGISTER" />
       </NavLink> 
-        <Button 
+        {/* <Button 
             Button_style={classes["btn_nav"]}
             Button_text="Logout" 
-            Button_onclick={handleLogout}/>
+            Button_onclick={handleLogout}/> */}
+      <NavLink to='/Home'>
+        <Button 
+          Button_style={classes["btn_nav"]}
+          Button_text="Logout" 
+          Button_onclick={handleLogout} />
+      </NavLink>
     </div>
 
       
