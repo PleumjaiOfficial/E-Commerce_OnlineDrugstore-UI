@@ -21,6 +21,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from '../../redux/actions/authenAction';
+import InfoModal from '../../components/InfoModal/InfoModal';
 
 const theme = createTheme({
   palette: {
@@ -61,6 +62,28 @@ const Login = () => {
       password: '',
     });
 
+    //state of modal: false -> close modal, true -> open modal
+    const [ openInfo, setOpenInfo ] = useState(false);
+    //infomation of the modal
+    const [ infoModal, setInfoModal ] = useState({
+      status: '',
+      title: '',
+      detail: ''
+    });
+
+    const handleCloseInfo = () => {
+      setOpenInfo(false);
+    }
+
+    const handleOpenInfo = (data) => {
+      setInfoModal({
+        status: data.type,
+        title: data.type,
+        detail: data.message
+      });
+      setOpenInfo(true);
+    }
+
     //decode token function
     const decode = (codeSixFour) => {
       //split token
@@ -100,7 +123,10 @@ const Login = () => {
               // dispatch(setAuth(res.data))
               dispatch(setAuth(decode(res.data.token)))
         })
-        .catch((error) => alert('บ่ถูก'))
+        .catch((error) => {
+            // console.log(error.response.data);
+            handleOpenInfo(error.response.data);
+        })
       }
       getLogin();
     };
@@ -200,6 +226,16 @@ const Login = () => {
       <p>Check value</p>
       <p>email = {login.email}</p>
       <p>password = {login.password}</p>
+
+      <InfoModal
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status={infoModal.status}
+          title={infoModal.title}
+          detail={infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+      />
     </>
   );
 }
