@@ -12,7 +12,37 @@ import Footer from '../../../components/Footer/Footer';
 
 const AdminCreateProduct = () => {
 
-  const handleSubmit = () => {
+    const handleSubmit = () => {
+
+        //test
+        // const newproduct = {
+        //         "name": data.ProductName,
+        //         "file": data.file,
+        //         "description": data.ProductDesc,
+        //         "price":data.Price,
+        //         "remain":data.Remaining,
+        //         "healthGoal":data.HealthGoal
+        //     }
+        // console.log(newproduct)
+
+        if(checkEmply() === false)
+        {
+            alert("Don't filled out");
+        }else{
+            const CreateProduct = () => {
+
+            axios.post('http://localhost:5000/products/',
+            {
+                "name": data.ProductName,
+                "file": data.file,
+                "description": data.ProductDesc,
+                "price":data.Price,
+                "remain":data.Remaining,
+                "healthGoal":data.HealthGoal
+            }, {withCredentials: true})
+            .then(res => console.log(res) )
+        }
+        CreateProduct();
 
     //test
     // const newproduct = {

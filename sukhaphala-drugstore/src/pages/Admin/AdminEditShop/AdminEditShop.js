@@ -54,48 +54,47 @@ export const AdminEditShop = () => {
           Remaining: res.data.remain,
           HealthGoal: res.data.healthGoal
         })
+        .finally(() => {
+            setLoading(false);
+        });
+    },[])
+    console.log(data); 
+    console.log(product); 
 
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [])
-  console.log(data);
-  console.log(product);
-
-  async function delProduct() {
-    try {
-      const res = await axios.delete('http://localhost:5000/products/' + id)
-      console.log(res)
-    } catch (err) {
-      console.log(err)
+    async function delProduct() {
+        try{
+            const res = await axios.delete('http://localhost:5000/products/' + id, {withCredentials: true})
+            console.log(res)
+        } catch(err) {
+            console.log(err)
+        }
     }
   }
 
-  function handleSubmit(e) {
-    // e.preventDefault();
-    if (product.HealthGoal.length === 0) {
-      alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
-    }
-    else {
-      async function updateProduct() {
-        try {
-          const res = await axios.put('http://localhost:5000/products/' + id,
-            {
-              "name": product.ProductName,
-              "file": product.file,
-              "image": data.image,
-              "description": product.ProductDesc,
-              "price": product.Price,
-              "remain": product.Remaining,
-              "healthGoal": product.HealthGoal
-            })
-          console.log(res)
-        } catch (err) {
-          console.log(err)
+    function handleSubmit(e) {
+        // e.preventDefault();
+        if(product.HealthGoal.length === 0) {
+            alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
+        }
+        else{
+            async function updateProduct() {
+            try{
+                const res = await axios.put('http://localhost:5000/products/' + id,
+                {
+                    "name": product.ProductName,
+                    "file": product.file,
+                    "image": data.image,
+                    "description": product.ProductDesc,
+                    "price":product.Price,
+                    "remain":product.Remaining,
+                    "healthGoal":product.HealthGoal
+                }, {withCredentials: true})
+                console.log(res)
+                } catch(err) {
+                    console.log(err)
+                }
+            }
+            updateProduct(); 
         }
       }
       updateProduct();

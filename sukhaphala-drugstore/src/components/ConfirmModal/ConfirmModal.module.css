@@ -1,0 +1,76 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 250px;
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 24;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal header{
+  color: black;
+}
+
+.detail {
+  display: flex;
+  align-items: flex-start;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+}
+
+.confirm {
+  height: 30px;
+  padding: 2px 50px;
+  border-radius: 5px;
+  border: transparent;
+  color: white;
+  background-color: #FF6543;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.confirm:hover {
+  color: #FF6543;
+  background-color: white;
+  outline: 1px solid #FF6543;
+}
+
+.confirm:active {
+  color: white;
+  background-color: #FF370C;
+  outline : 1px solid white;
+}
+
+.cancel {
+  height: 30px;
+  padding: 2px 50px;
+  border-radius: 5px;
+  border: transparent;
+  color: #707070;
+  background-color: white;
+  outline: 1px solid #707070;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.cancel:hover {
+  color: white;
+  background-color: #707070;
+  outline: 1px solid #707070;
+}
+
+.cancel:active {
+  color: #707070;
+  background-color: white;
+  outline : 1px solid #707070;
+}

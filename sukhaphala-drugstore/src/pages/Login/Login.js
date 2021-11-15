@@ -66,7 +66,10 @@ const Login = () => {
         "email": login.email,
         "password": login.password
       })
-      .then(res => Cookies.set('token',res.data.token) )
+      .then(res => {
+        Cookies.set('token',res.data.token); 
+        console.log(res.data); 
+      })
       .catch((error) => alert('บ่ถูก'))
     }
     getLogin();
