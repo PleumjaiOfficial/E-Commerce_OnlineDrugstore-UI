@@ -20,6 +20,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
 import axios from 'axios';
+import InfoModal from '../../components/InfoModal/InfoModal';
 
 const theme = createTheme({
   palette: {
@@ -51,6 +52,28 @@ const Register = () =>  {
     re_password: '',
   });
 
+  //state of modal: false -> close modal, true -> open modal
+  const [ openInfo, setOpenInfo ] = useState(false);
+  //infomation of the modal
+  const [ infoModal, setInfoModal ] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  }
+
+  const handleOpenInfo = (data) => {
+    setInfoModal({
+      status: data.type,
+      title: data.type,
+      detail: data.message
+    });
+    setOpenInfo(true);
+  }
+
   const handleSubmit = () => {
     //check 
 
@@ -70,6 +93,9 @@ const Register = () =>  {
           }
       })
       .then(res => console.log(res) )
+      .catch(error => {
+        handleOpenInfo(error.response.data);
+      })
     }
     createCustomer();
   };
@@ -315,7 +341,16 @@ const Register = () =>  {
 
       <p>passaword = {credential.password}</p>
       <p>checkpassword = {credential.re_password}</p>
-
+      
+      <InfoModal
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status={infoModal.status}
+          title={infoModal.title}
+          detail={infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+      />
     </>
   );
 }

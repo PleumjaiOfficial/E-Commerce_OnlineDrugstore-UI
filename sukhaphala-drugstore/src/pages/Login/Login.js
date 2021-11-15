@@ -115,13 +115,14 @@ const Login = () => {
           "email": login.email,
           "password": login.password
         })
-        .then(res => { alert('success')
-            Cookies.set('token',res.data.token); 
-              console.log(res.data)
-              console.log(res.data.token)
-              // decode(res.data.token)
-              // dispatch(setAuth(res.data))
-              dispatch(setAuth(decode(res.data.token)))
+        .then(res => { 
+          // alert('success')
+          Cookies.set('token',res.data.token); 
+          // console.log(res.data)
+          // console.log(res.data.token)
+          // decode(res.data.token)
+          // dispatch(setAuth(res.data))
+          dispatch(setAuth(decode(res.data.token)))
         })
         .catch((error) => {
             // console.log(error.response.data);
