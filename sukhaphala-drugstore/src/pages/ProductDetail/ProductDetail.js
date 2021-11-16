@@ -18,7 +18,6 @@ const ProductDetail = () => {
   const [numpack, setNumpack] = useState(1);
 
   const [add, setAdd] = useState(false);
-  const holdAdd = () => setAdd(true);
 
   //modal handler ----------------------------------------------
   const cartError = useSelector((state) => state.cart.cartError);
@@ -38,6 +37,7 @@ const ProductDetail = () => {
   const mount = useRef(false);
   useEffect(() => {
     if (mount.current) {
+      console.log("bara1 : ")
       if (cartError.type === 'FAIL') {
         setInfoModal({
           status: 'FAIL',
@@ -45,9 +45,11 @@ const ProductDetail = () => {
           detail: cartError.message
         });
         setOpenInfo(true);
+        setAdd(false);
       }
     } else {
       mount.current = true;
+      console.log("bara2 : ")
     }
     return () => {
       dispatch(addCartError({}));
@@ -64,23 +66,21 @@ const ProductDetail = () => {
     if (isLoading) {
       simulateNetworkRequest().then(() => {
         setLoading(false);
-        holdAdd();
       });
     }
   }, [isLoading, cartError ]);
 
   const handleClick = () => {
     setLoading(true);
+    setAdd(true);
     dispatch(add2CartAsync({ ...data, amount: numpack }));
   }
   console.log('loadding ' + isLoading)
-  //
 
   const handleNumpack = (event) => {
     setNumpack(event.target.value)
   }
 
-  //in displace have action
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const ProductDetail = () => {
 
   
 
-    // const mount = useRef(false);
+  // const mount = useRef(false);
   // useEffect(() => {
   //   if(mount.current) {
   //     if (cartError.type === 'FAIL') {
@@ -179,7 +179,7 @@ const ProductDetail = () => {
             
 
             <div className={classes["content-add-cart"]}>
-              { add === false?
+              { add === false ?
                 <Button
                   variant="contained"
                   size="large"
@@ -194,10 +194,7 @@ const ProductDetail = () => {
                   Added cart
                 </Button>
               }
-
             </div>
-
-            
           </div>
 				</div>
 

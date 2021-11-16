@@ -14,7 +14,7 @@ const persistConfig = {
 
 const reducersPowerRanger = combineReducers({   
     cart: cartReducer, // {cart : {cart: [] } }
-    auth: authenReducer, // auth: {user : null} 
+    auth: authenReducer, // auth: {user : []} 
     order: orderReducer
 });
 
