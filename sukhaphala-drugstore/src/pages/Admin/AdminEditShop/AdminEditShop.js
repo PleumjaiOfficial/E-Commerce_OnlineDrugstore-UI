@@ -12,6 +12,7 @@ import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
 import InfoModal from '../../../components/InfoModal/InfoModal';
 import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
+import { Redirect } from 'react-router-dom';
 
 export const AdminEditShop = () => {
   //modal edit product
@@ -44,7 +45,8 @@ export const AdminEditShop = () => {
     setOpenInfoEdit(true);
   }
 
-
+  //use this state to indicate that this product was removed successfully
+  const [isRemoved, setIsRemoved] = useState(false); 
 
   //modal delete product
   const [openConfirmDel, setOpenConfirmDel] = useState(false);
@@ -69,7 +71,7 @@ export const AdminEditShop = () => {
         title: 'Error',
         detail: data.message
       });
-    } else if (data._id) {
+    } else if (data.type === 'SUCCESS') {
       setInfoModalDel({
         status: 'SUCCESS',
         title: 'SUCCESS',
@@ -78,8 +80,13 @@ export const AdminEditShop = () => {
     }
     setOpenInfoDel(true);
   }
+  //close info modal
+  //if removed successfully, redirect to /AdminShop 
   const handleCloseInfoDel = () => {
     setOpenInfoDel(false);
+    if (infoModalDel.status === 'SUCCESS') {
+      setIsRemoved(true);
+    }
   }
 
   const handleDel = () => {
@@ -87,9 +94,15 @@ export const AdminEditShop = () => {
   }
 
   const handleDeleteProduct = () => {
-    delProduct();
+    // delProduct();
+    handleCloseConfirmDel();
+    axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
+    .then(res => {
+      handleOpenInfoDel(res.data);
+    }).catch(error => {
+      handleOpenInfoDel(error.response.data);
+    });
   }
-
 
   const { id } = useParams();
   const [data, setData] = useState([]);
@@ -145,14 +158,14 @@ export const AdminEditShop = () => {
   console.log(data);
   console.log(product);
 
-  async function delProduct() {
-    try {
-      const res = await axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
-      console.log(res)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  // async function delProduct() {
+  //   try {
+  //     const res = await axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
+  //     console.log(res)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }
 
 
   //submit edit shop
@@ -242,6 +255,9 @@ export const AdminEditShop = () => {
     return <p>Data is loading...</p>;
   }
 
+  if (isRemoved) {
+    return <Redirect to='/AdminShop' />
+  }
   return (
     <>
       <Navbar />
@@ -423,6 +439,7 @@ export const AdminEditShop = () => {
         buttonCancel={handleCloseConfirmDel}
       />
 
+      
       <InfoModal
         open={openInfoDel}
         onClose={handleCloseInfoDel}
@@ -432,9 +449,6 @@ export const AdminEditShop = () => {
         buttonText='OK'
         buttonAction={handleCloseInfoDel}
       />
-
-
-
 
 
       <Footer />
