@@ -16,9 +16,10 @@
 
 .cart-info{
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
+  justify-content: left;
   height: 750px;
-  border: 1px solid;
+  /* border: 1px solid; */
 }
 
 .cartlist-container{
@@ -34,22 +35,3 @@
   justify-content: left;
   margin: 30px;
 }
-
-/* h2{
-    font-family: 'Montserrat';
-    font-size: 48px;
-    padding: 50px;
-    text-align: left;
-}
-
-.cartlist-container{
-    position: absolute;
-    margin-left: 50px; 
-    width: 800px;
-    height: 550px;
-    border: 1px solid black;
-}
-
-.billing-container{
-    margin: 1px 30px 2px 80px;
-} */
