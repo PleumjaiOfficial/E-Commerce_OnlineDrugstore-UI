@@ -11,15 +11,17 @@ function HeroSection() {
         <div className={classes["info-container"]}>
           <div className={classes["center-header"]}>SUKhaphala</div>
           <p> Online Drugstore, Pharmacy, Prescriptions & Health </p>
+          <NavLink to='/Shop' >
           <button className={classes["btn"]}>Get your health back</button>
+          </NavLink>
         </div>
 
         {/* <div className={classes["info-container"]}>
           <p> test</p>
         </div> */}
 
-        <NavLink to='/Shop' >
-        </NavLink>
+        {/* <NavLink to='/Shop' >
+        </NavLink> */}
             
       </div>
 

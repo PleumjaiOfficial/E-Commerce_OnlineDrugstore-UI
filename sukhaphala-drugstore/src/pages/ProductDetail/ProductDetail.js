@@ -9,12 +9,15 @@ import { add2Cart, add2CartAsync, addCartError } from '../../redux/actions/cartA
 import Button from '@mui/material/Button';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import Footer from '../../components/Footer/Footer'
+import HealthGoalsList from '../../components/HealthGoalList/HealthGoalList';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductDetail = () => {
 
   const { id } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    healthGoal: []
+  });
   const [numpack, setNumpack] = useState(1);
 
   const [add, setAdd] = useState(false);
@@ -102,7 +105,7 @@ const ProductDetail = () => {
       });
   }, [])
   console.log(data);
-
+  console.log(data.healthGoal);
   
 
   // const mount = useRef(false);
@@ -155,7 +158,13 @@ const ProductDetail = () => {
               <div className={classes["info-healthgoal"]}> 
                 <p>Health Goal :</p>
                 <div className={classes["healthgoal-list"]}> 
-                  {data.healthGoal} 
+                  
+                  <HealthGoalsList 
+                    healthGoals = {data.healthGoal}
+                  />
+
+                  {/* {data.healthGoal} */}
+
                 </div>
 
               </div>
