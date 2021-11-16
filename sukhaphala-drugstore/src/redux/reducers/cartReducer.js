@@ -26,16 +26,18 @@ export const cartReducer = (state = iniState , action) => {
             const sameAddProduct = state.cart.find( (product) => product._id === action.payload._id);
 
             //ของต่าง
-            if(!sameAddProduct){
+            if (!sameAddProduct) {
                 addCart = [...state.cart, action.payload];
             }
 
             //อันเดียวกัน
-            else{
-                addCart = state.cart.map( (product) => ({
-                    ...product, //overwrite ค่าเดิม
-                     amount: action.payload.amount
-                }))
+            else {
+                // addCart = state.cart.map( (product) => ({
+                //     ...product, //overwrite ค่าเดิม
+                //      amount: action.payload.amount
+                // }))
+                let updatedCart = { ...sameAddProduct, amount: action.payload.amount }
+                addCart = state.cart.map( cart => updatedCart.productId === cart.productId ? updatedCart : cart);
             }
 
             return {

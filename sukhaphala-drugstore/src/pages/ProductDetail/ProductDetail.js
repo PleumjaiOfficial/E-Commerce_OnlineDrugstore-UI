@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import { NavLink, useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { add2Cart, add2CartAsync } from '../../redux/actions/cartActions'
 // import Button from 'react-bootstrap/Button';
 import Button from '@mui/material/Button';
@@ -19,7 +19,6 @@ const ProductDetail = () => {
 
   const [add, setAdd] = useState(false);
   const holdAdd = () => setAdd(true);
-  const [modalShow, setModalShow] = useState(false);
 
   //Loading and click
   function simulateNetworkRequest() {
@@ -32,11 +31,14 @@ const ProductDetail = () => {
       simulateNetworkRequest().then(() => {
         setLoading(false);
         holdAdd();
-        setModalShow(true);
       });
     }
   }, [isLoading]);
-  const handleClick = () => setLoading(true);
+
+  const handleClick = () => {
+    setLoading(true);
+    dispatch(add2CartAsync({ ...data, amount: numpack }))
+  }
   console.log('loadding ' + isLoading)
   //
 
@@ -59,6 +61,22 @@ const ProductDetail = () => {
   }, [])
   console.log(data);
 
+  // const cart = useSelector((state) => state.cart.cart);
+
+  // const mount = useRef(false);
+  // useEffect(() => {
+  //   if (mount.current) {
+  //     cart.forEach(cartitem => {
+  //       if (cartitem.productId === data._id) {
+  //         holdAdd();
+  //       }
+  //     })
+  //   } else {
+  //     mount.current = true;
+  //   }
+  // }, [cart]);
+
+  
 
   return (
     <>
@@ -109,13 +127,13 @@ const ProductDetail = () => {
             
 
             <div className={classes["content-add-cart"]}>
-              {add === false ?
+              { add === false?
                 <Button
                   variant="contained"
                   size="large"
                   color="primary"
                   fullWidth={true} 
-                  onClick={!isLoading ? handleClick : dispatch(add2CartAsync({ ...data, amount: numpack }))}
+                  onClick={handleClick}
                   disabled={isLoading}>
                   {isLoading ? "Loading…" : "Add to cart"}
                 </Button>:
