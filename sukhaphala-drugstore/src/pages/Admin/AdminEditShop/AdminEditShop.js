@@ -10,8 +10,39 @@ import Navbar from '../../../components/Navbar/Navbar';
 import classes from './AdminEditShop.module.css';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
+import InfoModal from '../../../components/InfoModal/InfoModal';
 
 export const AdminEditShop = () => {
+   //modal state 
+   const [ openInfo, setOpenInfo ] = useState(false);
+   const [infoModal, setInfoModal] = useState({
+     status: '',
+     title: '',
+     detail: ''
+   });
+ 
+   const handleCloseInfo = () => {
+     setOpenInfo(false);
+   }
+ 
+   const handleOpenInfo = (data) => {
+     if (data.type === 'FAIL') {
+       setInfoModal({
+         status: data.type,
+         title: 'ERROR',
+         detail: data.message
+       })
+     } else if (data._id) {
+       setInfoModal({
+         status: 'SUCCESS',
+         title: 'SUCCESS',
+         detail: 'Successfully edit new product.'
+       })
+     }
+ 
+     setOpenInfo(true);
+   }
+
 
   const { id } = useParams();
   const [data, setData] = useState([]);
@@ -95,7 +126,13 @@ export const AdminEditShop = () => {
             "remain": product.Remaining,
             "healthGoal": product.HealthGoal
           }, { withCredentials: true })
-          console.log(res)
+          .then(res =>{
+            handleOpenInfo(res.data);
+          })
+          .catch(error => {
+            handleOpenInfo(error.response.data);
+          });
+          // console.log(res)
         } catch (err) {
           console.log(err)
         }
@@ -183,16 +220,6 @@ return (
             onFocus={(e) => resetInput(e)}
             onChange={e => setProduct({ ...product, ProductName: e.target.value })}
           />
-
-          {/* <label for="Name"><p>Product Name :</p></label>
-            <input type="text" name="Name" id="Name"
-              className={classes["create-formgroup-name"]}
-              placeholder={data.name}
-              value={product.ProductName}
-              onFocus={(e) => resetInput(e)}
-              onChange={e => setProduct({ ...product, ProductName: e.target.value })}
-            /> */}
-
         </div>
 
         {/* Edit Description */}
@@ -211,15 +238,6 @@ return (
             onFocus={(e) => resetInput(e)}
             onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
           />
-
-          {/* <label for="Description"><p>Product Description :</p></label>
-            <input type="text" name="Description" id="Description"
-              className={classes["create-formgroup-description"]}
-              placeholder={data.description}
-              value={product.ProductDesc}
-              onFocus={(e) => resetInput(e)}
-              onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
-            /> */}
         </div>
 
         {/* Edit Price */}
@@ -239,16 +257,6 @@ return (
             onFocus={(e) => resetInput(e)}
             onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
           />
-
-          {/* <label for="Price">Price :</label>
-            <input type="number" name="Price" id="Price"
-              className={classes["create-formgroup-price"]}
-              placeholder={data.price}
-              value={product.Price}
-              onFocus={(e) => resetInput(e)}
-              onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
-            />
-            <span>Bath</span> */}
         </div>
 
         {/* Edit Product Remaining */}
@@ -268,16 +276,6 @@ return (
             onFocus={(e) => resetInput(e)}
             onChange={e => setProduct({ ...product, Remaining: e.target.value })}
           />
-
-          {/* <label for="Remain">Product Remaining :</label>
-            <input type="text" name="Remain" id="Remain"
-              className={classes["create-formgroup-remain"]}
-              placeholder={data.remain}
-              value={product.Remaining}
-              onFocus={(e) => resetInput(e)}
-              onChange={e => setProduct({ ...product, Remaining: e.target.value })}
-            />
-            <span>Package</span> */}
         </div>
 
         {/* Add Health Goal */}
@@ -324,9 +322,9 @@ return (
 
             <div className={classes["submit-save"]}>
               <Button
-                component={NavLink}
-                to='/AdminShop'
                 onClick={handleSubmit}
+                // component={NavLink}
+                // to='/AdminShop'
                 variant="contained"
                 size="large"
                 color="primary"
@@ -339,6 +337,8 @@ return (
           <div className={classes["submit-remove"]}>
             <Button
               onClick={delProduct}
+              // component={NavLink}
+              // to='/AdminShop'
               variant="contained"
               size="large"
               color="error"
@@ -348,20 +348,29 @@ return (
           </div>
         </div>
       </div>
-
-
-      {/* </form> */}
-
-      {/* <p>
-          {data.image}       | {product.Image}    <br />
-          {data.name} | {product.ProductName}  <br />
-          {data.description} | {product.ProductDesc} <br />
-          {data.price}       | {product.Price} <br />
-          {data.remain}   | {product.Remaining} <br />
-          {data.healthGoal}   | {product.HealthGoal} <br />
-        </p> */}
-
     </div>
+
+    {/* <ConfirmModal
+      open={openConfirm}
+      onClose={handleCloseConfirm}
+      title='Are you sure?'
+      detail='Press confirm to continue place order'
+      buttonConfirmText='Confirm'
+      buttonCancelText='Cancel'
+      buttonConfirm={() => handlePlaceOrder(cart)}
+      buttonCancel={handleCloseConfirm}
+    /> */}
+
+
+    <InfoModal 
+      open={openInfo}
+      onClose={handleCloseInfo}
+      status= {infoModal.status}
+      title= {infoModal.title}
+      detail= {infoModal.detail}
+      buttonText='OK'
+      buttonAction={handleCloseInfo}
+    />
 
 
     <Footer />

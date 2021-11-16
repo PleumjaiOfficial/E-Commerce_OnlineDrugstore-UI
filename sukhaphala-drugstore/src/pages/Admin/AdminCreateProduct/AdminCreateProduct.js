@@ -12,7 +12,7 @@ import Footer from '../../../components/Footer/Footer';
 import InfoModal from '../../../components/InfoModal/InfoModal';
 
 const AdminCreateProduct = () => {
-  //modal state 
+  //modal state of 
   const [ openInfo, setOpenInfo ] = useState(false);
   const [infoModal, setInfoModal] = useState({
     status: '',
@@ -60,12 +60,6 @@ const AdminCreateProduct = () => {
   const [imagePreview, SetimagePreview] = useState(null);
   const handleUploadImage = (e) => {
     const file = e.target.files[0]
-    // console.log(e)
-    // console.log(file)
-    // //Keep name
-    // console.log(file.name)
-    // //Keep file
-    // console.log(file.type)
 
     const reader = new FileReader();
     reader.onloadend = (readerEvent) => {
@@ -180,16 +174,6 @@ const AdminCreateProduct = () => {
               onChange={e => setData({ ...data, ProductName: e.target.value })}
               required
             />
-
-            {/* <label for="Name"><h3>Product Name:</h3></label>
-            <input type="text" name="Name" id="Name"
-              className={classes["create-formgroup-name"]}
-              placeholder="Product Name:"
-              value={data.ProductName}
-              onChange={e => setData({ ...data, ProductName: e.target.value })}
-              required
-            /> */}
-
           </div>
 
           {/* Create Product Description */}
@@ -206,16 +190,6 @@ const AdminCreateProduct = () => {
               value={data.ProductDesc}
               onChange={e => setData({ ...data, ProductDesc: e.target.value })}
             />
-
-            {/* <label for="Description"><h3>Product Description:</h3></label>
-            <input type="text" name="Description" id="Description"
-              className={classes["create-formgroup-description"]}
-              placeholder="Product Description:"
-              value={data.ProductDesc}
-              onChange={e => setData({ ...data, ProductDesc: e.target.value })}
-              required
-            /> */}
-
           </div>
 
           {/* Create Product Price */}
@@ -234,18 +208,6 @@ const AdminCreateProduct = () => {
               onChange={e => setData({ ...data, Price: parseInt(e.target.value) })}
               required
             />
-
-            {/* <label for="Price">Price:</label>
-            <input type="number" name="Price" id="Price"
-              min="1"
-              className={classes["create-formgroup-price"]}
-              placeholder="Price:"
-              value={data.Price}
-              onChange={e => setData({ ...data, Price: parseInt(e.target.value) })}
-              required
-            />
-            <span>Bath</span> */}
-
           </div>
 
           {/* Create Product Remaining */}
@@ -264,17 +226,6 @@ const AdminCreateProduct = () => {
               onChange={e => setData({ ...data, Remaining: e.target.value })}
               required
             />
-            {/* <label for="Remain">Product Remaining:</label>
-            <input type="number" name="Remain" id="Remain"
-              min="1"
-              className={classes["create-formgroup-remain"]}
-              placeholder="Remain:"
-              value={data.Remaining}
-              onChange={e => setData({ ...data, Remaining: parseInt(e.target.value) })}
-              required
-            />
-            <span>Package</span> */}
-
           </div>
 
           {/* Create Product Health Goal */}
@@ -300,13 +251,6 @@ const AdminCreateProduct = () => {
                 </Button>
               )}
             </div>
-
-            {/* <span>Heathgoal: </span>
-            {data.HealthGoal.map(item =>
-              <button key={item} onClick={handleDelHealthGoal} value={item}>
-                {item} x
-              </button>
-            )} */}
           </div>
 
           {/* Submit Button */}
@@ -333,14 +277,6 @@ const AdminCreateProduct = () => {
                 Save
               </Button>
             </div>
-
-            {/* <NavLink to='/AdminShop'>
-              <button className={classes["cancel"]} >cancel</button>
-            </NavLink>
-            <button onClick={handleSubmit} className={classes["save"]}>
-              save
-            </button> */}
-
           </div>
         </div>
 
