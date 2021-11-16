@@ -31,7 +31,8 @@ const App = () => {
           <Route path='/Navbar' component={Navbar} />
           <Route path='/Shop' component={Shop} />
           <Route path='/Login' component={Login} >
-            { user.id ? <Redirect to='/Shop' /> : <Login /> }
+            {/* { user.id ? <Redirect to='/Shop' /> : <Login /> } */}
+            { user.isAdmin ? <Redirect to='/AdminShop' /> : user.id ? <Redirect to='/Shop' /> : <Login />}
           </Route>
           <Route path='/Register' component={Register} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
