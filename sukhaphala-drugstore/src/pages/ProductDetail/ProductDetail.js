@@ -40,7 +40,7 @@ const ProductDetail = () => {
   const mount = useRef(false);
   useEffect(() => {
     if (mount.current) {
-      console.log("bara1 : ")
+      // console.log("bara1 : ")
       if (cartError.type === 'FAIL') {
         setInfoModal({
           status: 'FAIL',
@@ -52,12 +52,19 @@ const ProductDetail = () => {
       }
     } else {
       mount.current = true;
-      console.log("bara2 : ")
+      // console.log("bara2 : ")
     }
-    return () => {
+    // return () => {
+    //   dispatch(addCartError({}));
+    // }
+  }, [cartError]);
+
+  //if fail to add to cart then reset cartError
+  useEffect(() => {
+    if (add === false) {
       dispatch(addCartError({}));
     }
-  }, [cartError]);
+  }, [add]);
 
   //Loading and click
   function simulateNetworkRequest() {
@@ -70,18 +77,19 @@ const ProductDetail = () => {
       simulateNetworkRequest().then(() => {
         setLoading(false);
       });
+      setAdd(true);
     }
-  }, [isLoading, cartError ]);
+  }, [isLoading]);
 
   const handleClick = () => {
     setLoading(true);
-    setAdd(true);
+    // setAdd(true);
     dispatch(add2CartAsync({ ...data, amount: numpack }));
   }
   console.log('loadding ' + isLoading)
 
   const handleNumpack = (event) => {
-    setNumpack(event.target.value)
+    setNumpack( + event.target.value )
   }
 
   const dispatch = useDispatch();
