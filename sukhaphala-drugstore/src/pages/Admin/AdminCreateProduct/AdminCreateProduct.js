@@ -9,40 +9,37 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
+import InfoModal from '../../../components/InfoModal/InfoModal';
 
 const AdminCreateProduct = () => {
+  //modal state 
+  const [ openInfo, setOpenInfo ] = useState(false);
+  const [infoModal, setInfoModal] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
 
-  const handleSubmit = () => {
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  }
 
-    //test
-    // const newproduct = {
-    //         "name": data.ProductName,
-    //         "file": data.file,
-    //         "description": data.ProductDesc,
-    //         "price":data.Price,
-    //         "remain":data.Remaining,
-    //         "healthGoal":data.HealthGoal
-    //     }
-    // console.log(newproduct)
-
-    if (checkEmply() === false) {
-      alert("Don't filled out");
-    } else {
-      const CreateProduct = () => {
-
-        axios.post('http://localhost:5000/products/',
-          {
-            "name": data.ProductName,
-            "file": data.file,
-            "description": data.ProductDesc,
-            "price": data.Price,
-            "remain": data.Remaining,
-            "healthGoal": data.HealthGoal
-          }, { withCredentials: true })
-          .then(res => console.log(res))
-      }
-      CreateProduct();
+  const handleOpenInfo = (data) => {
+    if (data.type === 'FAIL') {
+      setInfoModal({
+        status: data.type,
+        title: 'ERROR',
+        detail: data.message
+      })
+    } else if (data._id) {
+      setInfoModal({
+        status: 'SUCCESS',
+        title: 'SUCCESS',
+        detail: 'Successfully add new product.'
+      })
     }
+
+    setOpenInfo(true);
   }
 
   const [data, setData] = useState({
@@ -63,12 +60,12 @@ const AdminCreateProduct = () => {
   const [imagePreview, SetimagePreview] = useState(null);
   const handleUploadImage = (e) => {
     const file = e.target.files[0]
-    console.log(e)
-    console.log(file)
-    //Keep name
-    console.log(file.name)
-    //Keep file
-    console.log(file.type)
+    // console.log(e)
+    // console.log(file)
+    // //Keep name
+    // console.log(file.name)
+    // //Keep file
+    // console.log(file.type)
 
     const reader = new FileReader();
     reader.onloadend = (readerEvent) => {
@@ -86,6 +83,47 @@ const AdminCreateProduct = () => {
       SetimagePreview(reader.result)
     }
     reader.readAsDataURL(file)
+  }
+
+  const handleSubmit = () => {
+    if (checkEmply() === false) {
+      // alert("Don't filled out");
+      handleOpenInfo({
+        type: 'FAIL',
+        message: 'Please fill all required fields include: product name, price, remaining'
+      });
+    } else {
+      const CreateProduct = () => {
+
+        axios.post('http://localhost:5000/products/',
+          {
+            "name": data.ProductName,
+            "file": data.file,
+            "description": data.ProductDesc,
+            "price": data.Price,
+            "remain": data.Remaining,
+            "healthGoal": data.HealthGoal
+          }, { withCredentials: true })
+          .then(res => { 
+            // console.log(res);
+            handleOpenInfo(res.data);
+            setData({
+              ProductName: '',
+              file: {
+                name: '',
+                data: '',
+              },
+              ProductDesc: '',
+              Price: '',
+              Remaining: '',
+              HealthGoal: []
+            })
+          }).catch(error => {
+            handleOpenInfo(error.response.data);
+          });
+      }
+      CreateProduct();
+    }
   }
 
   const handleAddHealthGoal = (e) => {
@@ -107,7 +145,7 @@ const AdminCreateProduct = () => {
   }
 
   const checkEmply = () => {
-    if (data.ProductName && data.Price && data.Remaining && data.HealthGoal) {
+    if (data.ProductName && data.Price && data.Remaining && data.HealthGoal.length !== 0) {
       return true;
     }
     else {
@@ -321,6 +359,15 @@ const AdminCreateProduct = () => {
 
 
       </div>
+      <InfoModal 
+        open={openInfo}
+        onClose={handleCloseInfo}
+        status= {infoModal.status}
+        title= {infoModal.title}
+        detail= {infoModal.detail}
+        buttonText='OK'
+        buttonAction={handleCloseInfo}
+      />
       <Footer />
     </>
   )

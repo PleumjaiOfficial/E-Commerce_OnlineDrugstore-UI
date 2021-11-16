@@ -113,7 +113,7 @@ const Navbar = () => {
             Button_text="REGISTER" />
       </NavLink> }
       
-      { (role === 'USER' || role === 'ADMIN' || role === 'GUEST') && 
+      { (role === 'USER' || role === 'ADMIN') && 
       <NavLink to='/Home'>
         <Button 
           Button_style={classes["btn_nav"]}
