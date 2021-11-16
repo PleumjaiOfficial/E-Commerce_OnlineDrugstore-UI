@@ -8,7 +8,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import Button from "../Button/Button";
 import { getCart } from '../../redux/actions/cartActions';
 import Axios from 'axios';
-import Cookies from 'js-cookie';
+import Cookies, { set } from 'js-cookie';
 import { clearAuth } from '../../redux/actions/authenAction';
 import handleLogout from '../InfoModal/handleLogout/handleLogout';
 
@@ -18,31 +18,158 @@ const Navbar = () => {
 
   const [click,setclick] = useState(false);
   const holdClick = () => setclick(!click);
-  // console.log(click);
 
-  //useSelector คือ การดึง state ที่อยู่ใน redux store มา
-  //cart is array of qty
+
   const cart = useSelector((state) => state.cart.cart);
   // console.log(cart);
 
-  //logout test
-  // const handleLogout = () => {
-  //   Axios.get('http://localhost:5000/auth/logout')
-  //   .then(res=>{
-  //       console.log(res);
-  //       if (res.data.type === 'SUCCESS') {
-  //         Cookies.remove('token');
-  //         localStorage.removeItem('persist:root');
-  //         dispatch(clearAuth());
-  //       }
-  //   })
-  // }
+  /*
+    1.เริ่มเข้าเว็บ  guest-true admin-false user-false
+    2.เข้าในฐานะ admin : admin-true guest-false user-false
+    2.เข้าในฐานะ user : user-true admin-false guest-false 
+  
+  */
+  const [isGuest,setIsGuest] = useState(true);
+  const [isAdmin,setIsAdmin] = useState(false);
+  const [isUser,setIsUser] = useState(false);
+  const user = useSelector((state) => state.auth.user)
+  // console.log(user);
+
+  useEffect(() => {
+    if (user.isAdmin === true) //Login is Admmin
+    {
+      setIsAdmin(true)
+      setIsGuest(false)
+      setIsUser(false) 
+    } 
+    else if(isGuest === true)
+    {
+      setIsGuest(true)
+      setIsAdmin(false)
+      setIsUser(false)
+    }
+    else{
+      setIsUser(true)
+      setIsAdmin(false)
+      setIsGuest(false)
+      }
+
+  }, [user]);
 
   return(
     <nav className={classes["navbar"]}>
+      {isAdmin ? 
+        <>
+          <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
+ 
+            <li className={classes["nav-item"]}>
+              <NavLink  to='/Home'  
+              className={classes["nav-links"]}>
+                <span>HOME</span>
+              </NavLink>
+            </li>
+            
+            <li className={classes["nav-item"]}>
+              <NavLink  to='/Shop' 
+              className={classes["nav-links"]}>
+                <span>SHOP</span>
+              </NavLink>
+            </li>
+
+            <li className={classes["nav-item"]}>
+              <NavLink  to='/AdminCreateProduct' 
+              className={classes["nav-links"]}>
+                <span>ADD PRODUCT</span>
+              </NavLink>
+            </li>
+          </ul>
+
+          <div className={classes[click ? "nav-button-active" : "nav-button"]}>
+
+            <NavLink  to='/AdminShop'>
+              <span>
+                <i class="fas fa-poo"></i>
+              </span>
+            </NavLink>
+
+            <NavLink to='/Home'>
+              <Button 
+                Button_style={classes["btn_nav"]}
+                Button_text="Logout" 
+                Button_onclick={handleLogout} />
+            </NavLink>
+          </div>
+
+          {/* burger menu bar */}
+          <div className={classes['nav-burger']} onClick={holdClick}>
+            <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
+          </div>
+      </>
+
+    :
+
+      <>  
+        <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
+                    
+          <li className={classes["nav-item"]}>
+            <NavLink  to='/Home'  
+            className={classes["nav-links"]}>
+              <span>HOME</span>
+            </NavLink>
+          </li>
+          
+          <li className={classes["nav-item"]}>
+            <NavLink  to='/Shop' 
+            className={classes["nav-links"]}>
+              <span>SHOP</span>
+            </NavLink>
+          </li>
+        </ul>
+
+        <div className={classes[click ? "nav-button-active" : "nav-button"]}>
+
+          <NavLink  to='/Cart'>
+            <span>
+              <i class="fas fa-shopping-cart"></i>
+              {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
+              {/* sum start in 0 and plus with item.amount*/}
+              {cart.reduce((sum, current) =>  sum + current.amount, 0)}
+            </span>
+          </NavLink>
+
+          {isGuest ?
+            <NavLink  to='/Login'>
+            <Button
+                Button_style={classes["btn_nav"]}
+                Button_text="LOGIN" />
+            </NavLink> 
+            :
+            // <NavLink  to='/Login'>
+            <Button
+                Button_style={classes["btn_nav"]}
+                Button_text="Profile" 
+            />
+            // </NavLink>
+            }
+
+          <NavLink to='/Home'>
+            <Button 
+              Button_style={classes["btn_nav"]}
+              Button_text="Logout" 
+              Button_onclick={handleLogout} />
+          </NavLink>
+        </div>
+
+        {/* burger menu bar */}
+        <div className={classes['nav-burger']} onClick={holdClick}>
+          <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
+        </div>
+      </>
+
+    }
         
-      {/* links */}
-      <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
+
+      {/* <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
                     
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
@@ -78,8 +205,6 @@ const Navbar = () => {
       <NavLink  to='/Cart'>
         <span>
           <i class="fas fa-shopping-cart"></i>
-          {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
-          {/* sum start in 0 and plus with item.amount*/}
           {cart.reduce((sum, current) =>  sum + current.amount, 0)}
         </span>
       </NavLink>
@@ -96,10 +221,7 @@ const Navbar = () => {
             Button_style={classes["btn_nav"]}
             Button_text="REGISTER" />
       </NavLink> 
-        {/* <Button 
-            Button_style={classes["btn_nav"]}
-            Button_text="Logout" 
-            Button_onclick={handleLogout}/> */}
+
       <NavLink to='/Home'>
         <Button 
           Button_style={classes["btn_nav"]}
@@ -109,10 +231,9 @@ const Navbar = () => {
     </div>
 
       
-      {/* burger menu bar */}
       <div className={classes['nav-burger']} onClick={holdClick}>
         <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
-      </div>
+      </div> */}
 
     </nav>
   )
