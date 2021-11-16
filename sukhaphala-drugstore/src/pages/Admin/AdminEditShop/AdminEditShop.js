@@ -1,4 +1,4 @@
-import React, { Profiler, useEffect, useState } from 'react'
+import React, { Profiler, useEffect, useState, useRef } from 'react'
 import { useParams } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
@@ -11,37 +11,84 @@ import classes from './AdminEditShop.module.css';
 import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
 import Footer from '../../../components/Footer/Footer';
 import InfoModal from '../../../components/InfoModal/InfoModal';
+import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
 
 export const AdminEditShop = () => {
-   //modal state 
-   const [ openInfo, setOpenInfo ] = useState(false);
-   const [infoModal, setInfoModal] = useState({
-     status: '',
-     title: '',
-     detail: ''
-   });
- 
-   const handleCloseInfo = () => {
-     setOpenInfo(false);
-   }
- 
-   const handleOpenInfo = (data) => {
-     if (data.type === 'FAIL') {
-       setInfoModal({
-         status: data.type,
-         title: 'ERROR',
-         detail: data.message
-       })
-     } else if (data._id) {
-       setInfoModal({
-         status: 'SUCCESS',
-         title: 'SUCCESS',
-         detail: 'Successfully edit new product.'
-       })
-     }
- 
-     setOpenInfo(true);
-   }
+  //modal edit product
+  const [openInfoEdit, setOpenInfoEdit] = useState(false);
+  const [infoModalEdit, setInfoModalEdit] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+
+  const handleCloseInfoEdit = () => {
+    setOpenInfoEdit(false);
+  }
+
+  const handleOpenInfoEdit = (data) => {
+    if (data.type === 'FAIL') {
+      setInfoModalEdit({
+        status: data.type,
+        title: 'ERROR',
+        detail: data.message
+      })
+    } else if (data._id) {
+      setInfoModalEdit({
+        status: 'SUCCESS',
+        title: 'SUCCESS',
+        detail: 'Successfully edit new product.'
+      })
+    }
+
+    setOpenInfoEdit(true);
+  }
+
+
+
+  //modal delete product
+  const [openConfirmDel, setOpenConfirmDel] = useState(false);
+  const [openInfoDel, setOpenInfoDel] = useState(false);
+  const [infoModalDel, setInfoModalDel] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+
+  //use this variable to track if it is the first render to prevent useeffect make the popup
+  const mount = useRef(false);
+
+  const handleCloseConfirmDel = () => {
+    setOpenConfirmDel(false);
+  }
+
+  const handleOpenInfoDel = (data) => {
+    if (data.type === 'FAIL') {
+      setInfoModalDel({
+        status: 'FAIL',
+        title: 'Error',
+        detail: data.message
+      });
+    } else if (data._id) {
+      setInfoModalDel({
+        status: 'SUCCESS',
+        title: 'SUCCESS',
+        detail: 'Successfully remove a product'
+      });
+    }
+    setOpenInfoDel(true);
+  }
+  const handleCloseInfoDel = () => {
+    setOpenInfoDel(false);
+  }
+
+  const handleDel = () => {
+    setOpenConfirmDel(true);
+  }
+
+  const handleDeleteProduct = () => {
+    delProduct();
+  }
 
 
   const { id } = useParams();
@@ -108,6 +155,7 @@ export const AdminEditShop = () => {
   }
 
 
+  //submit edit shop
   function handleSubmit(e) {
     // e.preventDefault();
     if (product.HealthGoal.length === 0) {
@@ -117,21 +165,21 @@ export const AdminEditShop = () => {
       async function updateProduct() {
         try {
           const res = await axios.put('http://localhost:5000/products/' + id,
-          {
-            "name": product.ProductName,
-            "file": product.file,
-            "image": data.image,
-            "description": product.ProductDesc,
-            "price": product.Price,
-            "remain": product.Remaining,
-            "healthGoal": product.HealthGoal
-          }, { withCredentials: true })
-          .then(res =>{
-            handleOpenInfo(res.data);
-          })
-          .catch(error => {
-            handleOpenInfo(error.response.data);
-          });
+            {
+              "name": product.ProductName,
+              "file": product.file,
+              "image": data.image,
+              "description": product.ProductDesc,
+              "price": product.Price,
+              "remain": product.Remaining,
+              "healthGoal": product.HealthGoal
+            }, { withCredentials: true })
+            .then(res => {
+              handleOpenInfoEdit(res.data);
+            })
+            .catch(error => {
+              handleOpenInfoEdit(error.response.data);
+            });
           // console.log(res)
         } catch (err) {
           console.log(err)
@@ -142,240 +190,256 @@ export const AdminEditShop = () => {
   }
 
 
-const resetInput = (e) => {
-  e.target.value = "";
-}
+  const resetInput = (e) => {
+    e.target.value = "";
+  }
 
-const [imagePreview, SetimagePreview] = useState(null);
-const handleUploadImage = (e) => {
-  const file = e.target.files[0]
-  console.log(e)
-  console.log(file)
-  //Keep name
-  console.log(file.name)
-  //Keep file
-  console.log(file.type)
+  const [imagePreview, SetimagePreview] = useState(null);
+  const handleUploadImage = (e) => {
+    const file = e.target.files[0]
+    console.log(e)
+    console.log(file)
+    //Keep name
+    console.log(file.name)
+    //Keep file
+    console.log(file.type)
 
-  const reader = new FileReader();
-  reader.onloadend = (readerEvent) => {
-    let binaryString = readerEvent.target.result
-    console.log(readerEvent.target)
-    console.log(btoa(binaryString))
+    const reader = new FileReader();
+    reader.onloadend = (readerEvent) => {
+      let binaryString = readerEvent.target.result
+      console.log(readerEvent.target)
+      console.log(btoa(binaryString))
 
-    setProduct({
-      ...product,
-      file: {
-        name: file.name,
-        data: btoa(binaryString)
-      }
+      setProduct({
+        ...product,
+        file: {
+          name: file.name,
+          data: btoa(binaryString)
+        }
+      })
+      SetimagePreview(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handleAddHealthGoal = (e) => {
+    if (!product.HealthGoal.includes(e.target.value)) {
+      setProduct((old) => { return { ...old, HealthGoal: [...old.HealthGoal, e.target.value] } }
+      )
+    }
+  }
+
+  const handleDelHealthGoal = (e) => {
+    setProduct((old) => {
+      const newHealth = old.HealthGoal.filter(
+        item => item !== e.target.value
+      )
+      return { ...old, HealthGoal: newHealth }
     })
-    SetimagePreview(reader.result)
   }
-  reader.readAsDataURL(file)
-}
 
-const handleAddHealthGoal = (e) => {
-  if (!product.HealthGoal.includes(e.target.value)) {
-    setProduct((old) => { return { ...old, HealthGoal: [...old.HealthGoal, e.target.value] } }
-    )
+  if (loading) {
+    return <p>Data is loading...</p>;
   }
-}
 
-const handleDelHealthGoal = (e) => {
-  setProduct((old) => {
-    const newHealth = old.HealthGoal.filter(
-      item => item !== e.target.value
-    )
-    return { ...old, HealthGoal: newHealth }
-  })
-}
-
-if (loading) {
-  return <p>Data is loading...</p>;
-}
-
-return (
-  <>
-    <Navbar />
-    <div className={classes["productdetail-container"]}>
-      {/* <form onSubmit={handleSubmit}>     */}
-      <div className={classes["edit-image"]}>
-        {/* <img src={data.image} /> */}
-        <input type="file" onChange={handleUploadImage} />
-        <img src={imagePreview ? imagePreview : data.image} />
-      </div>
-
-      <div className={classes["edit-content"]}>
-        {/* Edit Name */}
-        <div className={classes["create-formgroup"]}>
-          <p>Product Name:</p>
-          <TextField
-            fullWidth
-            id="Name"
-            type="text"
-            variant="outlined"
-            size="normal"
-            placeholder={data.name}
-            value={product.ProductName}
-            onFocus={(e) => resetInput(e)}
-            onChange={e => setProduct({ ...product, ProductName: e.target.value })}
-          />
+  return (
+    <>
+      <Navbar />
+      <div className={classes["productdetail-container"]}>
+        {/* <form onSubmit={handleSubmit}>     */}
+        <div className={classes["edit-image"]}>
+          {/* <img src={data.image} /> */}
+          <input type="file" onChange={handleUploadImage} />
+          <img src={imagePreview ? imagePreview : data.image} />
         </div>
 
-        {/* Edit Description */}
-        <div className={classes["create-formgroup"]}>
-          <p>Product Description:</p>
-          <TextField
-            fullWidth
-            id="Description"
-            type="text"
-            variant="outlined"
-            size="small"
-            multiline
-            rows={2}
-            placeholder={data.description}
-            value={product.ProductDesc}
-            onFocus={(e) => resetInput(e)}
-            onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
-          />
-        </div>
-
-        {/* Edit Price */}
-        <div className={classes["create-formgroup-number"]}>
-          <p>Price:</p>
-          <TextField
-            fullWidth
-            id="Price"
-            type="number"
-            variant="outlined"
-            size="small"
-            InputProps={{
-              endAdornment: <InputAdornment position="start">Baht</InputAdornment>,
-            }}
-            placeholder={data.price}
-            value={product.Price}
-            onFocus={(e) => resetInput(e)}
-            onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
-          />
-        </div>
-
-        {/* Edit Product Remaining */}
-        <div className={classes["create-formgroup-number"]}>
-          <p>Remaining Amount:</p>
-          <TextField
-            fullWidth
-            id="Remain"
-            type="number"
-            variant="outlined"
-            size="small"
-            InputProps={{
-              endAdornment: <InputAdornment position="start">Packages</InputAdornment>,
-            }}
-            placeholder={data.remain}
-            value={product.Remaining}
-            onFocus={(e) => resetInput(e)}
-            onChange={e => setProduct({ ...product, Remaining: e.target.value })}
-          />
-        </div>
-
-        {/* Add Health Goal */}
-        <div className={classes["create-formgroup"]}>
-          <p>Add Heath Goal:</p>
-          <HealthGoal onChange={handleAddHealthGoal} />
-        </div>
-
-        {/*Show Health Goal*/}
-        <div className={classes["create-formgroup-healthgoal"]}>
-          <p>Heath Goal:</p>
-          <div className={classes["healthgoal-list"]}>
-            {product.HealthGoal.map(item =>
-              // <button key={item} onClick={handleDelHealthGoal} value={item}>
-              //   {item} x
-              // </button>
-              <Button
-                variant="outlined"
-                size="small"
-                color="inherit"
-                key={item}
-                onClick={handleDelHealthGoal}
-                value={item} >
-                {item} X
-              </Button>
-            )}
+        <div className={classes["edit-content"]}>
+          {/* Edit Name */}
+          <div className={classes["create-formgroup"]}>
+            <p>Product Name:</p>
+            <TextField
+              fullWidth
+              id="Name"
+              type="text"
+              variant="outlined"
+              size="normal"
+              placeholder={data.name}
+              value={product.ProductName}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, ProductName: e.target.value })}
+            />
           </div>
-        </div>
 
-        {/*Submit Button*/}
-        <div className={classes["submit-container"]}>
-          <div className={classes["submit-save-cancel"]}>
-            <div className={classes["submit-cancel"]}>
-              <Button
-                component={NavLink}
-                to='/AdminShop'
-                variant="contained"
-                size="large"
-                color="inherit"
-                fullWidth={true}>
-                Cancel
-              </Button>
+          {/* Edit Description */}
+          <div className={classes["create-formgroup"]}>
+            <p>Product Description:</p>
+            <TextField
+              fullWidth
+              id="Description"
+              type="text"
+              variant="outlined"
+              size="small"
+              multiline
+              rows={2}
+              placeholder={data.description}
+              value={product.ProductDesc}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, ProductDesc: e.target.value })}
+            />
+          </div>
+
+          {/* Edit Price */}
+          <div className={classes["create-formgroup-number"]}>
+            <p>Price:</p>
+            <TextField
+              fullWidth
+              id="Price"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Baht</InputAdornment>,
+              }}
+              placeholder={data.price}
+              value={product.Price}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, Price: parseInt(e.target.value) })}
+            />
+          </div>
+
+          {/* Edit Product Remaining */}
+          <div className={classes["create-formgroup-number"]}>
+            <p>Remaining Amount:</p>
+            <TextField
+              fullWidth
+              id="Remain"
+              type="number"
+              variant="outlined"
+              size="small"
+              InputProps={{
+                endAdornment: <InputAdornment position="start">Packages</InputAdornment>,
+              }}
+              placeholder={data.remain}
+              value={product.Remaining}
+              onFocus={(e) => resetInput(e)}
+              onChange={e => setProduct({ ...product, Remaining: e.target.value })}
+            />
+          </div>
+
+          {/* Add Health Goal */}
+          <div className={classes["create-formgroup"]}>
+            <p>Add Heath Goal:</p>
+            <HealthGoal onChange={handleAddHealthGoal} />
+          </div>
+
+          {/*Show Health Goal*/}
+          <div className={classes["create-formgroup-healthgoal"]}>
+            <p>Heath Goal:</p>
+            <div className={classes["healthgoal-list"]}>
+              {product.HealthGoal.map(item =>
+                // <button key={item} onClick={handleDelHealthGoal} value={item}>
+                //   {item} x
+                // </button>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  color="inherit"
+                  key={item}
+                  onClick={handleDelHealthGoal}
+                  value={item} >
+                  {item} X
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/*Submit Button*/}
+          <div className={classes["submit-container"]}>
+            <div className={classes["submit-save-cancel"]}>
+              <div className={classes["submit-cancel"]}>
+                <Button
+                  component={NavLink}
+                  to='/AdminShop'
+                  variant="contained"
+                  size="large"
+                  color="inherit"
+                  fullWidth={true}>
+                  Cancel
+                </Button>
+              </div>
+
+              <div className={classes["submit-save"]}>
+                <Button
+                  onClick={handleSubmit}
+                  // component={NavLink}
+                  // to='/AdminShop'
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  fullWidth={true} >
+                  Save
+                </Button>
+              </div>
             </div>
 
-            <div className={classes["submit-save"]}>
+            <div className={classes["submit-remove"]}>
               <Button
-                onClick={handleSubmit}
+                onClick={handleDel}
+                // onClick={delProduct}
                 // component={NavLink}
                 // to='/AdminShop'
                 variant="contained"
                 size="large"
-                color="primary"
-                fullWidth={true} >
-                Save
+                color="error"
+                fullWidth={true}>
+                Remove
               </Button>
             </div>
           </div>
-
-          <div className={classes["submit-remove"]}>
-            <Button
-              onClick={delProduct}
-              // component={NavLink}
-              // to='/AdminShop'
-              variant="contained"
-              size="large"
-              color="error"
-              fullWidth={true}>
-              Remove
-            </Button>
-          </div>
         </div>
       </div>
-    </div>
 
-    {/* <ConfirmModal
-      open={openConfirm}
-      onClose={handleCloseConfirm}
-      title='Are you sure?'
-      detail='Press confirm to continue place order'
-      buttonConfirmText='Confirm'
-      buttonCancelText='Cancel'
-      buttonConfirm={() => handlePlaceOrder(cart)}
-      buttonCancel={handleCloseConfirm}
-    /> */}
+      {/* Modal of Edit Product */}
+      <InfoModal
+        open={openInfoEdit}
+        onClose={handleCloseInfoEdit}
+        status={infoModalEdit.status}
+        title={infoModalEdit.title}
+        detail={infoModalEdit.detail}
+        buttonText='OK'
+        buttonAction={handleCloseInfoEdit}
+      />
+
+      
+      {/* Modal of Delete Product */}
+      <ConfirmModal
+        open={openConfirmDel}
+        onClose={handleCloseConfirmDel}
+        title='Are you sure?'
+        detail='Press confirm to remove a product'
+        buttonConfirmText='Confirm'
+        buttonCancelText='Cancel'
+        buttonConfirm={() => handleDeleteProduct()} //edit this later
+        buttonCancel={handleCloseConfirmDel}
+      />
+
+      <InfoModal
+        open={openInfoDel}
+        onClose={handleCloseInfoDel}
+        status={infoModalDel.status}
+        title={infoModalDel.title}
+        detail={infoModalDel.detail}
+        buttonText='OK'
+        buttonAction={handleCloseInfoDel}
+      />
 
 
-    <InfoModal 
-      open={openInfo}
-      onClose={handleCloseInfo}
-      status= {infoModal.status}
-      title= {infoModal.title}
-      detail= {infoModal.detail}
-      buttonText='OK'
-      buttonAction={handleCloseInfo}
-    />
 
 
-    <Footer />
-  </>
-)
+
+      <Footer />
+    </>
+  )
 }
 
 export default AdminEditShop;
