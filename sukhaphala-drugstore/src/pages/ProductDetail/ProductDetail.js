@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useDebugValue, useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import { NavLink, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { add2Cart, add2CartAsync } from '../../redux/actions/cartActions'
+import { add2Cart, add2CartAsync, addCartError } from '../../redux/actions/cartActions'
 // import Button from 'react-bootstrap/Button';
 import Button from '@mui/material/Button';
-import Modal from 'react-bootstrap/Modal';
+import InfoModal from '../../components/InfoModal/InfoModal';
 import Footer from '../../components/Footer/Footer'
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,6 +19,40 @@ const ProductDetail = () => {
 
   const [add, setAdd] = useState(false);
   const holdAdd = () => setAdd(true);
+
+  //modal handler ----------------------------------------------
+  const cartError = useSelector((state) => state.cart.cartError);
+
+  const [openInfo, setOpenInfo] = useState(false);
+  //info modal state
+  const [infoModal, setInfoModal] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  }
+
+  const mount = useRef(false);
+  useEffect(() => {
+    if (mount.current) {
+      if (cartError.type === 'FAIL') {
+        setInfoModal({
+          status: 'FAIL',
+          title: 'Error',
+          detail: cartError.message
+        });
+        setOpenInfo(true);
+      }
+    } else {
+      mount.current = true;
+    }
+    return () => {
+      dispatch(addCartError({}));
+    }
+  }, [cartError]);
 
   //Loading and click
   function simulateNetworkRequest() {
@@ -33,11 +67,11 @@ const ProductDetail = () => {
         holdAdd();
       });
     }
-  }, [isLoading]);
+  }, [isLoading, cartError ]);
 
   const handleClick = () => {
     setLoading(true);
-    dispatch(add2CartAsync({ ...data, amount: numpack }))
+    dispatch(add2CartAsync({ ...data, amount: numpack }));
   }
   console.log('loadding ' + isLoading)
   //
@@ -60,6 +94,24 @@ const ProductDetail = () => {
       });
   }, [])
   console.log(data);
+
+  
+
+    // const mount = useRef(false);
+  // useEffect(() => {
+  //   if(mount.current) {
+  //     if (cartError.type === 'FAIL') {
+  //       setInfoModal({
+  //         status: 'FAIL',
+  //         title: 'Error',
+  //         detail: cartError.message
+  //       });
+  //       setOpenInfo(true);
+  //     }
+  //   } else {
+  //     mount.current = true;
+  //   }
+  // }, [cartError]);
 
   // const cart = useSelector((state) => state.cart.cart);
 
@@ -150,6 +202,16 @@ const ProductDetail = () => {
 				</div>
 
 			<Footer />
+
+      <InfoModal
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status={infoModal.status}
+          title={infoModal.title}
+          detail={infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+        />
     </>
   )
 }

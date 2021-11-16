@@ -1,9 +1,10 @@
-import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_CART,UPDATE_SUB_CART } from '../actions/cartActions';
+import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_CART,UPDATE_SUB_CART, ADD_TO_CART_ERROR } from '../actions/cartActions';
 import {CREATE_ORDER } from "../actions/orderAction";
 import axios from 'axios'
 
 const iniState = {
     cart: [],
+    cartError: {}
 };
 
 export const cartReducer = (state = iniState , action) => {
@@ -117,7 +118,12 @@ export const cartReducer = (state = iniState , action) => {
             }else{
                 return state;
             }
-
+        
+        case ADD_TO_CART_ERROR:
+            return {
+                ...state,
+                cartError: action.payload
+            }
         default:
             //GET_CART
             return state;
