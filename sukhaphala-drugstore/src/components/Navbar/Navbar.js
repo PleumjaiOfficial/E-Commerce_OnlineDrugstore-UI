@@ -27,149 +27,35 @@ const Navbar = () => {
     1.เริ่มเข้าเว็บ  guest-true admin-false user-false
     2.เข้าในฐานะ admin : admin-true guest-false user-false
     2.เข้าในฐานะ user : user-true admin-false guest-false 
-  
+
   */
-  const [isGuest,setIsGuest] = useState(true);
-  const [isAdmin,setIsAdmin] = useState(false);
-  const [isUser,setIsUser] = useState(false);
+
+  /*
+    Guest's view: Home, Shop, Login, Register
+    User's view: Home, Shop, Cart, Logout
+    Admin's view: Home, Edit Product, Add Product, Logout 
+  */
+  // const [isGuest,setIsGuest] = useState(true);
+  // const [isAdmin,setIsAdmin] = useState(false);
+  // const [isUser,setIsUser] = useState(false);
+  //role includes [GUEST, ADMIN, USER]
+  const [role, setRole] = useState('GUEST');
   const user = useSelector((state) => state.auth.user)
-  // console.log(user);
 
   useEffect(() => {
-    if (user.isAdmin === true) //Login is Admmin
-    {
-      setIsAdmin(true)
-      setIsGuest(false)
-      setIsUser(false) 
-    } 
-    else if(isGuest === true)
-    {
-      setIsGuest(true)
-      setIsAdmin(false)
-      setIsUser(false)
+    if (user.isAdmin) {
+      setRole('ADMIN');
+    } else if (user.id) {
+      setRole('USER');
+    } else {
+      setRole('GUEST');
     }
-    else{
-      setIsUser(true)
-      setIsAdmin(false)
-      setIsGuest(false)
-      }
-
   }, [user]);
 
   return(
     <nav className={classes["navbar"]}>
-      {isAdmin ? 
-        <>
-          <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
- 
-            <li className={classes["nav-item"]}>
-              <NavLink  to='/Home'  
-              className={classes["nav-links"]}>
-                <span>HOME</span>
-              </NavLink>
-            </li>
-            
-            <li className={classes["nav-item"]}>
-              <NavLink  to='/Shop' 
-              className={classes["nav-links"]}>
-                <span>SHOP</span>
-              </NavLink>
-            </li>
 
-            <li className={classes["nav-item"]}>
-              <NavLink  to='/AdminCreateProduct' 
-              className={classes["nav-links"]}>
-                <span>ADD PRODUCT</span>
-              </NavLink>
-            </li>
-          </ul>
-
-          <div className={classes[click ? "nav-button-active" : "nav-button"]}>
-
-            <NavLink  to='/AdminShop'>
-              <span>
-                <i class="fas fa-poo"></i>
-              </span>
-            </NavLink>
-
-            <NavLink to='/Home'>
-              <Button 
-                Button_style={classes["btn_nav"]}
-                Button_text="Logout" 
-                Button_onclick={handleLogout} />
-            </NavLink>
-          </div>
-
-          {/* burger menu bar */}
-          <div className={classes['nav-burger']} onClick={holdClick}>
-            <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
-          </div>
-      </>
-
-    :
-
-      <>  
-        <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
-                    
-          <li className={classes["nav-item"]}>
-            <NavLink  to='/Home'  
-            className={classes["nav-links"]}>
-              <span>HOME</span>
-            </NavLink>
-          </li>
-          
-          <li className={classes["nav-item"]}>
-            <NavLink  to='/Shop' 
-            className={classes["nav-links"]}>
-              <span>SHOP</span>
-            </NavLink>
-          </li>
-        </ul>
-
-        <div className={classes[click ? "nav-button-active" : "nav-button"]}>
-
-          <NavLink  to='/Cart'>
-            <span>
-              <i class="fas fa-shopping-cart"></i>
-              {/* Ref: .reduce() https://medium.com/@thejasonfile/the-redux-reducers-and-reduce-puzzle-ecc935191fbf */}
-              {/* sum start in 0 and plus with item.amount*/}
-              {cart.reduce((sum, current) =>  sum + current.amount, 0)}
-            </span>
-          </NavLink>
-
-          {isGuest ?
-            <NavLink  to='/Login'>
-            <Button
-                Button_style={classes["btn_nav"]}
-                Button_text="LOGIN" />
-            </NavLink> 
-            :
-            // <NavLink  to='/Login'>
-            <Button
-                Button_style={classes["btn_nav"]}
-                Button_text="Profile" 
-            />
-            // </NavLink>
-            }
-
-          <NavLink to='/Home'>
-            <Button 
-              Button_style={classes["btn_nav"]}
-              Button_text="Logout" 
-              Button_onclick={handleLogout} />
-          </NavLink>
-        </div>
-
-        {/* burger menu bar */}
-        <div className={classes['nav-burger']} onClick={holdClick}>
-          <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
-        </div>
-      </>
-
-    }
-        
-
-      {/* <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
+      <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
                     
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
@@ -178,62 +64,68 @@ const Navbar = () => {
           </NavLink>
         </li>
         
+        {(role === 'GUEST' || role === 'USER') && 
         <li className={classes["nav-item"]}>
           <NavLink  to='/Shop' 
           className={classes["nav-links"]}>
             <span>SHOP</span>
           </NavLink>
-        </li>
+        </li>}
 
+        {role === 'ADMIN' && 
         <li className={classes["nav-item"]}>
           <NavLink  to='/AdminCreateProduct' 
           className={classes["nav-links"]}>
             <span>ADD PRODUCT</span>
           </NavLink>
-        </li>
+        </li> }
 
       </ul>
 
     <div className={classes[click ? "nav-button-active" : "nav-button"]}>
+      
+      {role === 'ADMIN' && 
+      <NavLink  to='/AdminShop'>
+        <span>
+          <i class="fas fa-poo"></i>
+        </span>
+      </NavLink> }
 
-    <NavLink  to='/AdminShop'>
-      <span>
-        <i class="fas fa-poo"></i>
-      </span>
-     </NavLink>
-
+      {role === 'USER' &&
       <NavLink  to='/Cart'>
         <span>
           <i class="fas fa-shopping-cart"></i>
           {cart.reduce((sum, current) =>  sum + current.amount, 0)}
         </span>
-      </NavLink>
+      </NavLink> }
       
-      
+      {role === 'GUEST' && 
       <NavLink  to='/Login'>
         <Button
             Button_style={classes["btn_nav"]}
             Button_text="LOGIN" />
-      </NavLink> 
-
+      </NavLink> }
+      
+      { role === 'GUEST' && 
       <NavLink  to='/Register'>
         <Button
             Button_style={classes["btn_nav"]}
             Button_text="REGISTER" />
-      </NavLink> 
-
+      </NavLink> }
+      
+      { (role === 'USER' || role === 'ADMIN' || role === 'GUEST') && 
       <NavLink to='/Home'>
         <Button 
           Button_style={classes["btn_nav"]}
           Button_text="Logout" 
           Button_onclick={handleLogout} />
-      </NavLink>
+      </NavLink> }
     </div>
 
       
       <div className={classes['nav-burger']} onClick={holdClick}>
         <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>
-      </div> */}
+      </div>
 
     </nav>
   )
