@@ -10,7 +10,6 @@ const Card = (props) => {
 
       <div className={classes["card-image"]}>
         <img src={props.img} />
-        {/* <img src="https://miro.medium.com/max/1400/1*XaU1wjTJK4ZYI8yI_SFuTg.png" /> */}
       </div>
 
       <div className={classes["card-price"]}>
