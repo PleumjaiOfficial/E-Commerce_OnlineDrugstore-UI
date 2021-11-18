@@ -76,16 +76,17 @@ export const CartListItem = (props) => {
   };
 
   return (
+    <>
     <div className={classes["cartlist"]}>
       {/* Query Product Image from productId */}
       <div className={classes["img-container"]}>
-        <span> <img src={props.cart.image} /></span>
+        <span> <img className={classes['product-img']} src={props.cart.image} /></span>
       </div>
 
       <div className={classes["detail-container"]}>
         {/* Query Product Name from productId */}
         {/* <div className={classes["name"]}> {props.cart.productId}</div> */}
-        <div className={classes["product-name"]}> Product Name </div>
+        <div className={classes["product-name"]}> {props.cart.name} </div>
 
         <div className={classes["action-container"]}>
           <div className={classes["action-detail"]}>
@@ -118,7 +119,6 @@ export const CartListItem = (props) => {
           </div>
         </div>
       </div>
-
       <ConfirmModal
         open={openConfirm}
         onClose={handleCloseConfirm}
@@ -131,5 +131,7 @@ export const CartListItem = (props) => {
       />
 
     </div>
+    <hr />
+    </>
   )
 }

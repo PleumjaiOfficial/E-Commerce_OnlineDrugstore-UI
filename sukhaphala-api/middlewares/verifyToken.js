@@ -27,6 +27,20 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+//customer authorization
+const customerAuthorization = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.customer.id === req.params.id) {
+      next();
+    } else {
+      res.status(403).json({
+        type: 'FAIL',
+        message: 'authorization failed'
+      });
+    }
+  })
+}
+
 //cart authorization check that user is the owner of that cart
 const cartAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
@@ -73,6 +87,7 @@ const adminAuthorization = (req, res, next) => {
 
 module.exports = {
   verifyToken: verifyToken,
+  customerAuthorization: customerAuthorization,
   cartAuthorization: cartAuthorization,
   orderAuthorization: orderAuthorization,
   adminAuthorization: adminAuthorization

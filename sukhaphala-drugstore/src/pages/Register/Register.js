@@ -92,7 +92,13 @@ const Register = () =>  {
               "postcode": address.postcode
           }
       })
-      .then(res => console.log(res) )
+      .then(res => {
+        // console.log(res.data);
+        handleOpenInfo({
+          type: 'SUCCESS',
+          message: 'Successfully register your account, please login and get you medicines!'
+        })
+      })
       .catch(error => {
         handleOpenInfo(error.response.data);
       })

@@ -10,6 +10,7 @@ const productAPI = require('./routes/product');
 const cartAPI = require('./routes/cart');
 const orderAPI = require('./routes/order');
 const healthGoalAPI = require('./routes/healthGoal');
+const customerAPI = require('./routes/customer');
 
 dotenv.config();
 const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
@@ -40,6 +41,7 @@ app.use('/products', productAPI);
 app.use('/carts', cartAPI);
 app.use('/orders', orderAPI);
 app.use('/healthgoals', healthGoalAPI);
+app.use('/customers', customerAPI);
 
 
 //start running application's backend

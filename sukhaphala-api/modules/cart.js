@@ -15,7 +15,14 @@ const checkAmount = async (productId, amount) => {
 const getCustomerCarts = async (customerId) => {
   try {
     const carts = await Cart.find({ customerId: customerId });
-    return carts;
+    const detailedCarts = await Promise.all(carts.map(async cart => {
+      const { name, image } = await productInterface.getProduct(cart.productId);
+      cart = cart._doc;
+      cart.name = name;
+      cart.image = image;
+      return cart;
+    }));
+    return detailedCarts;
   } catch (err) {
     return null;
   }
@@ -56,7 +63,13 @@ const createCart = async (cart) => {
         },
         { new: true, upsert: true}
       );
-      return newCart;
+      const { name, image } = await productInterface.getProduct(newCart.productId);
+      const detailedNewCart = {
+        ...newCart._doc,
+        name: name,
+        image: image
+      }
+      return detailedNewCart;
     } else {
       //product amount in DB is not enough
       return {
