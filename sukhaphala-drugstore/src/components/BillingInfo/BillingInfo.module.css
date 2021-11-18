@@ -1,0 +1,67 @@
+.biling-head{
+  padding-bottom: 30px;
+}
+
+.biling-head h1{
+  font-family: 'Montserrat';
+  font-size: 40px;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.biling-head h2{
+  font-family: 'Montserrat';
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.billing-info{
+  display: flex;
+  flex-flow: row nowrap;
+  padding-bottom: 20px;
+}
+
+.billing-info p{
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.info-head{
+  width: 100px;
+}
+
+.info-content{
+  width: 300px;
+  text-align: right;
+}
+
+.billing-info-address{
+  display: flex;
+  flex-flow: row nowrap;
+  padding-bottom: 50px;
+  height: 150px;
+}
+
+.billing-info-address p{
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.info-content-address{
+  width: 300px;
+  text-align: right;
+}
+
+.content-address{
+  padding-bottom: 10px;
+}
+
+.billing-placeorder{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 100px;
+  
+}

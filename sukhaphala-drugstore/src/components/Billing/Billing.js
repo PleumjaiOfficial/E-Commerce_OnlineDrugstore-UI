@@ -6,6 +6,8 @@ import { placeOrderAsync } from '../../redux/actions/orderAction';
 // import Button from "../Button/Button";
 import InfoModal from '../InfoModal/InfoModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
+import BillingInfo from '../BillingInfo/BillingInfo';
+import axios from 'axios';
 
 const Billing = () => {
 
@@ -70,6 +72,21 @@ const Billing = () => {
     }
   }, [order]);
 
+  //get customer detail from backend server
+  const { id } = useSelector((state) => state.auth.user);
+  const [ userDetail, setUserDetail ] = useState({
+    firstName: '',
+    lastName: '',
+    phone: '',
+    address: {}
+  });
+  useEffect(() => {
+    axios.get('http://localhost:5000/customers/' + id)
+    .then(res => {
+      setUserDetail(res.data);
+    })    
+  }, [])
+
   return (
     <>
       <div className={classes["billing-container"]}>
@@ -78,57 +95,26 @@ const Billing = () => {
           <h2>Order summary</h2>
         </div>
 
-        <div className={classes["billing-info"]}>
-          <div className={classes["info-head"]}>
-            <p>User : </p>
-          </div>
-          <div className={classes["info-content"]}>
-            <p>Fname and Lname </p>
-          </div>
-        </div>
+        <BillingInfo 
+          heading='User : '
+          content={userDetail.firstName + ' ' + userDetail.lastName}
+        />
 
-        <div className={classes["billing-info"]}>
-          <div className={classes["info-head"]}>
-            <p>Contact : </p>
-          </div>
-          <div className={classes["info-content"]}>
-            <p>phone number </p>
-          </div>
-        </div>
+        <BillingInfo 
+          heading='Contact : '
+          content={userDetail.phone}
+        />
 
-        <div className={classes["billing-info-address"]}>
-          <div className={classes["info-head"]}>
-            <p>Address : </p>
-          </div>
-          <div className={classes["info-content-address"]}>
-            <div className={classes["content-address"]}>
-              <p>Location</p>
-            </div>
-            <div className={classes["content-address"]}>
-              <p>District</p>
-            </div>
-            <div className={classes["content-address"]}>
-              <p>Country</p>
-            </div>
-            <div className={classes["content-address"]}>
-              <p>Postcode</p>
-            </div>
-          </div>
-        </div>
+        <BillingInfo 
+          type='ADDRESS'
+          heading='Address : '
+          contents={userDetail.address}
+        />
 
-        <div className={classes["billing-info"]}>
-          <div className={classes["info-head"]}>
-            <p>Total : </p>
-          </div>
-          <div className={classes["info-content"]}>
-            <p>{cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath </p>
-          </div>
-
-          {/* <span>Total :</span>
-          <span>
-            {cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath
-          </span> */}
-        </div>
+        <BillingInfo 
+          heading='Total : '
+          content={cart.reduce((sum, current) => sum + (current.price * current.amount), 0) + ' Bath'}
+        />
 
         {/*Place Order Button*/}
         <div className={classes["billing-placeorder"]}>
