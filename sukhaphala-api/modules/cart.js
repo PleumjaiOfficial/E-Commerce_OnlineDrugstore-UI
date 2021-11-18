@@ -63,7 +63,13 @@ const createCart = async (cart) => {
         },
         { new: true, upsert: true}
       );
-      return newCart;
+      const { name, image } = await productInterface.getProduct(newCart.productId);
+      const detailedNewCart = {
+        ...newCart._doc,
+        name: name,
+        image: image
+      }
+      return detailedNewCart;
     } else {
       //product amount in DB is not enough
       return {
