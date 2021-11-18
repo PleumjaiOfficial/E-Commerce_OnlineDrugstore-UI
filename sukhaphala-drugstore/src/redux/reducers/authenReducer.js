@@ -1,8 +1,8 @@
-import { SET_AUTH } from "../actions/authenAction";
+import { SET_AUTH, CLEAR_AUTH } from "../actions/authenAction";
 
 const initState = {
     //ไม่ได้ login
-    user: null 
+    user: [],
 }
 
 export const authenReducer = (state = initState , action) => {
@@ -11,8 +11,9 @@ export const authenReducer = (state = initState , action) => {
             return{
                 user:action.payload
             }
-    
-        default:
+        case CLEAR_AUTH:
             return initState;
+        default:
+            return state;
     }
 }

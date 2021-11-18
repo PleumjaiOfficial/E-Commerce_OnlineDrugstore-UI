@@ -21,7 +21,9 @@ export const orderReducer = (state = iniState, action) => {
             //     ...state,
             //     order:currentOrder
             // }; 
-    
+            return {
+                order: action.payload
+            }
         default:
             return state;
     }

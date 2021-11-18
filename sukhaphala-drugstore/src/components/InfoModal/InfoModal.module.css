@@ -1,0 +1,60 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 250px;
+  background-color: #fff;
+  border-radius: 25px;
+  box-shadow: 24;
+  padding: 20px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detail {
+  display: flex;
+  align-items: flex-start;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+}
+
+.footer button {
+  height: 30px;
+  padding: 2px 50px;
+  border-radius: 5px;
+  border: transparent;
+  color: white;
+  background-color: #FF6543;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+
+.footer button:hover {
+  color: #FF6543;
+  background-color: white;
+  outline: 1px solid #FF6543;
+}
+
+.footer button:active {
+  color: white;
+  background-color: #FF370C;
+  outline : 1px solid white;
+}
+
+.normal {
+  color: black;
+}
+
+.fail {
+  color: #FF370C;
+}
+
+.success {
+  color: #4BB543;
+}

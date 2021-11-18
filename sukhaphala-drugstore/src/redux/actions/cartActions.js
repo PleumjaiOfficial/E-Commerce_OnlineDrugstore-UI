@@ -6,6 +6,7 @@ export const ADD_TO_CART = "ADD_TO_CART";
 export const UPDATE_CART = "UPDATE_CART";
 export const UPDATE_SUB_CART = "UPDATE_SUB_CART";
 export const DELETE_CART = "DELETE_CART";
+export const ADD_TO_CART_ERROR = "ADD_TO_CART_ERROR";
 
 // export const getCart = () => {
 
@@ -56,6 +57,13 @@ export const add2Cart = (aimProduct) => {
     }
 }
 
+export const addCartError = (error) => {
+    return {
+        type: ADD_TO_CART_ERROR,
+        payload: error
+    }
+}
+
 export function add2CartAsync(aimProduct) {
     return async function(dispatch) {
         await axios.post('http://localhost:5000/carts/',aimProduct, {withCredentials: true})
@@ -63,11 +71,14 @@ export function add2CartAsync(aimProduct) {
             console.log(res.data)
             dispatch(add2Cart(res.data))
         })
+        .catch(error => {
+            dispatch(addCartError(error.response.data));
+        })
     }
 }
 
 // test space
-export const updateCart = (aimcartItem) => {
+export const updateAddCart = (aimcartItem) => {
 
     console.log(aimcartItem);
 
@@ -77,13 +88,13 @@ export const updateCart = (aimcartItem) => {
     }
 }
 
-export function updateCartAsync(aimcartItem) {
+export function updateAddCartAsync(aimcartItem) {
     return async function(dispatch) {
         await axios.put('http://localhost:5000/carts/' + aimcartItem._id, aimcartItem, {withCredentials: true})
         .then(res => {
             console.log(aimcartItem)
             console.log(res.data)
-            dispatch(updateCart(res.data))
+            dispatch(updateAddCart(res.data))
         })
     }
 }
@@ -133,7 +144,6 @@ export function deleteFromCartAsync(aimcartItemDel) {
         })
     }
 }
-// test space
 
 
 

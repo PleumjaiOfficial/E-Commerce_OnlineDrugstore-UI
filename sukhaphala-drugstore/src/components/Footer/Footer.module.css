@@ -1,0 +1,51 @@
+.footer {
+  min-height: 30vh;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+  background-color: #F5C1D5;
+}
+
+.footer-left{
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.footer-right{
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+}
+
+.foot-header {
+  font-family: 'EB Garamond';
+  font-size: 50px;
+  font-weight: 300;
+  text-align: left;
+}
+
+.details {
+  font-family: serif;
+  margin-top: 10px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.copyright{
+  margin-top: 10px;
+}
+
+.social{
+  margin-top: 20px;
+  column-count: 3;
+}
+
+.contact {
+  font-family: serif;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: left;
+}
+
+

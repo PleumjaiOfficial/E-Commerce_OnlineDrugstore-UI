@@ -17,7 +17,6 @@ const register =  async (user) => {
   //hash user's password before store in DB
   const hashPassword = bcrypt.hashSync(user.password, saltRounds);
   user.password = hashPassword;
-
   const registedUser = await customerInterface.createCustomer(user);
   const { password, ...otherInfo } = registedUser._doc;
   return otherInfo;

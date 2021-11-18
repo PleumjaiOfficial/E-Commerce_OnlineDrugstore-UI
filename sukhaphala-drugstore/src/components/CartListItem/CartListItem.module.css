@@ -1,0 +1,95 @@
+.cartlist {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: left;
+  width: 100%;
+  height: 200px;
+  /* border-bottom: 1px solid; */
+}
+
+.img-container{
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 150px;
+  width: 150px;
+  margin-top: 25px;
+  background-color: palevioletred;
+}
+
+.detail-container{
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 25px 0px 25px 50px;
+}
+
+.product-name{
+  font-family: sans-serif;  
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.cartlist h3{
+  font-family: sans-serif;
+  font-style: normal;
+  font-size: 10px;
+  padding: 5px 0px 10px 0px;
+}
+
+.action-container{
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 10px;
+}
+
+.action-detail{
+  display: flex;
+  flex-flow: column nowrap;
+  margin-right: 20px;
+}
+
+.action-detail-total{
+  display: flex;
+  flex-flow: column nowrap;
+  margin-right: 20px;
+  width: 100px;
+}
+
+.cartlist h2{
+  font-family: sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.quantity-edit{
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 10px;
+}
+
+.amount-container{
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
+  width: 80px;
+  height: 60px;   
+}
+
+.amount-container p{
+  font-family: sans-serif;
+  font-size: 24px;
+  margin-top: 15px;
+}
+
+.action-container button{
+    font-size: 20px;
+    margin: 10px 15px;
+    border: 1px solid black;
+    background-color: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 80%;
+    font-family: 'Montserrat';
+    font-size: 30px;
+    cursor: pointer;
+}

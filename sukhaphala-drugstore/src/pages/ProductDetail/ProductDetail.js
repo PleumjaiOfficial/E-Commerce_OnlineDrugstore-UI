@@ -1,84 +1,233 @@
-import React, {useEffect, useState} from 'react'
+import React, { useDebugValue, useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './ProductDetail.module.css';
 import Axios from 'axios';
-import {useParams} from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import {add2Cart, add2CartAsync} from '../../redux/actions/cartActions'
+import { NavLink, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { add2Cart, add2CartAsync, addCartError } from '../../redux/actions/cartActions'
+// import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
+import InfoModal from '../../components/InfoModal/InfoModal';
+import Footer from '../../components/Footer/Footer'
+import HealthGoalsList from '../../components/HealthGoalList/HealthGoalList';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductDetail = () => {
 
-    const { id } = useParams();
-    const [data, setData] = useState([]);
-    const [numpack,setNumpack] = useState(1);
+  const { id } = useParams();
+  const [data, setData] = useState({
+    healthGoal: []
+  });
+  const [numpack, setNumpack] = useState(1);
 
-    const handleNumpack = (event) => {
-        setNumpack(event.target.value)
-    }
+  const [add, setAdd] = useState(false);
 
-    //in displace have action
-    const dispatch = useDispatch();
+  //modal handler ----------------------------------------------
+  const cartError = useSelector((state) => state.cart.cartError);
 
-    useEffect(()=>{
-        Axios.get('http://localhost:5000/products/' + id)
-        .then(res=>{
-            console.log(res);
-            setData(res.data);
-        })
-        .catch(err =>{
-            console.log(err)
+  const [openInfo, setOpenInfo] = useState(false);
+  //info modal state
+  const [infoModal, setInfoModal] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  }
+
+  const mount = useRef(false);
+  useEffect(() => {
+    if (mount.current) {
+      // console.log("bara1 : ")
+      if (cartError.type === 'FAIL') {
+        setInfoModal({
+          status: 'FAIL',
+          title: 'Error',
+          detail: cartError.message
         });
-    },[])
-    console.log(data);
+        setOpenInfo(true);
+        setAdd(false);
+      }
+    } else {
+      mount.current = true;
+      // console.log("bara2 : ")
+    }
+    // return () => {
+    //   dispatch(addCartError({}));
+    // }
+  }, [cartError]);
 
-    // useEffect(() => {
-    //     dispatch(addadd()) 
-    // }, [dispatch])
+  //if fail to add to cart then reset cartError
+  useEffect(() => {
+    if (add === false) {
+      dispatch(addCartError({}));
+    }
+  }, [add]);
 
+  //Loading and click
+  function simulateNetworkRequest() {
+    return new Promise((resolve) => setTimeout(resolve, 1000));
+  }
 
-    return (
+  const [isLoading, setLoading] = useState(false);
+  useEffect(() => {
+    if (isLoading) {
+      simulateNetworkRequest().then(() => {
+        setLoading(false);
+      });
+      setAdd(true);
+    }
+  }, [isLoading]);
+
+  const handleClick = () => {
+    setLoading(true);
+    // setAdd(true);
+    dispatch(add2CartAsync({ ...data, amount: numpack }));
+  }
+  console.log('loadding ' + isLoading)
+
+  const handleNumpack = (event) => {
+    setNumpack( + event.target.value )
+  }
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    Axios.get('http://localhost:5000/products/' + id)
+      .then(res => {
+        console.log(res);
+        setData(res.data);
+      })
+      .catch(err => {
+        console.log(err)
+      });
+  }, [])
+  console.log(data);
+  console.log(data.healthGoal);
+  
+
+  // const mount = useRef(false);
+  // useEffect(() => {
+  //   if(mount.current) {
+  //     if (cartError.type === 'FAIL') {
+  //       setInfoModal({
+  //         status: 'FAIL',
+  //         title: 'Error',
+  //         detail: cartError.message
+  //       });
+  //       setOpenInfo(true);
+  //     }
+  //   } else {
+  //     mount.current = true;
+  //   }
+  // }, [cartError]);
+
+  // const cart = useSelector((state) => state.cart.cart);
+
+  // const mount = useRef(false);
+  // useEffect(() => {
+  //   if (mount.current) {
+  //     cart.forEach(cartitem => {
+  //       if (cartitem.productId === data._id) {
+  //         holdAdd();
+  //       }
+  //     })
+  //   } else {
+  //     mount.current = true;
+  //   }
+  // }, [cart]);
+
+  
+
+  return (
     <>
-    <Navbar />
-    
+      <Navbar/>
         <div className={classes["productdetail-container"]}>
 
+          <div className={classes["productdetail-image"]}>
+            <img src={data.image} />
+          </div>
 
-            <div className={classes["productdetail-image"]}>
-                <img src={data.image} />
+          <div className={classes["productdetail-content"]}>
+            <div className={classes["content-info"]}>
+              <div className={classes["info-name"]}> {data.name} </div>
+              <p className={classes["info-desc"]}> {data.description} </p>
+
+              <div className={classes["info-healthgoal"]}> 
+                <p>Health Goal :</p>
+                <div className={classes["healthgoal-list"]}> 
+                  
+                  <HealthGoalsList 
+                    healthGoals = {data.healthGoal}
+                  />
+
+                  {/* {data.healthGoal} */}
+
+                </div>
+
+              </div>
+            </div>
+            
+            <div className={classes["content-buy"]}>
+              <div className={classes["buy-price"]}>
+                <p>Price :</p>
+                <div className={classes["price-value"]}>{data.price}</div>
+                <div className={classes["price-unit"]}>Bath</div>
+              </div>
+
+              <div className={classes["buy-qty"]}>
+                <p>Amount :</p>
+                <select onChange={handleNumpack} value={numpack}>
+                    <option >1</option>
+                    <option >2</option>
+                    <option >3</option>
+                    <option >4</option>
+                </select>
+                <div className={classes["buy-unit"]}>Pack</div>
+              </div>
             </div>
 
-            <div className={classes["productdetail-content"]}>
+						{/* <button className={classes["btn"]} onClick={() => 
+							dispatch(add2CartAsync({ ...data, amount: numpack }))}>
+                Add to cart
+            </button>			 */}
+            
 
-                <h2 className={classes["productdetail-topic"]}> {data.name} </h2>
-                
-                <p className={classes["productdetail-desc"]}> {data.description} </p>
-
-                <h3 className={classes["product-price"]}>
-                    <span>price</span>
-                    <span className={classes["product-price-value"]}>{data.price}</span>  
-                    <span className={classes["product-price-unit"]}>Bath</span> 
-                </h3>
-
-                <h3 className={classes["product-qty"]}> 
-                    <span>Amount</span>
-                    
-                    <select onChange={handleNumpack} value={numpack}>
-                        <option >1</option>
-                        <option >2</option>
-                        <option >3</option>
-                        <option >4</option>
-                    </select> 
-                    
-                    <span product-qty-unit> pack </span>
-                </h3>
-
-                {/* <button className={classes["btn"]}>Add to cart</button> */}
-                <button className={classes["btn"]} onClick = {() => dispatch(add2CartAsync({...data,amount: numpack}))}>Add to cart</button>
-
+            <div className={classes["content-add-cart"]}>
+              { add === false ?
+                <Button
+                  variant="contained"
+                  size="large"
+                  color="primary"
+                  fullWidth={true} 
+                  onClick={handleClick}
+                  disabled={isLoading}>
+                  {isLoading ? "Loading…" : "Add to cart"}
+                </Button>:
+                <Button
+                  disabled>
+                  Added cart
+                </Button>
+              }
             </div>
-        </div>
+          </div>
+				</div>
+
+			<Footer />
+
+      <InfoModal
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status={infoModal.status}
+          title={infoModal.title}
+          detail={infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+        />
     </>
-    )
+  )
 }
 
-export default ProductDetail
+export default ProductDetail;

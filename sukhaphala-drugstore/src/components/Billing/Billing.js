@@ -1,59 +1,173 @@
-import React from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import classes from './Billing.module.css';
-import Button from "../Button/Button";
-import { useSelector,useDispatch } from 'react-redux';
-import { placeOrderAsync } from '../../redux/actions/orderAction'; 
+import { useSelector, useDispatch } from 'react-redux';
+import Button from '@mui/material/Button';
+import { placeOrderAsync } from '../../redux/actions/orderAction';
+// import Button from "../Button/Button";
+import InfoModal from '../InfoModal/InfoModal';
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
 const Billing = () => {
 
-    const cart = useSelector((state) => state.cart.cart);
-    console.log(cart);
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
 
-    const order = useSelector((state) => state.order.order);
-    console.log(order);
+  const order = useSelector((state) => state.order.order);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    return (
-        <div>
-            <div className={classes["billing"]}>
-                <div className={classes["biling-topic"]}>
-                    <h1>Billing</h1>
-                    <h2>Order summary</h2>
-                </div>
+  //modal state of confirm modal
+  const [openConfirm, setOpenConfirm] = useState(false);
+  //modal state of informative modal
+  const [openInfo, setOpenInfo] = useState(false);
+  //info modal state
+  const [infoModal, setInfoModal] = useState({
+    status: '',
+    title: '',
+    detail: ''
+  });
+  //use this variable to track if it is the first render to prevent useeffect make the popup
+  const mount = useRef(false);
 
-                <h3 className={classes["billing-user"]}>
-                    <span>User : </span>
-                    <span>Ryo Wong</span>
-                </h3>
+  const handleCloseConfirm = () => {
+    setOpenConfirm(false);
+  }
 
-                <h3 className={classes["billing-subtotal"]}>
-                    <span>Contact : </span>
-                    <span>บ่ฮู้</span>
+  const handleOpenInfo = () => {
+    if (order.type === 'FAIL') {
+      setInfoModal({
+        status: 'FAIL',
+        title: 'Error',
+        detail: order.message
+      });
+    } else if (order._id) {
+      setInfoModal({
+        status: 'SUCCESS',
+        title: 'SUCCESS',
+        detail: 'Successfully place your order!'
+      });
+    }
+    setOpenInfo(true);
+  }
+  const handleCloseInfo = () => {
+    setOpenInfo(false);
+  }
 
-                </h3>
+  const handleOrder = () => {
+    setOpenConfirm(true);
+  }
 
-                <h3 className={classes["billing-tax"]}>
-                    <span>Adress : </span>
-                    <span>บ่ฮู้</span>
-                </h3>
+  const handlePlaceOrder = (cart) => {
+    dispatch(placeOrderAsync(cart));
+  }
 
-                <h3 className={classes["billing-total"]}>
-                    <span>Total :</span>
-                    <span>
-                        {cart.reduce((sum, current) =>  sum + (current.price*current.amount), 0)} Bath
-                    </span>
-                </h3>
+  useEffect(() => {
+    if (mount.current) {
+      setOpenConfirm(false);
+      handleOpenInfo();
+    } else {
+      mount.current = true;
+    }
+  }, [order]);
 
-                <Button
-                    Button_style={classes["btn_cart"]}
-                    Button_text="Place order" 
-                    Button_onclick={()=> dispatch(placeOrderAsync(cart))}
-                />
-
-            </div>
+  return (
+    <>
+      <div className={classes["billing-container"]}>
+        <div className={classes["biling-head"]}>
+          <h1>Billing</h1>
+          <h2>Order summary</h2>
         </div>
-    )
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>User : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>Fname and Lname </p>
+          </div>
+        </div>
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>Contact : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>phone number </p>
+          </div>
+        </div>
+
+        <div className={classes["billing-info-address"]}>
+          <div className={classes["info-head"]}>
+            <p>Address : </p>
+          </div>
+          <div className={classes["info-content-address"]}>
+            <div className={classes["content-address"]}>
+              <p>Location</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>District</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>Country</p>
+            </div>
+            <div className={classes["content-address"]}>
+              <p>Postcode</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={classes["billing-info"]}>
+          <div className={classes["info-head"]}>
+            <p>Total : </p>
+          </div>
+          <div className={classes["info-content"]}>
+            <p>{cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath </p>
+          </div>
+
+          {/* <span>Total :</span>
+          <span>
+            {cart.reduce((sum, current) => sum + (current.price * current.amount), 0)} Bath
+          </span> */}
+        </div>
+
+        {/*Place Order Button*/}
+        <div className={classes["billing-placeorder"]}>
+          <Button
+            onClick={handleOrder}
+            variant="contained"
+            size="large"
+            color="primary"
+            fullWidth={true} >
+            Place Order
+          </Button>
+        </div>
+
+        <ConfirmModal
+          open={openConfirm}
+          onClose={handleCloseConfirm}
+          title='Are you sure?'
+          detail='Press confirm to continue place order'
+          buttonConfirmText='Confirm'
+          buttonCancelText='Cancel'
+          buttonConfirm={() => handlePlaceOrder(cart)}
+          buttonCancel={handleCloseConfirm}
+        />
+
+        <InfoModal
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status={infoModal.status}
+          title={infoModal.title}
+          detail={infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+        />
+
+
+      </div>
+
+    </>
+  )
 }
 
-export default Billing
+export default Billing;

@@ -1,22 +1,37 @@
 .cart-container{
-    display: inline-block;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: left;
+  position: relative;
+  margin: 70px 100px 50px 100px;
 }
 
-h1{
-    font-family: 'Montserrat';
-    font-size: 48px;
-    padding: 50px;
-    text-align: left;
+.cart-header{
+  font-family: 'Montserrat';
+  font-size: 40px;
+  font-weight: bold;
+  padding-bottom: 50px;
+  text-align: left;
+}
+
+.cart-info{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: left;
+  height: 750px;
+  /* border: 1px solid; */
 }
 
 .cartlist-container{
-    position: absolute;
-    margin-left: 50px; 
-    width: 800px;
-    height: 550px;
-    border: 1px solid black;
+  display: flex;
+  justify-content: left;
+  margin: 30px;
+  max-height: 650px;
+  /* border: 1px solid; */
 }
 
 .billing-container{
-    margin: 1px 30px 2px 80px;
+  display: flex;
+  justify-content: left;
+  margin: 30px;
 }

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import Home from './pages/Home/Home';
 import Navbar from './components/Navbar/Navbar';
@@ -12,8 +12,12 @@ import CartList from './components/CartList/CartList';
 import AdminCreateProduct from './pages/Admin/AdminCreateProduct/AdminCreateProduct';
 import { AdminShop } from './pages/Admin/AdminShop/AdminShop';
 import AdminEditShop from './pages/Admin/AdminEditShop/AdminEditShop';
+import { useSelector } from 'react-redux';
 
 const App = () => {
+
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <Router>
       <div className="App">
@@ -26,7 +30,10 @@ const App = () => {
           <Route path='/Home' component={Home} />
           <Route path='/Navbar' component={Navbar} />
           <Route path='/Shop' component={Shop} />
-          <Route path='/Login' component={Login} />
+          <Route path='/Login' component={Login} >
+            {/* { user.id ? <Redirect to='/Shop' /> : <Login /> } */}
+            { user.isAdmin ? <Redirect to='/AdminShop' /> : user.id ? <Redirect to='/Shop' /> : <Login />}
+          </Route>
           <Route path='/Register' component={Register} />
           <Route path='/ProductDetail/:id' component={ProductDetail} />
           <Route path='/Card' component={Card} />
@@ -35,7 +42,6 @@ const App = () => {
           <Route path='/AdminCreateProduct' component={AdminCreateProduct} />
           <Route path='/AdminShop' component={AdminShop} />
           <Route path='/AdminEditShop/:id' component={AdminEditShop} />
-        
         </Switch>
 
       </div>
