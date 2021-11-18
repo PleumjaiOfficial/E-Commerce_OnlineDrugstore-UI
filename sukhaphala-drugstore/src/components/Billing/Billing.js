@@ -81,7 +81,7 @@ const Billing = () => {
     address: {}
   });
   useEffect(() => {
-    axios.get('http://localhost:5000/customers/' + id)
+    axios.get('http://localhost:5000/customers/' + id, { withCredentials: true })
     .then(res => {
       setUserDetail(res.data);
     })    
