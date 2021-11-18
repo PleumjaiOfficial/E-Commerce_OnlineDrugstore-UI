@@ -14,6 +14,6 @@ export const authenReducer = (state = initState , action) => {
         case CLEAR_AUTH:
             return initState;
         default:
-            return {...state};
+            return state;
     }
 }
