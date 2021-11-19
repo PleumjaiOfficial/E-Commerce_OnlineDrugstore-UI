@@ -34,12 +34,14 @@ const Shop = () => {
     Axios.get('http://localhost:5000/products')
     .then(res=>{
       console.log(res)
-        setData(res.data)
+        setData(res.data.filter(selectData => selectData.remain>0))
     })
    .catch(err =>{
       console.log(err)
     });
   },[])
+
+  //console.log(data);
 
   return (
     <>
