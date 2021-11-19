@@ -51,7 +51,7 @@ const createCart = async (cart) => {
       cart.amount = cart.amount + existCart.amount;
     }
     //check amount of that product
-    const isEnough = checkAmount(cart.productId, cart.amount);
+    const isEnough = await checkAmount(cart.productId, cart.amount);
     if (isEnough) {
       const newCart = await Cart.findOneAndUpdate(
         { productId: cart.productId },
@@ -72,13 +72,13 @@ const createCart = async (cart) => {
       return detailedNewCart;
     } else {
       //product amount in DB is not enough
-      return {
+      throw {
         type: 'FAIL',
         message: 'this product doesn\'t have enough amount'
       }
     }
   } catch (err) {
-    return null;
+    throw err;
   }
 }
 
