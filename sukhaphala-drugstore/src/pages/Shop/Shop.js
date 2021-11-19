@@ -6,20 +6,28 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import Product from '../../components/Product/Product';
 import classes from './Shop.module.css'
 import Footer from '../../components/Footer/Footer';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCart, getCartAsync } from '../../redux/actions/cartActions';
 
 const Shop = () => {
 
-  // const [Navbar,setNavbar] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  //   console.log(user);
 
-  // const changeBackground = () => {
-  //     console.log(window.scrollY);
-  //     if(window.scrollY >= 80) {
-  //         setNavbar(true);
-  //     } else{
-  //         setNavbar(false);
-  //     }
-  // }
-    
+  const dispatch = useDispatch();
+  // dispatch(getCartAsync(user.id));
+
+  console.log("start useffect");
+  useEffect(() => {
+      console.log("useffect is working now");
+      Axios.get("http://localhost:5000/carts/" + user.id, {withCredentials: true} )
+      .then(res => {
+        console.log("gsdsgds")
+        console.log(res.data)
+        dispatch(getCart(res.data ))
+      })
+  },[])
+  console.log("useffect working");
   const [data, setData] = useState([]);
 
   useEffect(()=>{

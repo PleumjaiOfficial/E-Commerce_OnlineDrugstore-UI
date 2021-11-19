@@ -7,6 +7,7 @@ export const UPDATE_CART = "UPDATE_CART";
 export const UPDATE_SUB_CART = "UPDATE_SUB_CART";
 export const DELETE_CART = "DELETE_CART";
 export const ADD_TO_CART_ERROR = "ADD_TO_CART_ERROR";
+export const CLEAR_CART = "CLEAR_CART"
 
 // export const getCart = () => {
 
@@ -37,9 +38,9 @@ export const getCart = (aimProduct) => {
     }
 }
 
-// export function getCartAsync() {
+// export function getCartAsync(userId) {
 //     return async function(dispatch) {
-//         await axios.get("http://localhost:5000/carts/").then(res => {
+//         await axios.get("http://localhost:5000/carts/" + userId).then(res => {
 //             console.log(res.data)
 //             dispatch(getCart(res.data))
 //         })
@@ -145,6 +146,11 @@ export function deleteFromCartAsync(aimcartItemDel) {
     }
 }
 
+export const clearCart = () => {
+    return {
+        type: CLEAR_CART
+    };
+}
 
 
 
