@@ -12,80 +12,18 @@ const CartList = () => {
 
   const cart = useSelector((state) => state.cart.cart);
   //   console.log(cart);
+  const user = useSelector((state) => state.auth.user);
+  //   console.log(user);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  // useEffect( async () => {
-  //     let res = await axios.get("http://localhost:5000/carts/")
-  //     dispatch(getCart(res.data))
+  // useEffect(() => {
+  //     axios.get("http://localhost:5000/carts/" + user.id)
+  //     .then(res => {
+  //       console.log(res.data)
+  //       dispatch(getCart(res.data))
+  //     })
   // },[])
-
-  // //Loading and click
-  // function simulateNetworkRequest() {
-  //     return new Promise((resolve) => setTimeout(resolve, 1000));
-  // }
-
-  // const [isLoadingSub, setLoadingSub] = useState(false);
-  // const [isLoadingAdd, setLoadingAdd] = useState(false);
-  // const [cartBufferSub, setCartBufferSub] = useState({});
-  // const [cartBufferAdd, setCartBufferAdd] = useState({});
-  // // const [cartBuffer, setCartBuffer] = useState({});
-  // // const [operation,setOperation] = useState("")
-
-  // //loading sub
-  // useEffect(() => {
-  //     if (isLoadingSub === true) {
-  //         simulateNetworkRequest().then(() => {
-  //             setLoadingSub(false);
-  //             dispatch(updateSubCartAsync({...cartBufferSub,amount: cartBufferSub.amount - 1}));
-  //             //dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
-  //         });
-  //     } 
-  // }, [isLoadingSub]); 
-
-  // const handleClickSub = (cartItem) => {
-  //     setLoadingSub(true);
-  //     setCartBufferSub(cartItem);
-  // };
-
-  // //loading add
-  // useEffect(() => {
-  //     if (isLoadingAdd === true) {
-  //         simulateNetworkRequest().then(() => {
-  //             setLoadingAdd(false);
-  //             dispatch(updateAddCartAsync({...cartBufferAdd,amount: cartBufferAdd.amount + 1}));
-  //         });
-  //     } 
-  // }, [isLoadingAdd]); 
-
-  // const handleClickAdd = (cartItem) => {
-  //     setLoadingAdd(true);
-  //     setCartBufferAdd(cartItem);
-  // };
-
-  // useEffect(() => {
-  //     console.log('loadding before delay=> ' + isLoading)
-  //     if (operation === "sub" ) {
-  //         setLoading(true);
-  //         simulateNetworkRequest().then(() => {
-  //             setLoading(false);
-  //             console.log('loadding after delay=> ' + isLoading);
-  //             dispatch(updateSubCartAsync({...cartBuffer,amount: cartBuffer.amount - 1}));
-  //         });
-  //     }else{
-  //         setLoading(false);
-  //         simulateNetworkRequest().then(() => {
-  //             setLoading(true);
-  //             console.log('loadding after delay=> ' + isLoading);
-  //             dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
-  //         });
-  //     }
-  // }, [isLoading]); 
-
-  // const handleClick = (cartItem,operation) => {
-  //     setCartBuffer(cartItem);
-  //     setOperation(operation);
-  // };
 
   //   https://medium.com/how-to-react/how-to-use-redux-with-react-hooks-and-axios-a78d942fbe9c
   //   https://www.positronx.io/react-axios-tutorial-make-http-get-post-requests/

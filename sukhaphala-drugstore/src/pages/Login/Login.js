@@ -22,6 +22,7 @@ import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from '../../redux/actions/authenAction';
 import InfoModal from '../../components/InfoModal/InfoModal';
+import classes from './Login.module.css';
 
 const theme = createTheme({
   palette: {
@@ -151,79 +152,80 @@ const Login = () => {
       >
           <source src={DrugVdo} type="video/mp4" />
       </video>
-
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <Box
-              sx={{
-                  marginTop: 20,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-              }}
-            >
-
-            <Typography 
-                component="h2" 
-                variant="h2"
-                color='white'
+      
+      <div className={classes['login-container']}>
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+              <CssBaseline />
+              <Box
+                sx={{
+                    marginTop: 20,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}
               >
-                  Hello ~
-            </Typography>
 
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Typography 
+                  component="h2" 
+                  variant="h2"
+                  color='white'
+                >
+                    Hello ~
+              </Typography>
 
-               <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="EMAIL"
-                  label="EMAIL ADDRESS"
-                  name="EMAIL"
-                  autoComplete="email"
-                  autoFocus
-                  value={login.email}
-                  onChange={e => setLogin({...login, email: e.target.value})}
-              />
+              <Box component="form" noValidate sx={{ mt: 1 }}>
 
-              <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="PASSWORD"
-                  label="PASSWORD"
-                  type="PASSWORD"
-                  id="PASSWORD"
-                  autoComplete="current-password"
-                  value={login.password}
-                  onChange={e => setLogin({...login, password: e.target.value})}
-              />
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="EMAIL"
+                    label="EMAIL ADDRESS"
+                    name="EMAIL"
+                    autoComplete="email"
+                    autoFocus
+                    value={login.email}
+                    onChange={e => setLogin({...login, email: e.target.value})}
+                />
 
-              <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                  color="standard"
-                  onClick={handleSubmit}
-              >
-                  Sign In
-              </Button>
+                <TextField
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="PASSWORD"
+                    label="PASSWORD"
+                    type="PASSWORD"
+                    id="PASSWORD"
+                    autoComplete="current-password"
+                    value={login.password}
+                    onChange={e => setLogin({...login, password: e.target.value})}
+                />
 
-              <Grid container>  
-                <Grid item>
-                    <NavLink  to='/Register'>
-                        {"Don't have an account? Sign Up"}
-                    </NavLink>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                    color="standard"
+                    onClick={handleSubmit}
+                >
+                    Sign In
+                </Button>
+
+                <Grid container>  
+                  <Grid item>
+                      <NavLink  to='/Register'>
+                          {"Don't have an account? Sign Up"}
+                      </NavLink>
+                  </Grid>
                 </Grid>
-              </Grid>
 
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </ThemeProvider>
-
+          </Container>
+        </ThemeProvider>
+      </div>
       <p>Check value</p>
       <p>email = {login.email}</p>
       <p>password = {login.password}</p>

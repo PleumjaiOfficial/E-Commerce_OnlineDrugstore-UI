@@ -1,4 +1,4 @@
-import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_CART,UPDATE_SUB_CART, ADD_TO_CART_ERROR } from '../actions/cartActions';
+import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_CART,UPDATE_SUB_CART, ADD_TO_CART_ERROR,CLEAR_CART} from '../actions/cartActions';
 import {CREATE_ORDER } from "../actions/orderAction";
 import axios from 'axios'
 
@@ -124,6 +124,9 @@ export const cartReducer = (state = iniState , action) => {
                 ...state,
                 cartError: action.payload
             }
+        
+        case CLEAR_CART:
+            return iniState;
         default:
             //GET_CART
             return state;
