@@ -13,14 +13,23 @@ const checkProductAmount = async (productId, amount) => {
 };
 
 const checkStock = async (carts) => {
-  const outOfStockCart = [];
+  let outOfStockCart = [];
   //check stock before place order
-  carts.forEach( async cart => {
-    const isEnough = await checkProductAmount(cart.productId, cart.amount);
+  //there is an error with promise when use with forEach
+  // await Promise.all(carts.forEach( async cart => {
+  //   const isEnough = await checkProductAmount(cart.productId, cart.amount);
+  //   if (!isEnough) {
+  //     outOfStockCart.push(cart);
+  //   }
+  // }));
+  let i;
+  for (i=0; i<carts.length; i++) {
+    const isEnough = await checkProductAmount(carts[i].productId, carts[i].amount);
     if (!isEnough) {
-      outOfStockCart.push(cart);
+      outOfStockCart.push(carts[i]);
     }
-  });
+  }
+  // console.log(outOfStockCart);
   return outOfStockCart;
 };
 

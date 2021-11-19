@@ -21,10 +21,10 @@ export function placeOrderAsync(userProduct) {
                         dispatch(placeOrder(res.data))
                     })
                     .catch((error) => {
-                        console.log('บ่ถูก');
+                        console.log(error.response);
                         dispatch(placeOrder({
                             type: 'FAIL',
-                            message: 'fail to place this order, please try again later'
+                            message: error.response.data.message
                         }));
                     });
                     // .catch((error) => alert('บ่ถูก'))

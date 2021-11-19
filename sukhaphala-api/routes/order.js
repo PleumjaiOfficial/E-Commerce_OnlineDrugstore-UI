@@ -5,12 +5,15 @@ const verifyMiddleware = require('../middlewares/verifyToken');
 router.post('/', verifyMiddleware.orderAuthorization, async (req, res) => {
   //order is the list of carts
   const order = req.body;
-  if (order) {
+  if (order.length > 0) {
     try {
       const placedOrder = await orderInterface.createOrder(order);
       res.status(200).json(placedOrder);
     } catch (err) {
-      res.status(500).json(err);
+      res.status(500).json({
+        type: 'FAIL',
+        message: 'cannot create this order'
+      });
     }
   } else {
     res.status(500).json({
