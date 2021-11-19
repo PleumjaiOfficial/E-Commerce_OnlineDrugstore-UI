@@ -9,8 +9,10 @@ import storage from "redux-persist/lib/storage";
 const persistConfig = {
     key:'root',
     storage,
-    whitelist: ['auth'] //what resucer what to save
+    whitelist: ['auth','cart'] //what resucer what to save
 }
+
+
 
 const reducersPowerRanger = combineReducers({   
     cart: cartReducer, // {cart : {cart: [] } }

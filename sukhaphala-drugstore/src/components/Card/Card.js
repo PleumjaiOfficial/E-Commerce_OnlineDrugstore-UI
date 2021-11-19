@@ -3,8 +3,16 @@ import classes from './Card.module.css';
 // import Axios from 'axios';
 
 const Card = (props) => {
-
   console.log(props.id)
+  let textDesc
+
+  if(props.desc.length > 50){
+    textDesc = props.desc.substring(0,50);
+    textDesc  = textDesc + "..."
+  } else{
+    textDesc = props.desc
+  }
+
   return (
     <div className={classes["card"]}>
 
@@ -24,12 +32,11 @@ const Card = (props) => {
           </h2>
 
           <p className={classes["card-desc"]}>
-            {props.desc}
+            {textDesc}
           </p>
 
           <h3> Expore more... </h3>
-
-        </div>
+      </div>
       </div>
     </div>
   )
