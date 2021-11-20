@@ -4,6 +4,15 @@ import classes from './CardAdmin.module.css'
 
 const CardAdmin = (props) => {
   console.log(props.id)
+  let textDesc
+
+  if(props.desc.length > 50){
+    textDesc = props.desc.substring(0,50);
+    textDesc  = textDesc + "..."
+  } else{
+    textDesc = props.desc
+  }
+
   return (
     <div className={classes["card"]}>
 
@@ -23,7 +32,7 @@ const CardAdmin = (props) => {
           </h2>
 
           <p className={classes["card-desc"]}>
-            {props.desc}
+            {textDesc}
           </p>
 
           <h3> Edit </h3>

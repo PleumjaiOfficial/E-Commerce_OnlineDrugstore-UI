@@ -162,9 +162,6 @@ const ProductDetail = () => {
                   <HealthGoalsList 
                     healthGoals = {data.healthGoal}
                   />
-
-                  {/* {data.healthGoal} */}
-
                 </div>
 
               </div>
