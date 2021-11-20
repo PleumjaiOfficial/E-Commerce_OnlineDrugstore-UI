@@ -13,13 +13,13 @@ const healthGoalAPI = require('./routes/healthGoal');
 const customerAPI = require('./routes/customer');
 
 dotenv.config();
-const url = `mongodb+srv://winnr:${process.env.DB_PASSWORD}@cluster0.95dro.mongodb.net/sukhapala?retryWrites=true&w=majority`
+const url = process.env.DB_URL;
 
 //connect to the database
 try {
   mongoose.connect(url);
-  console.log('Connected correctly to server');
-} catch (error) {
+  console.log('Connected correctly to database');
+} catch (err) {
   console.log('Failed to connected');
 }
 

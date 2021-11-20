@@ -4,45 +4,27 @@ const authenInterface = require('../modules/authen');
 //register
 router.post('/register', async (req, res) => {
   const newCustomer = req.body;
-  //check if there is no email and password
-  if (!(newCustomer.password && newCustomer.email)) {
-    res.status(400).json({
-      type: 'FAIL',
-      message: 'cannot leave email and password blank'})
-  }
-
-  const registedCustomer = await authenInterface.register(newCustomer);
-  if (registedCustomer.type === 'FAIL') {
-    //fail to register
-    res.status(400).json(registedCustomer);
-  } else {
-    //register successful
+  try {
+    const registedCustomer = await authenInterface.register(newCustomer);
     res.status(200).json(registedCustomer);
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
 
 //login
 router.post('/login', async (req, res) => {
   const credential = req.body;
-  //check if there is no email and password
-  if (!(credential.password && credential.email)) {
-    res.status(400).json({
-      type: 'FAIL',
-      message: 'cannot leave email and password blank'})
-  }
-
-  const loggedInUser = await authenInterface.login(credential);
-  if (loggedInUser.type === 'FAIL') {
-    res.status(401).json(loggedInUser);
-  } else {
-    res.cookie('token', loggedInUser.token, {httpOnly: true});
+  try {
+    const loggedInUser = await authenInterface.login(credential);
+    res.cookie('token', loggedInUser.token, { maxAge: 86400000, httpOnly: true}); //maxAge calculation: 1d = 1 * 24 * 60 * 60 * 1000 ms
     res.status(200).json(loggedInUser);
+  } catch (err) {
+    res.status(401).json(err);
   }
-
 });
 
 router.get('/logout', (req, res) => {
-  // const result = authenInterface.logout();
   res.clearCookie('token');
   res.status(200).json({
     type: 'SUCCESS'
