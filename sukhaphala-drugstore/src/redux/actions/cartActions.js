@@ -73,6 +73,7 @@ export function add2CartAsync(aimProduct) {
             dispatch(add2Cart(res.data))
         })
         .catch(error => {
+            console.log(error);
             dispatch(addCartError(error.response.data));
         })
     }
