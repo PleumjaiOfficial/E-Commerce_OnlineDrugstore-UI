@@ -24,12 +24,16 @@ router.post('/', verifyMiddleware.verifyToken, async (req, res) => {
   };
 
   try {
+  //   const newCart = await cartInterface.createCart(requestCart);
+  //   if (newCart) {
+  //     res.status(200).json(newCart);
+  //   } else {
+  //     res.status(500).json({message: 'failed to add cart'});
+  //   }
+  // } catch (err) {
+  //   res.status(500).json(err);
     const newCart = await cartInterface.createCart(requestCart);
-    if (newCart) {
-      res.status(200).json(newCart);
-    } else {
-      res.status(500).json({message: 'failed to add cart'});
-    }
+    res.status(200).json(newCart);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -42,19 +46,22 @@ router.put('/:id', verifyMiddleware.cartAuthorization ,async (req, res) => {
 
   try {
     const updatedCart = await cartInterface.updateCart(cartId, cart);
-    if (updatedCart) {
-      res.status(200).json(updatedCart);
-    } else {
-      res.status(500).json({
-        type: 'FAIL',
-        message: 'failed to update cart'
-      });
-    }
+    // if (updatedCart) {
+    //   res.status(200).json(updatedCart);
+    // } else {
+    //   res.status(500).json({
+    //     type: 'FAIL',
+    //     message: 'failed to update cart'
+    //   });
+    //}
+    res.status(200).json(updatedCart);
   } catch (err) {
     res.status(500).json(err);
   };
 });
 
+//delete customer cart api
+//if have a time, please find the way to make authorization in middleware 
 router.delete('/:id', verifyMiddleware.verifyToken, async (req, res) => {
     const cartId = req.params.id;
     const customerId = req.customer.id;

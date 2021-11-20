@@ -43,6 +43,7 @@ const reduceProductAmount = (carts) => {
       await productInterface.updateProduct(product._id, product);
     } catch (err) {
       //may be manage this error another time
+      console.log(err);
       console.log('cannot reduce amount of product...');
     }
   });
