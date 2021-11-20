@@ -21,6 +21,8 @@ import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
 import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
+import { set } from 'js-cookie';
+import { typography } from '@mui/system';
 
 const theme = createTheme({
   palette: {
@@ -39,6 +41,11 @@ const Register = () =>  {
     email:    '',
     phone:    '',
   })
+  const [firstnameError,setFirstnameError] = useState(false)
+  const [lastnameError,setLastnameError] = useState(false)
+  const [emailError,setEmailError] = useState(false)
+  const [phoneError,setPhoneError] = useState(false)
+
 
   const [address,setAddress] = useState({
     location: '',
@@ -46,11 +53,20 @@ const Register = () =>  {
     country: '',
     postcode: '',
   });
+  const [locationError,setLocationError] = useState(false)
+  const [districtError,setDistrictError] = useState(false)
+  const [countryError,setCountryError] = useState(false)
+  const [postcodeError,setPostcodeError] = useState(false)
 
   const [credential,setCredential] = useState({
     password: '',
     re_password: '',
   });
+  const [passwordError,setPasswordError] = useState(false)
+  const [rePasswordError,setRePasswordError] = useState(false)
+
+  
+
 
   //state of modal: false -> close modal, true -> open modal
   const [ openInfo, setOpenInfo ] = useState(false);
@@ -75,7 +91,61 @@ const Register = () =>  {
   }
 
   const handleSubmit = () => {
-    //check 
+
+
+    //check basic-info error
+    if(basicInfo.firstname == ''){
+      setFirstnameError(true)
+    }
+
+    if(basicInfo.lastname == ''){
+      setLastnameError(true)
+    }
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(basicInfo.email == ''){
+      setEmailError(true)
+    }else if(basicInfo.email.match(mailformat)){
+      setEmailError(false)
+    }else{
+      setEmailError(true)
+    }
+
+    if(basicInfo.phone == ''){
+      setPhoneError(true)
+    }else if(typeof(basicInfo.phone) !== 'number'){
+      setPhoneError(true)
+    }
+
+    //check address error
+    if(address.location == ''){
+      setLocationError(true)
+    }
+
+    if(address.district == ''){
+      setDistrictError(true)
+    }
+
+    if(address.country == ''){
+      setCountryError(true)
+    }
+
+    if(address.postcode == ''){
+      setPostcodeError(true)
+    }
+
+    //check credential error
+    if(credential.password == ''){
+      setPasswordError(true)
+    }
+
+    if(credential.re_password == ''){
+      setRePasswordError(true)
+    }
+
+    if(credential.password !== credential.re_password){
+      setRePasswordError(true)
+    }
 
     const createCustomer = () => {
       axios.post('http://localhost:5000/auth/register',
@@ -139,10 +209,6 @@ const Register = () =>  {
               alignItems: 'center',
             }}
           >
-            
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
 
             <Typography component="h2" variant="h3">
               Sign up
@@ -170,6 +236,7 @@ const Register = () =>  {
                     autoFocus
                     value={basicInfo.firstname}
                     onChange={e => setBasicInfo({...basicInfo, firstname: e.target.value})}
+                    error = {firstnameError}
                   />
                 </Grid>
 
@@ -177,12 +244,13 @@ const Register = () =>  {
                   <TextField
                     required
                     fullWidth
-                    id="SURNAME"
-                    label="SURNAME"
-                    name="SURNAME"
+                    id="LASTNAME"
+                    label="LASTNAME"
+                    name="LASTNAME"
                     autoComplete="family-name"
                     value={basicInfo.lastname}
                     onChange={e => setBasicInfo({...basicInfo, lastname: e.target.value})}
+                    error = {lastnameError}
                   />
                 </Grid>
 
@@ -196,6 +264,7 @@ const Register = () =>  {
                     autoComplete="email"
                     value={basicInfo.email}
                     onChange={e => setBasicInfo({...basicInfo, email: e.target.value})}
+                    error = {emailError}
                   />
                 </Grid>
 
@@ -208,6 +277,7 @@ const Register = () =>  {
                     name="PHONE NUMBER"
                     value={basicInfo.phone}
                     onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
+                    error = {phoneError}
                   />
                 </Grid>
               </Grid>
@@ -233,6 +303,7 @@ const Register = () =>  {
                     name="LOCATION"
                     value={address.location}
                     onChange={e => setAddress({...address, location: e.target.value})}
+                    error={locationError}
                   />
                 </Grid>
 
@@ -245,6 +316,7 @@ const Register = () =>  {
                     name="DISTRICT"
                     value={address.district}
                     onChange={e => setAddress({...address, district: e.target.value})}
+                    error={districtError}
                   />
                 </Grid>
 
@@ -259,6 +331,7 @@ const Register = () =>  {
                       value={address.country}
                       label="COUNTRY"
                       onChange={e => setAddress({...address, country: e.target.value})}
+                      error={countryError}
                     >
                       <MenuItem value='thailand'> Thailand </MenuItem>
                     </Select>
@@ -274,6 +347,7 @@ const Register = () =>  {
                     name="POSTCODE"
                     value={address.postcode}
                     onChange={e => setAddress({...address, postcode: e.target.value})}
+                    error={postcodeError}
                   />
                 </Grid>
               </Grid>
@@ -300,6 +374,7 @@ const Register = () =>  {
                     autoComplete="new-password"
                     value={credential.password}
                     onChange={e => setCredential({...credential, password: e.target.value})}
+                    error={passwordError}
                   />
                 </Grid>
 
@@ -314,21 +389,48 @@ const Register = () =>  {
                     autoComplete="re-new-password"
                     value={credential.re_password}
                     onChange={e => setCredential({...credential, re_password: e.target.value})}
+                    error={rePasswordError}
                   />
                 </Grid>
               </Grid>
             </Box>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                color="standard"
-                onClick={handleSubmit}
-              >
-                Sign Up
-              </Button>
+            
+            {/* {inValid ?  
+               <Button
+                  disabled
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                  color="standard"
+                  onClick={handleSubmit}
+                >
+                  Sign Up
+                </Button>
+              :
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                  color="standard"
+                  onClick={handleSubmit}
+                >
+                  Sign Up
+                </Button>
+            } */}
+            <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                  color="standard"
+                  onClick={handleSubmit}
+                >
+                  Sign Up
+                </Button>
+
           </Box>
         </Container>
       </ThemeProvider>
