@@ -23,7 +23,7 @@ const ProductDetail = () => {
   const [add, setAdd] = useState(false);
 
   //modal handler ----------------------------------------------
-  const cartError = useSelector((state) => state.cart.cartError);
+  const cartError = useSelector((state) => state.carts.cartError);
 
   const [openInfo, setOpenInfo] = useState(false);
   //info modal state

@@ -20,7 +20,7 @@ const Navbar = () => {
   const holdClick = () => setclick(!click);
 
 
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state.carts.cart);
   // console.log(cart);
 
   /*

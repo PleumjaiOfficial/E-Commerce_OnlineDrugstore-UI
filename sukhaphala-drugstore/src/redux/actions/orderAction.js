@@ -1,10 +1,9 @@
 import axios from 'axios'
 export const CREATE_ORDER = "CREATE_ORDER";
+export const GET_ORDER = "GET_ORDER";
 
 
 export const placeOrder = (feedback) => {
-    console.log(feedback);
-
     return {
         type: CREATE_ORDER,
         payload: feedback,
@@ -12,22 +11,21 @@ export const placeOrder = (feedback) => {
 }
 
 export function placeOrderAsync(userProduct) {
-
-    console.log(userProduct);
     return async function(dispatch) {
+        // post data that want to place order to database
         await axios.post('http://localhost:5000/orders/', userProduct, {withCredentials: true})
                     .then(res => {
-                        console.log(res.data)
-                        dispatch(placeOrder(res.data))
+                        dispatch(placeOrder(res.data)) //post to database success get response to state
                     })
                     .catch((error) => {
-                        console.log(error.response);
+                        //post to database fail get response fail and keep previous state
                         dispatch(placeOrder({
                             type: 'FAIL',
                             message: error.response.data.message
                         }));
                     });
-                    // .catch((error) => alert('บ่ถูก'))
     }
 }
+
+
 
