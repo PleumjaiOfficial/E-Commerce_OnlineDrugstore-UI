@@ -99,6 +99,21 @@
   margin-left: 10px;
 }
 
+.remain{
+  display: flex;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.remain-value{
+  margin-left: 60px;
+}
+
+.remain-unit{
+  margin-left: 10px;
+}
+
 .buy-qty{
   display: flex;
   padding-top: 20px;

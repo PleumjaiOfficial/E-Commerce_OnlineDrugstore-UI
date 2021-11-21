@@ -4,9 +4,6 @@ import classes from './Cart.module.css';
 import Billing from '../../components/Billing/Billing';
 import CartList from '../../components/CartList/CartList';
 import Footer from '../../components/Footer/Footer';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import { getCart, getCartAsync } from '../../redux/actions/cartActions';
 
 const Cart = () => {
 

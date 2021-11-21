@@ -1,22 +1,16 @@
-import React, {Profiler, useEffect, useState} from 'react'
-import Avatar from '@mui/material/Avatar';
+import React, {useState} from 'react'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { alpha, styled } from '@mui/material/styles';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Navbar from '../../components/Navbar/Navbar';
 import { NavLink } from 'react-router-dom';
 import DrugVdo from '../../Video/demo-vdo.mp4';
-import { display, positions } from '@mui/system';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux';
@@ -87,14 +81,12 @@ const Login = () => {
 
     //decode token function
     const decode = (codeSixFour) => {
-      //split token
-      console.log(codeSixFour)
-      var text = codeSixFour.split(".");
-        console.log(text);
-        console.log(text[1]);
 
-      //decode
-      let str = text[1];
+      //split token
+      var text = codeSixFour.split(".");
+
+      //decode base64 to string
+      let str = text[1]; //string to decode on the middle base64
       let buff = new Buffer(str, 'base64');
       let base64ToStringNew = buff.toString('ascii');
         console.log(base64ToStringNew)
@@ -117,16 +109,11 @@ const Login = () => {
           "password": login.password
         })
         .then(res => { 
-          // alert('success')
           Cookies.set('token',res.data.token); 
-          // console.log(res.data)
-          // console.log(res.data.token)
-          // decode(res.data.token)
-          // dispatch(setAuth(res.data))
           dispatch(setAuth(decode(res.data.token)))
         })
         .catch((error) => {
-            // console.log(error.response.data);
+
             handleOpenInfo(error.response.data);
         })
       }
@@ -220,15 +207,15 @@ const Login = () => {
                       </NavLink>
                   </Grid>
                 </Grid>
-
               </Box>
             </Box>
           </Container>
         </ThemeProvider>
       </div>
-      <p>Check value</p>
+
+      {/* <p>Check value</p>
       <p>email = {login.email}</p>
-      <p>password = {login.password}</p>
+      <p>password = {login.password}</p> */}
 
       <InfoModal
           open={openInfo}

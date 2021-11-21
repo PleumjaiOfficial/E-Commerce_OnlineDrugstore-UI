@@ -3,7 +3,6 @@ import Axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import image from '../../image/HeaderBackground.jpg';
 import Sidebar from '../../components/Sidebar/Sidebar';
-// import ProductAdmin from '../../components/ProductAdmin/ProductAdmin'
 import Product from '../../components/Product/Product';
 import classes from './AdminShop.module.css';
 import Footer from '../../components/Footer/Footer';

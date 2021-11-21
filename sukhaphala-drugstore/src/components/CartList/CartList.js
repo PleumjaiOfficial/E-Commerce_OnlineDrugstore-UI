@@ -6,7 +6,7 @@ const CartList = () => {
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-  const cart = useSelector((state) => state.cart.cart);
+  const cart = useSelector((state) => state.carts.cart);
 
   return (
     <div className={classes["cartlist-container"]}>

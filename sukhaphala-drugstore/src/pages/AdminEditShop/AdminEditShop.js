@@ -14,7 +14,6 @@ import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import { Redirect } from 'react-router-dom';
 
 export const AdminEditShop = () => {
-  //modal edit product
   const [openInfoEdit, setOpenInfoEdit] = useState(false);
   const [infoModalEdit, setInfoModalEdit] = useState({
     status: '',
@@ -108,7 +107,7 @@ export const AdminEditShop = () => {
   const [healthgoals, setHealthGoals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // //fix
+  // Initial state of product that want to edit
   const [product, setProduct] = useState({
     ProductName: '',
 
@@ -122,28 +121,25 @@ export const AdminEditShop = () => {
     Remaining: '',
     HealthGoal: []
   })
-  console.log(product)
 
   useEffect(() => {
     axios.get('http://localhost:5000/products/' + id)
       .then(res => {
-        // console.log(res);
-        setData(res.data);
-        console.log(res.data);
+          setData(res.data);
 
-        setProduct({
-          ProductName: res.data.name,
+          setProduct({
+            ProductName: res.data.name,
 
-          file: {
-            name: '',
-            data: '',
-          },
+            file: {
+              name: '',
+              data: '',
+            },
 
-          ProductDesc: res.data.description,
-          Price: res.data.price,
-          Remaining: res.data.remain,
-          HealthGoal: res.data.healthGoal
-        })
+            ProductDesc: res.data.description,
+            Price: res.data.price,
+            Remaining: res.data.remain,
+            HealthGoal: res.data.healthGoal
+          })
       })
 
       .catch(err => {
@@ -154,22 +150,8 @@ export const AdminEditShop = () => {
       });
   }, [])
 
-  console.log(data);
-  console.log(product);
-
-  // async function delProduct() {
-  //   try {
-  //     const res = await axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
-  //     console.log(res)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
-
   //submit edit shop
-  function handleSubmit(e) {
-    // e.preventDefault();
+  const handleSubmit = (e) => {
     if (product.HealthGoal.length === 0) {
       alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
     }
@@ -192,7 +174,6 @@ export const AdminEditShop = () => {
             .catch(error => {
               handleOpenInfoEdit(error.response.data);
             });
-          // console.log(res)
         } catch (err) {
           console.log(err)
         }
@@ -261,9 +242,9 @@ export const AdminEditShop = () => {
     <>
       <Navbar />
       <div className={classes["productdetail-container"]}>
-        {/* <form onSubmit={handleSubmit}>     */}
         <div className={classes["edit-image"]}>
-          {/* <img src={data.image} /> */}
+          
+          {/* before add image show default image first */}
           <input type="file" onChange={handleUploadImage} />
           <img src={imagePreview ? imagePreview : data.image} />
         </div>
@@ -352,9 +333,6 @@ export const AdminEditShop = () => {
             <p>Heath Goal:</p>
             <div className={classes["healthgoal-list"]}>
               {product.HealthGoal.map(item =>
-                // <button key={item} onClick={handleDelHealthGoal} value={item}>
-                //   {item} x
-                // </button>
                 <Button
                   variant="outlined"
                   size="small"
@@ -386,8 +364,6 @@ export const AdminEditShop = () => {
               <div className={classes["submit-save"]}>
                 <Button
                   onClick={handleSubmit}
-                  // component={NavLink}
-                  // to='/AdminShop'
                   variant="contained"
                   size="large"
                   color="primary"
@@ -400,9 +376,6 @@ export const AdminEditShop = () => {
             <div className={classes["submit-remove"]}>
               <Button
                 onClick={handleDel}
-                // onClick={delProduct}
-                // component={NavLink}
-                // to='/AdminShop'
                 variant="contained"
                 size="large"
                 color="error"
@@ -434,7 +407,7 @@ export const AdminEditShop = () => {
         detail='Press confirm to remove a product'
         buttonConfirmText='Confirm'
         buttonCancelText='Cancel'
-        buttonConfirm={() => handleDeleteProduct()} //edit this later
+        buttonConfirm={() => handleDeleteProduct()} 
         buttonCancel={handleCloseConfirmDel}
       />
 

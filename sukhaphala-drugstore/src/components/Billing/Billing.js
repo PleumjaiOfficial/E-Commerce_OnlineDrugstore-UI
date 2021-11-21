@@ -10,8 +10,8 @@ import { placeOrderAsync } from '../../redux/actions/orderAction';
 
 const Billing = () => {
 
-  const cart = useSelector((state) => state.cart.cart);
-  const order = useSelector((state) => state.order.order);
+  const cart = useSelector((state) => state.carts.cart);
+  const order = useSelector((state) => state.orders.order);
 
   const dispatch = useDispatch();
 

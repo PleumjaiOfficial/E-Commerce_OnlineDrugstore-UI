@@ -1,16 +1,14 @@
-import React, { useDebugValue, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './ProductDetail.module.css';
 import Axios from 'axios';
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { add2Cart, add2CartAsync, addCartError } from '../../redux/actions/cartActions'
-// import Button from 'react-bootstrap/Button';
+import { add2CartAsync, addCartError } from '../../redux/actions/cartActions'
 import Button from '@mui/material/Button';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import Footer from '../../components/Footer/Footer'
 import HealthGoalsList from '../../components/HealthGoalList/HealthGoalList';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ProductDetail = () => {
 
@@ -52,11 +50,7 @@ const ProductDetail = () => {
       }
     } else {
       mount.current = true;
-      // console.log("bara2 : ")
     }
-    // return () => {
-    //   dispatch(addCartError({}));
-    // }
   }, [cartError]);
 
   //if fail to add to cart then reset cartError
@@ -83,7 +77,6 @@ const ProductDetail = () => {
 
   const handleClick = () => {
     setLoading(true);
-    // setAdd(true);
     dispatch(add2CartAsync({ ...data, amount: numpack }));
   }
   console.log('loadding ' + isLoading)
@@ -97,47 +90,13 @@ const ProductDetail = () => {
   useEffect(() => {
     Axios.get('http://localhost:5000/products/' + id)
       .then(res => {
-        console.log(res);
         setData(res.data);
       })
       .catch(err => {
         console.log(err)
       });
   }, [])
-  console.log(data);
-  console.log(data.healthGoal);
-  
 
-  // const mount = useRef(false);
-  // useEffect(() => {
-  //   if(mount.current) {
-  //     if (cartError.type === 'FAIL') {
-  //       setInfoModal({
-  //         status: 'FAIL',
-  //         title: 'Error',
-  //         detail: cartError.message
-  //       });
-  //       setOpenInfo(true);
-  //     }
-  //   } else {
-  //     mount.current = true;
-  //   }
-  // }, [cartError]);
-
-  // const cart = useSelector((state) => state.cart.cart);
-
-  // const mount = useRef(false);
-  // useEffect(() => {
-  //   if (mount.current) {
-  //     cart.forEach(cartitem => {
-  //       if (cartitem.productId === data._id) {
-  //         holdAdd();
-  //       }
-  //     })
-  //   } else {
-  //     mount.current = true;
-  //   }
-  // }, [cart]);
 
   
 
@@ -172,6 +131,12 @@ const ProductDetail = () => {
                 <p>Price :</p>
                 <div className={classes["price-value"]}>{data.price}</div>
                 <div className={classes["price-unit"]}>Bath</div>
+              </div>
+
+              <div className={classes["remain"]}>
+                <p>Remain :</p>
+                <div className={classes["remain-value"]}>{data.remain}</div>
+                <div className={classes["remain-unit"]}>pack</div>
               </div>
 
               <div className={classes["buy-qty"]}>

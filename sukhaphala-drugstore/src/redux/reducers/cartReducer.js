@@ -94,8 +94,8 @@ export const cartReducer = (state = iniState , action) => {
             }
 
         case CREATE_ORDER:
-            // cart is cannot update and change to emply cart if have error from backend
             if(action.payload.type !== "FAIL"){
+                // after placeorder cart will reset
                 return {
                     cart: [] 
                     }

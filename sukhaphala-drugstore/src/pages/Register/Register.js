@@ -1,13 +1,7 @@
-//rafce
-import React, {Profiler, useEffect, useState} from 'react'
-import classes from './Register.module.css'
-import Avatar from '@mui/material/Avatar';
+import React, {useState} from 'react'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -21,11 +15,6 @@ import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
 import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
-import { set } from 'js-cookie';
-import { typography } from '@mui/system';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';  
-import IconButton from '@mui/material/IconButton';
 
 const theme = createTheme({
   palette: {
@@ -57,11 +46,6 @@ const Register = () =>  {
     country: '',
     postcode: '',
   });
-  // const [locationError,setLocationError] = useState(false)
-  // const [districtError,setDistrictError] = useState(false)
-  // const [countryError,setCountryError] = useState(false)
-  // const [postcodeError,setPostcodeError] = useState(false)
-
 
   const [credential,setCredential] = useState({
     password: '',
@@ -98,8 +82,7 @@ const Register = () =>  {
     
 
     //check basic-info error
-     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if(basicInfo.firstname == ''){
       setFirstnameError(true)
     } else {setFirstnameError(false)}
@@ -119,25 +102,6 @@ const Register = () =>  {
     }else {
       setPhoneError(false)
     }
-
-    //check address error
-    // if(address.location == ''){
-    //   setLocationError(true)
-    // }else{setLocationError(false)}
-
-    // if(address.district == ''){
-    //   setDistrictError(true)
-    // }else{setDistrictError(false)}
-
-    // if(address.country == ''){
-    //   setCountryError(true)
-    // } else {setCountryError(false)}
-
-    // if(address.postcode == ''){
-    //   setPostcodeError(true)
-    // }else {setPostcodeError(false)}
-
-
 
     //check credential error
     if(credential.password == ''){
@@ -169,7 +133,6 @@ const Register = () =>  {
           }
       })
       .then(res => {
-        // console.log(res.data);
         handleOpenInfo({
           type: 'SUCCESS',
           message: 'Successfully register your account, please login and get you medicines!'
@@ -409,47 +372,21 @@ const Register = () =>  {
               </Grid>
             </Box>
 
-            
-            {/* {inValid ?  
-               <Button
-                  disabled
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                  color="standard"
-                  onClick={handleSubmit}
-                >
-                  Sign Up
-                </Button>
-              :
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                  color="standard"
-                  onClick={handleSubmit}
-                >
-                  Sign Up
-                </Button>
-            } */}
             <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2,borderRadius: 5  }}
-                  color="standard"
-                  onClick={handleSubmit}
-                >
-                  Sign Up
-                </Button>
-
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2,borderRadius: 5  }}
+                color="standard"
+                onClick={handleSubmit}
+              >
+                Sign Up
+            </Button>
           </Box>
         </Container>
       </ThemeProvider>
 
-      <p>Check value</p>
+      {/* <p>Check value</p>
       <p>firstname = {basicInfo.firstname}</p>
       <p>lastname = {basicInfo.lastname}</p>
       <p>password = {basicInfo.password}</p>
@@ -462,7 +399,7 @@ const Register = () =>  {
       <p>postcode = {address.postcode}</p>
 
       <p>passaword = {credential.password}</p>
-      <p>checkpassword = {credential.re_password}</p>
+      <p>checkpassword = {credential.re_password}</p> */}
       
       <InfoModal
           open={openInfo}

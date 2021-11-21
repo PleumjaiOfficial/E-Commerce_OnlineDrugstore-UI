@@ -41,8 +41,8 @@ const AdminCreateProduct = () => {
     setOpenInfo(true);
   }
 
+  // Initial state of product that want to create
   const [data, setData] = useState({
-    // initial state
     ProductName: '',
 
     file: {
@@ -56,16 +56,14 @@ const AdminCreateProduct = () => {
     HealthGoal: []
   });
 
-  const [imagePreview, SetimagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const handleUploadImage = (e) => {
     const file = e.target.files[0]
 
     const reader = new FileReader();
     reader.onloadend = (readerEvent) => {
-      let binaryString = readerEvent.target.result
-      console.log(readerEvent.target)
-      console.log(btoa(binaryString))
 
+      let binaryString = readerEvent.target.result
       setData({
         ...data,
         file: {
@@ -73,14 +71,13 @@ const AdminCreateProduct = () => {
           data: btoa(binaryString)
         }
       })
-      SetimagePreview(reader.result)
+      setImagePreview(reader.result)
     }
     reader.readAsDataURL(file)
   }
 
   const handleSubmit = () => {
     if (checkEmply() === false) {
-      // alert("Don't filled out");
       handleOpenInfo({
         type: 'FAIL',
         message: 'Please fill all required fields include: product name, price, remaining'
@@ -98,7 +95,6 @@ const AdminCreateProduct = () => {
             "healthGoal": data.HealthGoal
           }, { withCredentials: true })
           .then(res => { 
-            // console.log(res);
             handleOpenInfo(res.data);
             setData({
               ProductName: '',
@@ -151,7 +147,6 @@ const AdminCreateProduct = () => {
       <Navbar />
 
       <div className={classes["productdetail-container"]}>
-        {/* <form onSubmit={handleSubmit}>     */}
         <div className={classes["create-image"]}>
           <input type="file" onChange={handleUploadImage} />
           <img src={imagePreview ? imagePreview : 'http://localhost:5000/images/default-image.jpg'} />
@@ -159,6 +154,7 @@ const AdminCreateProduct = () => {
         </div>
 
         <div className={classes["create-content"]}>
+
           {/* Create Product Name */}
           <div className={classes["create-formgroup"]}>
 
@@ -279,7 +275,6 @@ const AdminCreateProduct = () => {
           </div>
         </div>
 
-        {/* </form> */}
 
         {/* Test space */}
         {/* <p>
@@ -290,19 +285,18 @@ const AdminCreateProduct = () => {
         {data.HealthGoal}   <br />
         {data.file.name}    <br />
         {data.file.data}    <br />
-      </p> */}
-
-
+        </p> */}
       </div>
-      <InfoModal 
-        open={openInfo}
-        onClose={handleCloseInfo}
-        status= {infoModal.status}
-        title= {infoModal.title}
-        detail= {infoModal.detail}
-        buttonText='OK'
-        buttonAction={handleCloseInfo}
-      />
+
+        <InfoModal 
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status= {infoModal.status}
+          title= {infoModal.title}
+          detail= {infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+        />
       <Footer />
     </>
   )
