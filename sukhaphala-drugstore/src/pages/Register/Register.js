@@ -372,8 +372,7 @@ const Register = () =>  {
                     onChange={e => setCredential({...credential, password: e.target.value})}
                     error={passwordError}
                     helperText= {passwordError && "Invalid field"}
-                     
-                    InputProp={{
+                    InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
