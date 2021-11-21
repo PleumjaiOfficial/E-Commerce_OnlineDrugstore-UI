@@ -15,6 +15,8 @@ import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
 import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
+import { InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const theme = createTheme({
   palette: {
@@ -146,6 +148,17 @@ const Register = () =>  {
     createCustomer();
   };
 
+  const [ showPassword, setShowPassword ] = useState(false);
+  const [ showRePassword, setShowRePassword ] = useState(false);
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  }
+  const handleClickShowPassword = () => {
+    setShowPassword(prev => !prev);
+  }
+  const handleClickShowRePassword = () => {
+    setShowRePassword(prev => !prev);
+  }
 
   return (
     <>
@@ -344,13 +357,26 @@ const Register = () =>  {
                     fullWidth
                     name="PASSWORD"
                     label="PASSWORD"
-                    type="PASSWORD"
+                    type={showPassword ? "text" : "password"}
                     id="PASSWORD"
                     autoComplete="new-password"
                     value={credential.password}
                     onChange={e => setCredential({...credential, password: e.target.value})}
                     error={passwordError}
                     helperText= {passwordError && "Invalid field"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Grid>
 
@@ -360,13 +386,26 @@ const Register = () =>  {
                     fullWidth
                     name="RE-ENTER PASSWORD"
                     label="RE-ENTER PASSWORD"
-                    type="RE-ENTER PASSWORD"
+                    type={showRePassword ? "text" : "password"}
                     id="RE-ENTER PASSWORD"
                     autoComplete="re-new-password"
                     value={credential.re_password}
                     onChange={e => setCredential({...credential, re_password: e.target.value})}
                     error={rePasswordError}
                     helperText= {rePasswordError && "Password not match"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowRePassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showRePassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Grid>
               </Grid>
