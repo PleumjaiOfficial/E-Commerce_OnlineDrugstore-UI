@@ -11,12 +11,15 @@ import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
 import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
-import { InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
+
 
 const theme = createTheme({
   palette: {
@@ -116,36 +119,41 @@ const Register = () =>  {
 
     if(credential.password !== credential.re_password){
       setRePasswordError(true)
-    } else {setRePasswordError(false)}
-
-
-    const createCustomer = () => {
-      axios.post('http://localhost:5000/auth/register',
-      {
-        "firstname": basicInfo.firstname,
-        "lastname": basicInfo.lastname,
-        "password": credential.password,
-        "email": basicInfo.email,
-        "phone": basicInfo.phone,
-          "address": {
-              "location": address.location,
-              "district": address.district,
-              "country": address.country,
-              "postcode": address.postcode
-          }
-      })
-      .then(res => {
-        handleOpenInfo({
-          type: 'SUCCESS',
-          message: 'Successfully register your account, please login and get you medicines!'
+       handleOpenInfo({
+          type: 'FAIL',
+          message: 'Password don\'t match'
         })
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        handleOpenInfo(error.response.data);
-      })
+    } 
+    else {
+      setRePasswordError(false)
+      const createCustomer = () => {
+        axios.post('http://localhost:5000/auth/register',
+        {
+          "firstname": basicInfo.firstname,
+          "lastname": basicInfo.lastname,
+          "password": credential.password,
+          "email": basicInfo.email,
+          "phone": basicInfo.phone,
+            "address": {
+                "location": address.location,
+                "district": address.district,
+                "country": address.country,
+                "postcode": address.postcode
+            }
+        })
+        .then(res => {
+          handleOpenInfo({
+            type: 'SUCCESS',
+            message: 'Successfully register your account, please login and get you medicines!'
+          })
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          handleOpenInfo(error.response.data);
+        })
+      }
+      createCustomer();
     }
-    createCustomer();
   };
 
   const [ showPassword, setShowPassword ] = useState(false);
@@ -364,7 +372,8 @@ const Register = () =>  {
                     onChange={e => setCredential({...credential, password: e.target.value})}
                     error={passwordError}
                     helperText= {passwordError && "Invalid field"}
-                    InputProps={{
+                     
+                    InputProp={{
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
@@ -378,6 +387,7 @@ const Register = () =>  {
                       )
                     }}
                   />
+                  
                 </Grid>
 
                 <Grid item xs={12}>
