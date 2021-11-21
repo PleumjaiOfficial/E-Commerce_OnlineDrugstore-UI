@@ -9,7 +9,7 @@ const checkStock = async (carts) => {
   for (i=0; i<carts.length; i++) {
     const isEnough = await cartInterface.checkAmount(carts[i].productId, carts[i].amount);
     if (!isEnough) {
-      outOfStockCart.push(carts[i]);
+      outOfStockCart.push(carts[i].name);
     }
   }
   //return the list os cart that contains not enough product in the stock
@@ -68,8 +68,7 @@ const createOrder = async (order) => {
   if (outOfStockCart.length > 0) {
     throw { 
       type: 'FAIL',
-      message: 'there are some products don\'t have enought quantity',
-      problemCart: outOfStockCart
+      message: 'there are some products don\'t have enought quantity: \n' + outOfStockCart.toString()
     };
   }
 
