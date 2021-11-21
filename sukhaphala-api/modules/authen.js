@@ -5,11 +5,38 @@ const saltRounds = 10;
 
 const register =  async (user) => {
   //check if there is no email and password
-  if (!(newCustomer.password && newCustomer.email && newCustomer.firstname && newCustomer.lastname)) {
+  // if (!(newCustomer.password && newCustomer.email && newCustomer.firstname && newCustomer.lastname)) {
+  //   throw {
+  //     type: 'FAIL',
+  //     message: 'cannot leave firstname, surname, email, and password blank'
+  //   };
+  // }
+
+  let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  //check if there is no email and password
+  if (!(user.password && user.email)) {
     throw {
       type: 'FAIL',
-      message: 'cannot leave firstname, surname, email, and password blank'
-    };
+      message: 'cannot leave email and password blank'
+    }
+  //check if there is no firstname and lastname
+  } else if (!(user.firstname && user.lastname)) {
+    throw {
+      type: 'FAIL',
+      message: 'cannot leave firstname and lastname blank'
+    }
+  //validate email
+  } else if(!(user.email.match(mailformat))){
+    throw {
+      type: 'FAIL',
+      message: 'email is not valid'
+    }
+  //check if there is no phone number
+  } else if(!(user.phone)){
+    throw {
+      type: 'FAIL',
+      message: 'cannot leave phone contact blank'
+    }
   }
 
   //check if there is the already existed email

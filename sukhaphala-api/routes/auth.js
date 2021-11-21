@@ -5,39 +5,11 @@ const authenInterface = require('../modules/authen');
 router.post('/register', async (req, res) => {
   const newCustomer = req.body;
   console.log(newCustomer);
-  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  //check if there is no email and password
-  if (!(newCustomer.password && newCustomer.email)) {
-    res.status(400).json({
-      type: 'FAIL',
-      message: 'cannot leave email and password blank'})
-  //pleum add this
-  } else if (!(newCustomer.firstname && newCustomer.lastname)) {
-    res.status(400).json({
-      type: 'FAIL',
-      message: 'cannot leave firstname and lastname'})
-  } else if(!(newCustomer.email.match(mailformat))){
-     res.status(400).json({
-      type: 'FAIL',
-      message: 'email is not define'})
-  } else if(!(newCustomer.phone)){
-    res.status(400).json({
-      type: 'FAIL',
-      message: 'cannot leave phone contact'})
-  }
-  
-  
-
-
-
-  const registedCustomer = await authenInterface.register(newCustomer);
-  if (registedCustomer.type === 'FAIL') {
-    //fail to register
-    res.status(400).json(registedCustomer);
-  } else {
-    //register successful
+  try {
+    const registedCustomer = await authenInterface.register(newCustomer);
     res.status(200).json(registedCustomer);
   } catch (err) {
+    console.log(err);
     res.status(400).json(err);
   }
 });
