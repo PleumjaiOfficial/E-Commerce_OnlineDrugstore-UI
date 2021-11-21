@@ -27,11 +27,14 @@ const App = () => {
         <Switch>
 
           <Route exact path='/' component={Home} />
-          <Route path='/Home' component={Home} />
+          <Route path='/Home' component={Home} >
+          {/* Redirect to admin shop page if the user is admin */}
+            { user.isAdmin && <Redirect path='/AdminShop'/> }
+          </Route>
           <Route path='/Navbar' component={Navbar} />
           <Route path='/Shop' component={Shop} />
           <Route path='/Login' component={Login} >
-            {/* { user.id ? <Redirect to='/Shop' /> : <Login /> } */}
+          {/* if successfully login, redirect to shop page */}
             { user.isAdmin ? <Redirect to='/AdminShop' /> : user.id ? <Redirect to='/Shop' /> : <Login />}
           </Route>
           <Route path='/Register' component={Register} />

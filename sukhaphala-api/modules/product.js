@@ -26,8 +26,7 @@ const createImage =  async (imageFile) => {
       message: 'successfully create a file'
     });
   } catch (err) {
-    console.log(err)
-    return ({
+    throw ({
       type: 'FAIL',
       message: 'Fail to write a file'
     });
@@ -36,13 +35,17 @@ const createImage =  async (imageFile) => {
 
 //delete image from disk
 const deleteImageFromPath = async (imageUrl) => {
-  
-    const imageName = imageUrl.split('/').pop();
-    const imagePath = path.resolve('public', 'images', imageName);
+  const imageName = imageUrl.split('/').pop();
+  const imagePath = path.resolve('public', 'images', imageName);
   try {
-    fs.unlinkSync(imagePath);
+    if (imageName !== 'default-image.jpg') {
+      fs.unlinkSync(imagePath);
+    }
   } catch (err) {
-    throw err;
+    throw {
+      type: 'FAIL',
+      message: 'Cannot delete this image from the disk'
+    };
   }
 };
 
@@ -52,9 +55,9 @@ const getAllProducts = async () => {
     const products = await Product.find();
     return products;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
-      message: 'cannot get all products'
+      message: 'Cannot get all products from database.'
     };
   }
 };
@@ -65,7 +68,7 @@ const getProduct = async (productId) => {
     const product =  await Product.findById(productId);
     return product._doc;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
       productId: productId,
       message: 'cannot get this product detail'
@@ -75,32 +78,32 @@ const getProduct = async (productId) => {
 
 //add new product
 const addProduct = async (product) => {
-  if (product.file.data !== '') {
-    const savedImageResult = await createImage(product.file);
-    if (savedImageResult.type === 'SUCCESS') {
-      try {
-        const newProduct = new Product({
-          name: product.name,
-          image: savedImageResult.path,
-          description: product.description,
-          price: product.price,
-          remain: product.remain,
-          healthGoal: product.healthGoal
-        });
+  //use haveFile to be middle varaible that check the image
+  // - if request comes from UI interface, there will always be product.file
+  //    to check if there is file with a request, check product.file.data
+  // - if request comes from internal interface and there is no file with request,
+  //    we can check from product.file
+  let haveFile = '';
+  if (product.file) {
+    haveFile = product.file.data;
+  }
+  try { 
+    if (haveFile) {
+      //if there is image of this product
+      const savedImageResult = await createImage(product.file);
+      const newProduct = new Product({
+        name: product.name,
+        image: savedImageResult.path,
+        description: product.description,
+        price: product.price,
+        remain: product.remain,
+        healthGoal: product.healthGoal
+      });
 
-        const saveProduct = await newProduct.save();
-        return saveProduct;
-      } catch (err) {
-        return {
-          type: 'FAIL',
-          message: 'Cannot add new product'
-        };
-      }
+      const saveProduct = await newProduct.save();
+      return saveProduct;
     } else {
-      return savedImageResult;
-    }
-  } else {
-    try {
+      //if there is no image of this product
       const newProduct = new Product({
         name: product.name,
         description: product.description,
@@ -108,37 +111,39 @@ const addProduct = async (product) => {
         remain: product.remain,
         healthGoal: product.healthGoal
       });
+
       const saveProduct = await newProduct.save();
       return saveProduct;
-    } catch (err) {
-      return {
-        type: 'FAIL',
-        message: 'Cannot add new product'
-      };
-    ;}
+    }
+  } catch (err) {
+    throw {
+      type: 'FAIL',
+      message: 'Cannot add new product'
+    };
   }
 };
 
 //update product details
 const updateProduct = async (productId, product) => {
+  let haveFile = '';
+  if (product.file) {
+    haveFile = product.file.data;
+  }
   try {
     //update product with new image
-    if (product.file.data) {
+    if (haveFile) {
       //create new image
       const savedImageResult = await createImage(product.file);
-      if (savedImageResult.type === 'SUCCESS') {
-        console.log(product.image);
-        deleteImageFromPath(product.image);
-        const updatedProduct = Product.findByIdAndUpdate(productId,
-          { ...product,
-            image: savedImageResult.path }, //update new image path
-          { new: true }
-        );
-        return updatedProduct;
-      }
-      return savedImageResult;
+      deleteImageFromPath(product.image); //delete old image of this product
+      const updatedProduct = Product.findByIdAndUpdate(productId,
+        { ...product,
+          image: savedImageResult.path }, //update new image path
+        { new: true }
+      );
+      return updatedProduct;
 
-    } else { //update product without new image
+    } else { 
+      //update product without new image
       const updatedProduct = await Product.findByIdAndUpdate(productId, 
         { ...product },
         { new: true });
@@ -146,10 +151,10 @@ const updateProduct = async (productId, product) => {
     }
 
   } catch (err) {
-    return {
+    console.log(err);
+    throw {
       type: 'FAIL',
-      productId: productId,
-      message: 'cannot update this product'
+      message: `cannot update this product (product id: ${productId})`
     };
   }
 };
@@ -163,14 +168,12 @@ const deleteProduct = async (productId) => {
     deleteImageFromPath(product.image);
     return {
       type: 'SUCCESS',
-      productId: productId,
-      message: 'successfully removed product'
+      message: `successfully removed product (product id: ${productId})`
     }
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
-      productId: productId,
-      message: 'cannot delete this product'
+      message: `cannot delete this product (product id: ${productId})`
     }
   }
 }

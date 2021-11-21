@@ -2,16 +2,14 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
   const jwtToken = req.cookies.token; //read token from cookie
-  // const authenHeader = req.headers.token;
   if (!jwtToken) {
-    //no token
+    //if no token in the cookie
     res.status(401).json({
       type: 'FAIL',
       message: 'please authenticate first'
     }); 
   } else {
     //verify token
-    // const jwtToken = authenHeader.split(' ')[1];
     jwt.verify(jwtToken, process.env.JWT_SECRET, (err, customer) => {
       //if token is not valid
       if (err) {
@@ -20,7 +18,7 @@ const verifyToken = (req, res, next) => {
           message: 'token is invalid'
         });
       }
-
+      //set request payload of customer with customerId and isAdmin
       req.customer = customer;
       next();
     });

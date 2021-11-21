@@ -10,12 +10,10 @@ router.post('/', verifyMiddleware.orderAuthorization, async (req, res) => {
       const placedOrder = await orderInterface.createOrder(order);
       res.status(200).json(placedOrder);
     } catch (err) {
-      res.status(500).json({
-        type: 'FAIL',
-        message: 'cannot create this order'
-      });
+      res.status(500).json(err);
     }
   } else {
+    //if order is empty send back the error
     res.status(500).json({
       type: 'FAIL',
       message: 'order cannot be empty'

@@ -1,61 +1,46 @@
-const { Promise } = require('mongoose');
 const Order = require('../models/Order');
 const cartInterface = require('./cart');
 const productInterface = require('./product');
 
-const checkProductAmount = async (productId, amount) => {
-  const product = await productInterface.getProduct(productId);
-  if (product.remain >= amount) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
+//check all product amount for each cart
 const checkStock = async (carts) => {
   let outOfStockCart = [];
-  //check stock before place order
-  //there is an error with promise when use with forEach
-  // await Promise.all(carts.forEach( async cart => {
-  //   const isEnough = await checkProductAmount(cart.productId, cart.amount);
-  //   if (!isEnough) {
-  //     outOfStockCart.push(cart);
-  //   }
-  // }));
   let i;
   for (i=0; i<carts.length; i++) {
-    const isEnough = await checkProductAmount(carts[i].productId, carts[i].amount);
+    const isEnough = await cartInterface.checkAmount(carts[i].productId, carts[i].amount);
     if (!isEnough) {
       outOfStockCart.push(carts[i]);
     }
   }
-  // console.log(outOfStockCart);
+  //return the list os cart that contains not enough product in the stock
   return outOfStockCart;
 };
 
+//reduce product amount in the stock base on order 
 const reduceProductAmount = (carts) => {
-  //reduce product remaining
+  //reduce product remaining of each cart
   carts.forEach(async cart => {
     try {
       let product = await productInterface.getProduct(cart.productId);
-      const remaining = product.remain - cart.amount;
+      const remaining = product.remain - cart.amount; //subtract the amount in database with those from the cart
       product = { ...product, remain: remaining };
-      await productInterface.updateProduct(product._id, product);
+      await productInterface.updateProduct(product._id, product); //update the cart with new amount
     } catch (err) {
-      //may be manage this error another time
-      console.log('cannot reduce amount of product...');
+      throw {
+        type: 'FAIL',
+        message: 'Cannot reduce the amount of some products'
+      }
     }
   });
 };
 
+//calculate total amount off the order
 const calculateTotal = async (carts) => {
   try {
     //find price of each product and add to cart object
     const cartWithSubtotals = await Promise.all(carts.map( async cart => {
       const { price } = await productInterface.getProduct(cart.productId);
       const subtotal = price * cart.amount;
-      // const cartWithSubtotal = { ...cart, subtotal };
-      // return cartWithSubtotal;
       return subtotal;
     }));
 
@@ -69,15 +54,19 @@ const calculateTotal = async (carts) => {
     return total;
 
   } catch (err) {
-    return null;
+    throw {
+      type: 'FAIL',
+      message: 'Cannot calculate the totol amount of order.'
+    }
   };
 };
 
+//main function for create order
 const createOrder = async (order) => {
   //recheck before place order
   const outOfStockCart = await checkStock(order);
   if (outOfStockCart.length > 0) {
-    return { 
+    throw { 
       type: 'FAIL',
       message: 'there are some products don\'t have enought quantity',
       problemCart: outOfStockCart
@@ -86,7 +75,8 @@ const createOrder = async (order) => {
 
   //calculate total money
   const totalMoney = await calculateTotal(order);
-  //create order
+  //start create order
+  //create order line
   let savedOrder;
   const orderLine = order.map(orderItem => {
     return {
@@ -94,7 +84,8 @@ const createOrder = async (order) => {
       amount: orderItem.amount
     };
   });
-  // console.log(orderLine);
+
+  //try to save order to database
   try {
     const newOrder = await new Order({
       customerId: order[0].customerId,
@@ -104,30 +95,18 @@ const createOrder = async (order) => {
     });
     savedOrder = await newOrder.save();
   } catch (err) {
-    //do something
-    // console.log(err);
-    savedOrder = null;
+    throw {
+      type: 'FAIL',
+      message: 'Cannot save the order to the database.'
+    }
   }
   
-  if (savedOrder) {
-    //update product remaining
-    reduceProductAmount(order);
-    const result = await cartInterface.deleteAllCustomerCart(order[0].customerId);
-    if (result.type === 'SUCCESS') {
-      return savedOrder;
-    } else {
-      return {
-        type: 'FAIL',
-        message: 'success created order, but cannot delete carts',
-        ...savedOrder
-      }
-    }
-  } else {
-    return {
-      type: 'FAIL',
-      message: 'cannot create order'
-    }
-  }
+  //update product remaining
+  reduceProductAmount(order);
+  //delete all cart that are used to create the order
+  const result = await cartInterface.deleteAllCustomerCart(order[0].customerId);
+  
+  return savedOrder;
 
 };
 
