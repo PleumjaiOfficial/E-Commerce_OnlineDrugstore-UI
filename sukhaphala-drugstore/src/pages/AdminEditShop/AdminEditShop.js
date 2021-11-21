@@ -153,7 +153,10 @@ export const AdminEditShop = () => {
   //submit edit shop
   const handleSubmit = (e) => {
     if (product.HealthGoal.length === 0) {
-      alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
+      handleOpenInfoEdit({
+        type: 'FAIL',
+        message: 'The product must have at least 1 healh goal'
+      });
     }
     else {
       async function updateProduct() {

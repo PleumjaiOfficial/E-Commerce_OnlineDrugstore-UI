@@ -70,7 +70,7 @@ const login = async (credential) => {
 
   //check if username is not in the database
   const targetCustomer = await customerInterface.getCustomerByEmail(email);
-  if (targetCustomer.type === 'FAIL' || targetCustomer === null) {
+  if (targetCustomer === null || targetCustomer.type === 'FAIL') {
     throw {
       type: 'FAIL',
       message: 'invalid username/password'
