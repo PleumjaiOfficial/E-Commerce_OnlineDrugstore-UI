@@ -27,29 +27,7 @@ const theme = createTheme({
   }
 });
 
-const ValidationTextField = styled(TextField)({
-  '& input:valid + fieldset': {
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-
-  '& input:invalid + fieldset': {
-    borderColor: 'white',
-    borderWidth: 2,
-  },
-
-  '& input:valid:focus + fieldset': {
-    borderLeftWidth: 6,
-    padding: '4px !important', // override inline-style
-  },
-  
-});
-
-
-
 const Login = () => {
-
-    const user = useSelector((state) => state.auth.user) //global state user
     const dispatch = useDispatch();
 
     const [login,setLogin] = useState({
@@ -113,7 +91,6 @@ const Login = () => {
           dispatch(setAuth(decode(res.data.token)))
         })
         .catch((error) => {
-
             handleOpenInfo(error.response.data);
         })
       }
@@ -124,7 +101,7 @@ const Login = () => {
     <>
       <Navbar />
 
-      <video
+      {/* <video
           autoPlay
           loop
           muted
@@ -138,7 +115,7 @@ const Login = () => {
           }}
       >
           <source src={DrugVdo} type="video/mp4" />
-      </video>
+      </video> */}
       
       <div className={classes['login-container']}>
         <ThemeProvider theme={theme}>
@@ -156,7 +133,7 @@ const Login = () => {
               <Typography 
                   component="h2" 
                   variant="h2"
-                  color='white'
+                  color='black'
                 >
                     Hello ~
               </Typography>
@@ -167,10 +144,11 @@ const Login = () => {
                     margin="normal"
                     required
                     fullWidth
+                    type="email"
                     id="EMAIL"
                     label="EMAIL ADDRESS"
                     name="EMAIL"
-                    autoComplete="email"
+                    // autoComplete="email"
                     autoFocus
                     value={login.email}
                     onChange={e => setLogin({...login, email: e.target.value})}
@@ -212,10 +190,6 @@ const Login = () => {
           </Container>
         </ThemeProvider>
       </div>
-
-      {/* <p>Check value</p>
-      <p>email = {login.email}</p>
-      <p>password = {login.password}</p> */}
 
       <InfoModal
           open={openInfo}
