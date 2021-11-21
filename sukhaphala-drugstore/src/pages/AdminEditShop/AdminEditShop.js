@@ -1,17 +1,16 @@
-import React, { Profiler, useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import Navbar from '../../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import classes from './AdminEditShop.module.css';
-import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
-import Footer from '../../../components/Footer/Footer';
-import InfoModal from '../../../components/InfoModal/InfoModal';
-import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
+import HealthGoal from '../../components/HealthGoal/HealthGoal';
+import Footer from '../../components/Footer/Footer';
+import InfoModal from '../../components/InfoModal/InfoModal';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 import { Redirect } from 'react-router-dom';
 
 export const AdminEditShop = () => {

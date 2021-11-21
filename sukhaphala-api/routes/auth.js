@@ -9,7 +9,6 @@ router.post('/register', async (req, res) => {
     const registedCustomer = await authenInterface.register(newCustomer);
     res.status(200).json(registedCustomer);
   } catch (err) {
-    console.log(err);
     res.status(400).json(err);
   }
 });

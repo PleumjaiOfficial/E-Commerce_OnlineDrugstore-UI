@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
-import Navbar from '../../../components/Navbar/Navbar';
-import image from '../../../image/HeaderBackground.jpg';
-import Sidebar from '../../../components/Sidebar/Sidebar';
-import ProductAdmin from '../AdminComponent/ProductAdmin/ProductAdmin';
+import Navbar from '../../components/Navbar/Navbar';
+import image from '../../image/HeaderBackground.jpg';
+import Sidebar from '../../components/Sidebar/Sidebar';
+// import ProductAdmin from '../../components/ProductAdmin/ProductAdmin'
+import Product from '../../components/Product/Product';
 import classes from './AdminShop.module.css';
-import Footer from '../../../components/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 export const AdminShop = () => {
 
@@ -41,7 +42,7 @@ export const AdminShop = () => {
         <div className={classes["shop-product"]}>
           {
             data.map(i=>(
-              <ProductAdmin 
+              <Product
                 id={i._id}
                 title={i.name}
                 price={i.price}

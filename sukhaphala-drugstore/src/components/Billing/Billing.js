@@ -1,33 +1,28 @@
-import React, { useEffect, useState, useRef } from 'react'
-import classes from './Billing.module.css';
+import { useEffect, useState, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
-import { placeOrderAsync } from '../../redux/actions/orderAction';
-// import Button from "../Button/Button";
+import axios from 'axios';
 import InfoModal from '../InfoModal/InfoModal';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
 import BillingInfo from '../BillingInfo/BillingInfo';
-import axios from 'axios';
+import classes from './Billing.module.css';
+import { placeOrderAsync } from '../../redux/actions/orderAction';
 
 const Billing = () => {
 
   const cart = useSelector((state) => state.cart.cart);
-  console.log(cart);
-
   const order = useSelector((state) => state.order.order);
 
   const dispatch = useDispatch();
 
-  //modal state of confirm modal
-  const [openConfirm, setOpenConfirm] = useState(false);
-  //modal state of informative modal
-  const [openInfo, setOpenInfo] = useState(false);
-  //info modal state
-  const [infoModal, setInfoModal] = useState({
+  const [openConfirm, setOpenConfirm] = useState(false); //modal state of confirm modal
+  const [openInfo, setOpenInfo] = useState(false); //modal state of informative modal
+  const [infoModal, setInfoModal] = useState({ //info modal state
     status: '',
     title: '',
     detail: ''
   });
+  
   //use this variable to track if it is the first render to prevent useeffect make the popup
   const mount = useRef(false);
 
@@ -36,12 +31,15 @@ const Billing = () => {
   }
 
   const handleOpenInfo = () => {
+    //set information in modal base on action status
+    //if place order failed, order type in redux will be FAIL
     if (order.type === 'FAIL') {
       setInfoModal({
         status: 'FAIL',
         title: 'Error',
         detail: order.message
       });
+    //if successfully place order, there must be order id in redux 
     } else if (order._id) {
       setInfoModal({
         status: 'SUCCESS',
@@ -49,20 +47,24 @@ const Billing = () => {
         detail: 'Successfully place your order!'
       });
     }
+    //after set information, pop up modal
     setOpenInfo(true);
   }
   const handleCloseInfo = () => {
     setOpenInfo(false);
   }
-
+  //open confirm modal
   const handleOrder = () => {
     setOpenConfirm(true);
   }
 
+  //will be call when click confirm on modal
   const handlePlaceOrder = (cart) => {
     dispatch(placeOrderAsync(cart));
   }
 
+  //this code snipped will be run after click confirm
+  //and also open modal to show status
   useEffect(() => {
     if (mount.current) {
       setOpenConfirm(false);
@@ -128,6 +130,7 @@ const Billing = () => {
           </Button>
         </div>
 
+        {/* This modal will be pop up when customer click place order */}
         <ConfirmModal
           open={openConfirm}
           onClose={handleCloseConfirm}
@@ -138,7 +141,7 @@ const Billing = () => {
           buttonConfirm={() => handlePlaceOrder(cart)}
           buttonCancel={handleCloseConfirm}
         />
-
+        {/* This modal will be pop up when action was done */}
         <InfoModal
           open={openInfo}
           onClose={handleCloseInfo}
@@ -148,10 +151,7 @@ const Billing = () => {
           buttonText='OK'
           buttonAction={handleCloseInfo}
         />
-
-
       </div>
-
     </>
   )
 }

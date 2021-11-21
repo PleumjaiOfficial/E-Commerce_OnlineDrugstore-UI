@@ -3,7 +3,6 @@
   flex-flow: column nowrap;
   justify-content: top;
   position: relative;
-  /* height: 550px; */
   width: 450px;
   height: 650px;
   padding: 50px;
@@ -27,64 +26,3 @@
   font-size: 24px;
   font-weight: bold;
 }
-
-.billing-info{
-  display: flex;
-  flex-flow: row nowrap;
-  padding-bottom: 20px;
-}
-
-.billing-info p{
-  font-family: 'Montserrat';
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.info-head{
-  width: 100px;
-}
-
-.info-content{
-  width: 300px;
-  text-align: right;
-}
-
-.billing-info-address{
-  display: flex;
-  flex-flow: row nowrap;
-  padding-bottom: 50px;
-  height: 150px;
-}
-
-.billing-info-address p{
-  font-family: 'Montserrat';
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.info-content-address{
-  width: 300px;
-  text-align: right;
-}
-
-.content-address{
-  padding-bottom: 10px;
-}
-
-.billing-placeorder{
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  margin-top: 100px;
-  
-}
-
-/*.btn_cart {
-	width: 150px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    padding: 2px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s linear;
-} */

@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from './Footer.module.css';
-import {AiOutlineCopyright, AiFillFacebook, AiFillTwitterSquare, AiFillInstagram} from 'react-icons/ai';
+import { AiOutlineCopyright, AiFillFacebook, AiFillTwitterSquare, AiFillInstagram } from 'react-icons/ai';
 
 const Footer = () => {
   return (

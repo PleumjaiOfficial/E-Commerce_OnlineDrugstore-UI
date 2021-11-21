@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { clearAuth } from '../../../redux/actions/authenAction';
-import { clearCart } from "../../../redux/actions/cartActions";
-import {store} from '../../../redux/store';
+import { clearAuth } from '../redux/actions/authenAction';
+import { clearCart } from "../redux/actions/cartActions";
+import {store} from '../redux/store';
 
 const handleLogout = () => {
   // const dispatch = useDispatch();

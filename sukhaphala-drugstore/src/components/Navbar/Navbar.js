@@ -1,47 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import classes from './Navbar.module.css';
-import { useSelector, useDispatch} from 'react-redux';
-
-// import { IconName } from "react-icons/hi";
-// https://react-icons.github.io/react-icons
 import Button from "../Button/Button";
-import { getCart } from '../../redux/actions/cartActions';
-import Axios from 'axios';
-import Cookies, { set } from 'js-cookie';
-import { clearAuth } from '../../redux/actions/authenAction';
-import handleLogout from '../InfoModal/handleLogout/handleLogout';
+import handleLogout from '../../utils/handleLogout';
+import classes from './Navbar.module.css';
 
 const Navbar = () => {
 
-  const dispatch = useDispatch();
-
-  const [click,setclick] = useState(false);
+  //use for responsive design (unfinish)
+  const [ click, setclick ] = useState(false);
   const holdClick = () => setclick(!click);
-
-
-  const cart = useSelector((state) => state.carts.cart);
-  // console.log(cart);
-
-  /*
-    1.เริ่มเข้าเว็บ  guest-true admin-false user-false
-    2.เข้าในฐานะ admin : admin-true guest-false user-false
-    2.เข้าในฐานะ user : user-true admin-false guest-false 
-
-  */
-
+  
   /*
     Guest's view: Home, Shop, Login, Register
     User's view: Home, Shop, Cart, Logout
     Admin's view: Home, Edit Product, Add Product, Logout 
   */
-  // const [isGuest,setIsGuest] = useState(true);
-  // const [isAdmin,setIsAdmin] = useState(false);
-  // const [isUser,setIsUser] = useState(false);
   //role includes [GUEST, ADMIN, USER]
   const [role, setRole] = useState('GUEST');
-  const user = useSelector((state) => state.auth.user)
 
+  const cart = useSelector((state) => state.carts.cart); //use to display number of product in cart of navbar
+  const user = useSelector((state) => state.auth.user); //use for track the user role
+  
+  //set user role 
   useEffect(() => {
     if (user.isAdmin) {
       setRole('ADMIN');
@@ -56,7 +37,7 @@ const Navbar = () => {
     <nav className={classes["navbar"]}>
 
       <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
-
+        {/* home link */}
         {(role === 'GUEST' || role === 'USER') &&             
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
@@ -65,6 +46,7 @@ const Navbar = () => {
           </NavLink>
           </li> }
         
+        {/* main shopping page link */}
         {(role === 'GUEST' || role === 'USER') && 
         <li className={classes["nav-item"]}>
           <NavLink  to='/Shop' 
@@ -73,14 +55,7 @@ const Navbar = () => {
           </NavLink>
         </li>}
 
-        {role === 'ADMIN' && 
-        <li className={classes["nav-item"]}>
-          <NavLink  to='/Shop' 
-          className={classes["nav-links"]}>
-            <span>SHOP</span>
-          </NavLink>
-        </li> }
-
+        {/* create product page (for admin) */}
         {role === 'ADMIN' && 
         <li className={classes["nav-item"]}>
           <NavLink  to='/AdminCreateProduct' 
@@ -89,6 +64,7 @@ const Navbar = () => {
           </NavLink>
         </li> }
 
+        {/* manage product page (for admin) */}
         {role === 'ADMIN' && 
          <li className={classes["nav-item"]}>
           <NavLink  to='/AdminShop'
@@ -102,7 +78,7 @@ const Navbar = () => {
       </ul>
 
     <div className={classes[click ? "nav-button-active" : "nav-button"]}>
-
+      {/* user's cart */}
       {role === 'USER' &&
       <NavLink  to='/Cart'>
         <span>
@@ -111,6 +87,7 @@ const Navbar = () => {
         </span>
       </NavLink> }
       
+      {/* login page */}
       {role === 'GUEST' && 
       <NavLink  to='/Login'>
         <Button
@@ -118,6 +95,7 @@ const Navbar = () => {
             Button_text="LOGIN" />
       </NavLink> }
       
+      {/* register page */}
       { role === 'GUEST' && 
       <NavLink  to='/Register'>
         <Button
@@ -125,6 +103,7 @@ const Navbar = () => {
             Button_text="REGISTER" />
       </NavLink> }
       
+      {/* home page */}
       { (role === 'USER' || role === 'ADMIN') && 
       <NavLink to='/Home'>
         <Button 
@@ -133,7 +112,6 @@ const Navbar = () => {
           Button_onclick={handleLogout} />
       </NavLink> }
     </div>
-
       
       <div className={classes['nav-burger']} onClick={holdClick}>
         <i className={click ? 'fas fa-times' : 'fa fa-bars'}></i>

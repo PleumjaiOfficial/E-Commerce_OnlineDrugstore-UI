@@ -1,32 +1,22 @@
-import React from 'react'
-import classes from './Product.module.css'
-import Card from '../Card/Card'
-// import ProductDetail from './ProductDetail'
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import Card from '../Card/Card'
 
 const Product = (props) => {
+	const user = useSelector((state) => state.auth.user); //use for track the user role
 
-    return (
-        <>
-        <NavLink to={`/ProductDetail/${props.id}`}>
-            <Card 
-                id={props.id}
-                title={props.title}
-                price={props.price}
-                img={props.img}
-                desc={props.desc}
-                // img="https://miro.medium.com/max/1400/1*XaU1wjTJK4ZYI8yI_SFuTg.png"
-            />
-        </NavLink>
-
-            {/* <ProductDetail
-                title={props.title}
-                desc={props.desc}
-            /> */}
-
-        </>
-        
-    )
+	return (
+		<NavLink to={user.isAdmin ? `/AdminEditShop/${props.id}` : `/ProductDetail/${props.id}`}>
+			<Card 
+				id={props.id}
+				title={props.title}
+				price={props.price}
+				img={props.img}
+				desc={props.desc}
+				button={user.isAdmin ? 'Edit' : 'Explore More...'}
+			/>
+		</NavLink>
+	)
 }
 
 export default Product

@@ -1,11 +1,9 @@
-// import React, {useEffect, useState} from 'react'
 import classes from './Card.module.css';
-// import Axios from 'axios';
 
 const Card = (props) => {
-  console.log(props.id)
   let textDesc
 
+  //truncate string to not longer than 50 characters
   if(props.desc.length > 50){
     textDesc = props.desc.substring(0,50);
     textDesc  = textDesc + "..."
@@ -35,7 +33,7 @@ const Card = (props) => {
             {textDesc}
           </p>
 
-          <h3> Expore more... </h3>
+          <h3> {props.button} </h3>
       </div>
       </div>
     </div>
