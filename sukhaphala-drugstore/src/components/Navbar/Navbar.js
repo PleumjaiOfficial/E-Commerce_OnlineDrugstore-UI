@@ -56,13 +56,14 @@ const Navbar = () => {
     <nav className={classes["navbar"]}>
 
       <ul className={classes[click ? "nav-menu-active" : "nav-menu"]}>
-                    
+
+        {(role === 'GUEST' || role === 'USER') &&             
         <li className={classes["nav-item"]}>
           <NavLink  to='/Home'  
           className={classes["nav-links"]}>
             <span>HOME</span>
           </NavLink>
-        </li>
+          </li> }
         
         {(role === 'GUEST' || role === 'USER') && 
         <li className={classes["nav-item"]}>
@@ -74,22 +75,33 @@ const Navbar = () => {
 
         {role === 'ADMIN' && 
         <li className={classes["nav-item"]}>
+          <NavLink  to='/Shop' 
+          className={classes["nav-links"]}>
+            <span>SHOP</span>
+          </NavLink>
+        </li> }
+
+        {role === 'ADMIN' && 
+        <li className={classes["nav-item"]}>
           <NavLink  to='/AdminCreateProduct' 
           className={classes["nav-links"]}>
             <span>ADD PRODUCT</span>
           </NavLink>
         </li> }
 
+        {role === 'ADMIN' && 
+         <li className={classes["nav-item"]}>
+          <NavLink  to='/AdminShop'
+          className={classes["nav-links"]}>
+          <span>
+            <span>MANAGE PRODUCT</span>
+          </span>
+          </NavLink> 
+        </li> }
+
       </ul>
 
     <div className={classes[click ? "nav-button-active" : "nav-button"]}>
-      
-      {role === 'ADMIN' && 
-      <NavLink  to='/AdminShop'>
-        <span>
-          <i class="fas fa-poo"></i>
-        </span>
-      </NavLink> }
 
       {role === 'USER' &&
       <NavLink  to='/Cart'>
