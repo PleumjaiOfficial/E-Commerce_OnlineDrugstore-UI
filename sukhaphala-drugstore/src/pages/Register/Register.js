@@ -173,7 +173,7 @@ const Register = () =>  {
 
       <Navbar />
 
-      <video
+      {/* <video
         autoPlay
         loop
         muted
@@ -187,7 +187,7 @@ const Register = () =>  {
         }}
       >
         <source src={DrugVdo} type="video/mp4" />
-      </video>
+      </video> */}
 
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
@@ -340,6 +340,7 @@ const Register = () =>  {
                     fullWidth
                     id="POSTCODE"
                     label="POSTCODE"
+                    type="number"
                     name="POSTCODE"
                     value={address.postcode}
                     onChange={e => setAddress({...address, postcode: e.target.value})}
