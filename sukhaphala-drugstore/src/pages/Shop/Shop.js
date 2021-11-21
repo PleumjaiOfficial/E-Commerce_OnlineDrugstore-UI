@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import image from '../../image/HeaderBackground.jpg';
@@ -7,7 +7,7 @@ import Product from '../../components/Product/Product';
 import classes from './Shop.module.css'
 import Footer from '../../components/Footer/Footer';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCart, getCartAsync } from '../../redux/actions/cartActions';
+import { getCart } from '../../redux/actions/cartActions';
 
 const Shop = () => {
 

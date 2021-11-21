@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
-import classes from './CartListItem.module.css'
-import { useSelector, useDispatch } from 'react-redux';
-import { getCart, updateAddCartAsync, updateSubCartAsync, deleteFromCartAsync, getCartAsync } from '../../redux/actions/cartActions';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
+import classes from './CartListItem.module.css'
+import { getCart, updateAddCartAsync, updateSubCartAsync, deleteFromCartAsync } from '../../redux/actions/cartActions';
 
 export const CartListItem = (props) => {
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 
-  //modal state of confirm modal
-  const [openConfirm, setOpenConfirm] = useState(false);
-  //modal state of informative modal
-
+  const [openConfirm, setOpenConfirm] = useState(false); //modal state of confirm modal
+  const [isLoadingSub, setLoadingSub] = useState(false); //state for decrease loading button
+  const [isLoadingAdd, setLoadingAdd] = useState(false); //state for increase loading button
+  const [cartBufferSub, setCartBufferSub] = useState({}); //state of cart that will be decrease during loading 
+  const [cartBufferAdd, setCartBufferAdd] = useState({}); //state of cart that will be increase during loading
+  
+  //open modal
   const handleOpenConfirm = () => {
     setOpenConfirm(true);
   }
@@ -21,46 +25,33 @@ export const CartListItem = (props) => {
     setOpenConfirm(false);
   }
 
+  //if click confirm button on modal, call this function
   const handleRemove = (cart) => {
     dispatch(deleteFromCartAsync(cart))
   }
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-  const dispatch = useDispatch();
-  useEffect(async () => {
-    let res = await axios.get("http://localhost:5000/carts/")
-    dispatch(getCart(res.data))
-  }, [])
-
-  //Loading and click
+  //simulating loading
   function simulateNetworkRequest() {
     return new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  const [isLoadingSub, setLoadingSub] = useState(false);
-  const [isLoadingAdd, setLoadingAdd] = useState(false);
-  const [cartBufferSub, setCartBufferSub] = useState({});
-  const [cartBufferAdd, setCartBufferAdd] = useState({});
-  // const [cartBuffer, setCartBuffer] = useState({});
-  // const [operation,setOperation] = useState("")
-
-  //loading sub
+  //show loading then decrease amount by 1
   useEffect(() => {
     if (isLoadingSub === true) {
       simulateNetworkRequest().then(() => {
         setLoadingSub(false);
         dispatch(updateSubCartAsync({ ...cartBufferSub, amount: cartBufferSub.amount - 1 }));
-        //dispatch(updateAddCartAsync({...cartBuffer,amount: cartBuffer.amount + 1}));
       });
     }
   }, [isLoadingSub]);
 
+  //when click minus button, call this function to show loading and set cart buffer
   const handleClickSub = (cartItem) => {
     setLoadingSub(true);
     setCartBufferSub(cartItem);
   };
 
-  //loading add
+  //show loading then increase amount by 1
   useEffect(() => {
     if (isLoadingAdd === true) {
       simulateNetworkRequest().then(() => {
@@ -70,10 +61,18 @@ export const CartListItem = (props) => {
     }
   }, [isLoadingAdd]);
 
+  //when click add button, call this function to show loading and set cart buffer
   const handleClickAdd = (cartItem) => {
     setLoadingAdd(true);
     setCartBufferAdd(cartItem);
   };
+
+  //get all carts of this customer from database and store in redux 
+  const dispatch = useDispatch();
+  useEffect(async () => {
+    let res = await axios.get("http://localhost:5000/carts/")
+    dispatch(getCart(res.data))
+  }, [])
 
   return (
     <>
@@ -85,7 +84,6 @@ export const CartListItem = (props) => {
 
       <div className={classes["detail-container"]}>
         {/* Query Product Name from productId */}
-        {/* <div className={classes["name"]}> {props.cart.productId}</div> */}
         <div className={classes["product-name"]}> {props.cart.name} </div>
 
         <div className={classes["action-container"]}>
@@ -119,6 +117,7 @@ export const CartListItem = (props) => {
           </div>
         </div>
       </div>
+
       <ConfirmModal
         open={openConfirm}
         onClose={handleCloseConfirm}
@@ -129,7 +128,7 @@ export const CartListItem = (props) => {
         buttonConfirm={() => handleRemove(props.cart._id)}
         buttonCancel={handleCloseConfirm}
       />
-
+      
     </div>
     <hr />
     </>

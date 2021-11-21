@@ -1,15 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import Navbar from '../../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import classes from './AdminCreateProduct.module.css'
 import axios from 'axios';
-import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
-import Footer from '../../../components/Footer/Footer';
-import InfoModal from '../../../components/InfoModal/InfoModal';
+import HealthGoal from '../../components/HealthGoal/HealthGoal';
+import Footer from '../../components/Footer/Footer';
+import InfoModal from '../../components/InfoModal/InfoModal';
 
 const AdminCreateProduct = () => {
   //modal state of 

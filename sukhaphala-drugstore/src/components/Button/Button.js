@@ -1,17 +1,11 @@
 
-const Button = ({
-  Button_text,
-  Button_style,
-  Button_onclick,
-  Button_icon
-}) => {
-
+const Button = (props) => {
   return(
     <button
-      onClick={Button_onclick}
-      className={Button_style}
+      onClick={props.Button_onclick}
+      className={props.Button_style}
     >
-      {Button_text} 
+      {props.Button_text} 
     </button>
   )
 };
