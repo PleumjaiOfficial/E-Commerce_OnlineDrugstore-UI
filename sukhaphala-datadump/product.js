@@ -129,14 +129,6 @@ async function Main() {
   //create model
   const Product = mongoose.model('Product', productSchema);
 
-  // //delete all document
-  // try{
-  //   await Product.deleteMany({});
-  //   console.log('delete correctly');
-  // }catch(error){
-  //   console.log('fail to delete');
-  // }
-
   //create multiple documents
   try{
     Product.create(dummyProduct);
