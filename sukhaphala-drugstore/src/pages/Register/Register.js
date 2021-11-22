@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -17,7 +18,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Navbar from '../../components/Navbar/Navbar';
 import DrugVdo from '../../Video/vdo-regis.mp4';
-import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
 
 
@@ -168,6 +168,30 @@ const Register = () =>  {
     setShowRePassword(prev => !prev);
   }
 
+  const handleChangePhone = (e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+    if (onlyNums.length < 10) {
+        setBasicInfo({...basicInfo, phone: onlyNums});
+    } else if (onlyNums.length === 10) {
+        const number = onlyNums.replace(
+            /(\d{3})(\d{3})(\d{4})/,
+            '($1) $2-$3'
+        );
+         setBasicInfo({...basicInfo, phone: number});
+    }
+  } 
+
+  const handleChangePostcode = (e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+    if (onlyNums.length <= 5) {
+        const numsPostcode = onlyNums.replace(
+            /(\d{5})/,
+            '$1'
+        );
+         setAddress({...address, postcode: numsPostcode});
+    }
+  } 
+
   return (
     <>
 
@@ -266,12 +290,13 @@ const Register = () =>  {
                   <TextField
                     required
                     fullWidth
-                    type="number"
+                    // type="number"
                     id="PHONE NUMBER"
                     label="PHONE NUMBER"
                     name="PHONE NUMBER"
                     value={basicInfo.phone}
-                    onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
+                    //onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
+                    onChange={handleChangePhone}
                     error = {phoneError}
                     helperText= {phoneError && "Phone were number and 10-digit."}
                   />
@@ -340,10 +365,10 @@ const Register = () =>  {
                     fullWidth
                     id="POSTCODE"
                     label="POSTCODE"
-                    type="number"
                     name="POSTCODE"
                     value={address.postcode}
-                    onChange={e => setAddress({...address, postcode: e.target.value})}
+                    //onChange={e => setAddress({...address, postcode: e.target.value})}
+                    onChange={handleChangePostcode}
                     // error={postcodeError}
                   />
                 </Grid>
@@ -435,7 +460,7 @@ const Register = () =>  {
         </Container>
       </ThemeProvider>
 
-      {/* <p>Check value</p>
+      <p>Check value</p>
       <p>firstname = {basicInfo.firstname}</p>
       <p>lastname = {basicInfo.lastname}</p>
       <p>password = {basicInfo.password}</p>
@@ -448,7 +473,7 @@ const Register = () =>  {
       <p>postcode = {address.postcode}</p>
 
       <p>passaword = {credential.password}</p>
-      <p>checkpassword = {credential.re_password}</p> */}
+      <p>checkpassword = {credential.re_password}</p>
       
       <InfoModal
           open={openInfo}

@@ -17,6 +17,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuth } from '../../redux/actions/authenAction';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import classes from './Login.module.css';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const theme = createTheme({
   palette: {
@@ -34,6 +38,15 @@ const Login = () => {
       email: '',
       password: '',
     });
+
+    const [ showPassword, setShowPassword ] = useState(false);
+    const [ showRePassword, setShowRePassword ] = useState(false);
+    const handleMouseDownPassword = (e) => {
+      e.preventDefault();
+    }
+    const handleClickShowPassword = () => {
+      setShowPassword(prev => !prev);
+    }
 
     //state of modal: false -> close modal, true -> open modal
     const [ openInfo, setOpenInfo ] = useState(false);
@@ -155,16 +168,28 @@ const Login = () => {
                 />
 
                 <TextField
-                    margin="normal"
                     required
                     fullWidth
                     name="PASSWORD"
                     label="PASSWORD"
-                    type="PASSWORD"
+                    type={showPassword ? "text" : "password"}
                     id="PASSWORD"
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     value={login.password}
                     onChange={e => setLogin({...login, password: e.target.value})}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                 />
 
                 <Button
