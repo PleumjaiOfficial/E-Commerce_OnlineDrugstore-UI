@@ -1,29 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Navbar from '../../components/Navbar/Navbar';
-import classes from './ProductDetail.module.css';
 import Axios from 'axios';
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { add2CartAsync, addCartError } from '../../redux/actions/cartActions'
 import Button from '@mui/material/Button';
+import Navbar from '../../components/Navbar/Navbar';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import Footer from '../../components/Footer/Footer'
 import HealthGoalsList from '../../components/HealthGoalList/HealthGoalList';
+import { add2CartAsync, addCartError } from '../../redux/actions/cartActions'
+import classes from './ProductDetail.module.css';
 
 const ProductDetail = () => {
 
-  const { id } = useParams();
+  //useParam to get product that user want to explore the detail
+  const { id } = useParams(); 
+
+  //state for healthGoal
   const [data, setData] = useState({
     healthGoal: []
   });
-  const [numpack, setNumpack] = useState(1);
 
+  //state for get multiple product
+  const [numpack, setNumpack] = useState(1);
   const [add, setAdd] = useState(false);
 
-  //modal handler ----------------------------------------------
+  //modal handler 
   const cartError = useSelector((state) => state.carts.cartError);
-
   const [openInfo, setOpenInfo] = useState(false);
+
   //info modal state
   const [infoModal, setInfoModal] = useState({
     status: '',
@@ -38,7 +42,6 @@ const ProductDetail = () => {
   const mount = useRef(false);
   useEffect(() => {
     if (mount.current) {
-      // console.log("bara1 : ")
       if (cartError.type === 'FAIL') {
         setInfoModal({
           status: 'FAIL',
@@ -68,8 +71,8 @@ const ProductDetail = () => {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     if (isLoading) {
-      simulateNetworkRequest().then(() => {
-        setLoading(false);
+      simulateNetworkRequest().then(() => { //if loading not finish yet, setLoading is logic true
+        setLoading(false); //Loading finish
       });
       setAdd(true);
     }
@@ -77,20 +80,18 @@ const ProductDetail = () => {
 
   const handleClick = () => {
     setLoading(true);
-    dispatch(add2CartAsync({ ...data, amount: numpack }));
+    dispatch(add2CartAsync({ ...data, amount: numpack })); //overwrite data if use get product more than one
   }
-  console.log('loadding ' + isLoading)
 
   const handleNumpack = (event) => {
     setNumpack( + event.target.value )
   }
 
   const dispatch = useDispatch();
-
   useEffect(() => {
-    Axios.get('http://localhost:5000/products/' + id)
+    Axios.get('http://localhost:5000/products/' + id) //get data product that same id that get from useParam
       .then(res => {
-        setData(res.data);
+        setData(res.data); 
       })
       .catch(err => {
         console.log(err)
@@ -150,12 +151,6 @@ const ProductDetail = () => {
                 <div className={classes["buy-unit"]}>Pack</div>
               </div>
             </div>
-
-						{/* <button className={classes["btn"]} onClick={() => 
-							dispatch(add2CartAsync({ ...data, amount: numpack }))}>
-                Add to cart
-            </button>			 */}
-            
 
             <div className={classes["content-add-cart"]}>
               { add === false ?

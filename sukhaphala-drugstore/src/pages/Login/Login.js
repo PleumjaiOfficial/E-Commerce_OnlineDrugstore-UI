@@ -1,26 +1,24 @@
 import React, {useState} from 'react'
+import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Navbar from '../../components/Navbar/Navbar';
-import { NavLink } from 'react-router-dom';
-import DrugVdo from '../../Video/demo-vdo.mp4';
-import axios from 'axios';
-import Cookies from 'js-cookie'
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuth } from '../../redux/actions/authenAction';
-import InfoModal from '../../components/InfoModal/InfoModal';
-import classes from './Login.module.css';
+import { useDispatch } from 'react-redux';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { setAuth } from '../../redux/actions/authenAction';
+import InfoModal from '../../components/InfoModal/InfoModal';
+import Navbar from '../../components/Navbar/Navbar';
+import classes from './Login.module.css';
 
 const theme = createTheme({
   palette: {
@@ -32,15 +30,17 @@ const theme = createTheme({
 });
 
 const Login = () => {
+
+    //dispatch for redux action
     const dispatch = useDispatch();
 
+    //state for login
     const [login,setLogin] = useState({
       email: '',
       password: '',
     });
 
     const [ showPassword, setShowPassword ] = useState(false);
-    const [ showRePassword, setShowRePassword ] = useState(false);
     const handleMouseDownPassword = (e) => {
       e.preventDefault();
     }
@@ -70,7 +70,7 @@ const Login = () => {
       setOpenInfo(true);
     }
 
-    //decode token function
+    //function decode token 
     const decode = (codeSixFour) => {
 
       //split token
@@ -78,14 +78,11 @@ const Login = () => {
 
       //decode base64 to string
       let str = text[1]; //string to decode on the middle base64
-      let buff = new Buffer(str, 'base64');
+      let buff = new Buffer(str, 'base64'); //buff variable for create base64string
       let base64ToStringNew = buff.toString('ascii');
-        console.log(base64ToStringNew)
 
       //String to object
-      console.log(JSON.parse(base64ToStringNew));
       let tokenObject = JSON.parse(base64ToStringNew)
-
 
       //sent object that decoded
       return tokenObject 
@@ -100,8 +97,8 @@ const Login = () => {
           "password": login.password
         })
         .then(res => { 
-          Cookies.set('token',res.data.token); 
-          dispatch(setAuth(decode(res.data.token)))
+          Cookies.set('token',res.data.token);  //set cookie 
+          dispatch(setAuth(decode(res.data.token))) //use dispath setAuth for set authentication
         })
         .catch((error) => {
             handleOpenInfo(error.response.data);
@@ -113,22 +110,6 @@ const Login = () => {
   return (
     <>
       <Navbar />
-
-      {/* <video
-          autoPlay
-          loop
-          muted
-          style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              zIndex: "-1",
-              opacity: "80%",
-          }}
-      >
-          <source src={DrugVdo} type="video/mp4" />
-      </video> */}
       
       <div className={classes['login-container']}>
         <ThemeProvider theme={theme}>

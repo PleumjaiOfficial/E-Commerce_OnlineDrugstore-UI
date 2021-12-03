@@ -1,47 +1,38 @@
 import { useEffect, useState } from 'react';
-import Axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import Navbar from '../../components/Navbar/Navbar';
 import image from '../../image/HeaderBackground.jpg';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import Product from '../../components/Product/Product';
 import classes from './Shop.module.css'
 import Footer from '../../components/Footer/Footer';
-import { useSelector, useDispatch } from 'react-redux';
 import { getCart } from '../../redux/actions/cartActions';
 
 const Shop = () => {
 
   const user = useSelector((state) => state.auth.user);
-  //   console.log(user);
-
   const dispatch = useDispatch();
-  // dispatch(getCartAsync(user.id));
 
-  console.log("start useffect");
+  //get data on cart if user didn't place order
   useEffect(() => {
-      console.log("useffect is working now");
-      Axios.get("http://localhost:5000/carts/" + user.id, {withCredentials: true} )
+      axios.get("http://localhost:5000/carts/" + user.id, {withCredentials: true} )
       .then(res => {
-        console.log("gsdsgds")
-        console.log(res.data)
         dispatch(getCart(res.data ))
       })
   },[])
-  console.log("useffect working");
-  const [data, setData] = useState([]);
 
+  //state for data
+  const [data, setData] = useState([]);
   useEffect(()=>{
-    Axios.get('http://localhost:5000/products')
+    axios.get('http://localhost:5000/products')
     .then(res=>{
-      console.log(res)
-        setData(res.data.filter(selectData => selectData.remain>0))
+        // get only product in stock
+        setData(res.data.filter(selectData => selectData.remain>0)) 
     })
    .catch(err =>{
-      console.log(err)
     });
   },[])
-
-  //console.log(data);
 
   return (
     <>
@@ -53,7 +44,6 @@ const Shop = () => {
           <p>Vitamins, protein, and more, made from the best ingredients on earth and personalized just for you.</p>
           <p>NO TIME TO DIE, Adjust your delivery or cancel at any time.</p>
         </div>
-
       </div>
 
       <div className={classes["shop-container"]}>

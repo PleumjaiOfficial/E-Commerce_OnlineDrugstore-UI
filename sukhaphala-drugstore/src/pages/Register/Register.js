@@ -17,10 +17,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Navbar from '../../components/Navbar/Navbar';
-import DrugVdo from '../../Video/vdo-regis.mp4';
 import InfoModal from '../../components/InfoModal/InfoModal';
 
-
+// theme for use on material UI
 const theme = createTheme({
   palette: {
     standard: {
@@ -32,19 +31,20 @@ const theme = createTheme({
 
 const Register = () =>  {
 
+  //state of basic information
   const [basicInfo,setBasicInfo] = useState({
     firstname:'',
     lastname: '',
     email:    '',
     phone:    '',
   })
+  //state error case of basic information
   const [firstnameError,setFirstnameError] = useState(false)
   const [lastnameError,setLastnameError] = useState(false)
   const [emailError,setEmailError] = useState(false)
   const [phoneError,setPhoneError] = useState(false)
-  const [phoneErrorFormat,setPhoneErrorFormat] = useState(false)
 
-
+  //state of address information
   const [address,setAddress] = useState({
     location: '',
     district: '',
@@ -52,14 +52,15 @@ const Register = () =>  {
     postcode: '',
   });
 
+  //state of credential
   const [credential,setCredential] = useState({
     password: '',
     re_password: '',
   });
+  //state error case of credential
   const [passwordError,setPasswordError] = useState(false)
   const [rePasswordError,setRePasswordError] = useState(false)
 
-  
   //state of modal: false -> close modal, true -> open modal
   const [ openInfo, setOpenInfo ] = useState(false);
   //infomation of the modal
@@ -84,25 +85,26 @@ const Register = () =>  {
 
   const handleSubmit = () => {
 
-    
-
     //check basic-info error
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if(basicInfo.firstname == ''){
+    //first all of textboxs are require
+    //if null, will set state error 'true'
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //correct format of email
+    if(basicInfo.firstname == ''){ 
       setFirstnameError(true)
     } else {setFirstnameError(false)}
 
-    if(basicInfo.lastname == ''){
+    if(basicInfo.lastname == ''){ 
       setLastnameError(true)
     } else {setLastnameError(false)}
 
-    if(basicInfo.email == '' || !(basicInfo.email.match(mailformat))){
+    if(basicInfo.email == '' || !(basicInfo.email.match(mailformat))){ //not null and focus on format
       setEmailError(true)
     }else{
       setEmailError(false)
     }
 
-    if(basicInfo.phone == ''){
+    if(basicInfo.phone == ''){ 
       setPhoneError(true)
     }else {
       setPhoneError(false)
@@ -117,6 +119,7 @@ const Register = () =>  {
       setRePasswordError(true)
     } else {setRePasswordError(false)}
 
+    //password should to same in re-writing password
     if(credential.password !== credential.re_password){
       setRePasswordError(true)
        handleOpenInfo({
@@ -127,7 +130,7 @@ const Register = () =>  {
     else {
       setRePasswordError(false)
       const createCustomer = () => {
-        axios.post('http://localhost:5000/auth/register',
+        axios.post('http://localhost:5000/auth/register', //post data in state to API
         {
           "firstname": basicInfo.firstname,
           "lastname": basicInfo.lastname,
@@ -156,6 +159,7 @@ const Register = () =>  {
     }
   };
 
+  //state for show password (eyeicon)
   const [ showPassword, setShowPassword ] = useState(false);
   const [ showRePassword, setShowRePassword ] = useState(false);
   const handleMouseDownPassword = (e) => {
@@ -168,6 +172,7 @@ const Register = () =>  {
     setShowRePassword(prev => !prev);
   }
 
+  //phone must only 10 digit and focus on format (xxx)xxxxxxx
   const handleChangePhone = (e) => {
     const onlyNums = e.target.value.replace(/[^0-9]/g, '');
     if (onlyNums.length < 10) {
@@ -181,6 +186,7 @@ const Register = () =>  {
     }
   } 
 
+  //postcode only 5 digit
   const handleChangePostcode = (e) => {
     const onlyNums = e.target.value.replace(/[^0-9]/g, '');
     if (onlyNums.length <= 5) {
@@ -194,25 +200,7 @@ const Register = () =>  {
 
   return (
     <>
-
       <Navbar />
-
-      {/* <video
-        autoPlay
-        loop
-        muted
-        style={{
-            position: "absolute",
-            width: "100%",
-            height: "130%",
-            objectFit: "cover",
-            zIndex: "-1",
-            opacity: "20%"
-        }}
-      >
-        <source src={DrugVdo} type="video/mp4" />
-      </video> */}
-
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -290,12 +278,10 @@ const Register = () =>  {
                   <TextField
                     required
                     fullWidth
-                    // type="number"
                     id="PHONE NUMBER"
                     label="PHONE NUMBER"
                     name="PHONE NUMBER"
                     value={basicInfo.phone}
-                    //onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
                     onChange={handleChangePhone}
                     error = {phoneError}
                     helperText= {phoneError && "Phone were number and 10-digit."}
@@ -317,27 +303,23 @@ const Register = () =>  {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    // required
                     fullWidth
                     id="LOCATION"
                     label="LOCATION"
                     name="LOCATION"
                     value={address.location}
                     onChange={e => setAddress({...address, location: e.target.value})}
-                    // error={locationError}
                   />
                 </Grid>
 
                 <Grid item xs={12}>
                   <TextField
-                    // required
                     fullWidth
                     id="DISTRICT"
                     label="DISTRICT"
                     name="DISTRICT"
                     value={address.district}
                     onChange={e => setAddress({...address, district: e.target.value})}
-                    // error={districtError}
                   />
                 </Grid>
 
@@ -345,14 +327,12 @@ const Register = () =>  {
                   <FormControl sx={{ width: 400 }}>
                     <InputLabel id="demo-multiple-checkbox-label">COUNTRY</InputLabel>
                     <Select 
-                      // required
                       fullWidth
                       labelId="select-label"
                       id="select"
                       value={address.country}
                       label="COUNTRY"
                       onChange={e => setAddress({...address, country: e.target.value})}
-                      // error={countryError}
                     >
                       <MenuItem value='thailand'> Thailand </MenuItem>
                     </Select>
@@ -361,15 +341,12 @@ const Register = () =>  {
 
                 <Grid item xs={12}>
                   <TextField
-                    // required
                     fullWidth
                     id="POSTCODE"
                     label="POSTCODE"
                     name="POSTCODE"
                     value={address.postcode}
-                    //onChange={e => setAddress({...address, postcode: e.target.value})}
                     onChange={handleChangePostcode}
-                    // error={postcodeError}
                   />
                 </Grid>
               </Grid>
@@ -459,21 +436,6 @@ const Register = () =>  {
           </Box>
         </Container>
       </ThemeProvider>
-
-      <p>Check value</p>
-      <p>firstname = {basicInfo.firstname}</p>
-      <p>lastname = {basicInfo.lastname}</p>
-      <p>password = {basicInfo.password}</p>
-      <p>email = {basicInfo.email}</p>
-      <p>phone = {basicInfo.phone}</p>
-
-      <p>location = {address.location}</p>
-      <p>district = {address.district}</p>
-      <p>country = {address.country}</p>
-      <p>postcode = {address.postcode}</p>
-
-      <p>passaword = {credential.password}</p>
-      <p>checkpassword = {credential.re_password}</p>
       
       <InfoModal
           open={openInfo}

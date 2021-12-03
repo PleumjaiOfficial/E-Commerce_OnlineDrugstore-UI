@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import Navbar from '../../components/Navbar/Navbar';
-import classes from './AdminCreateProduct.module.css'
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import Navbar from '../../components/Navbar/Navbar';
 import HealthGoal from '../../components/HealthGoal/HealthGoal';
 import Footer from '../../components/Footer/Footer';
 import InfoModal from '../../components/InfoModal/InfoModal';
+import classes from './AdminCreateProduct.module.css'
 
 const AdminCreateProduct = () => {
-  //modal state of 
+
+  //state for modal
   const [ openInfo, setOpenInfo ] = useState(false);
   const [infoModal, setInfoModal] = useState({
     status: '',
@@ -37,7 +38,6 @@ const AdminCreateProduct = () => {
         detail: 'Successfully add new product.'
       })
     }
-
     setOpenInfo(true);
   }
 
@@ -59,11 +59,12 @@ const AdminCreateProduct = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const handleUploadImage = (e) => {
     const file = e.target.files[0]
-
     const reader = new FileReader();
-    reader.onloadend = (readerEvent) => {
 
+    reader.onloadend = (readerEvent) => {
       let binaryString = readerEvent.target.result
+
+      //overwrite to file in data state 
       setData({
         ...data,
         file: {
@@ -274,18 +275,6 @@ const AdminCreateProduct = () => {
             </div>
           </div>
         </div>
-
-
-        {/* Test space */}
-        {/* <p>
-        {data.ProductName}  <br />
-        {data.ProductDesc}  <br />
-        {data.Price}        <br />
-        {data.Remaining}    <br />
-        {data.HealthGoal}   <br />
-        {data.file.name}    <br />
-        {data.file.data}    <br />
-        </p> */}
       </div>
 
         <InfoModal 

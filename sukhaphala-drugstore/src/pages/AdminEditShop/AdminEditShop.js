@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useParams } from "react-router-dom";
-import { NavLink } from 'react-router-dom';
+import { useParams,NavLink,Redirect } from "react-router-dom";
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -11,9 +10,10 @@ import HealthGoal from '../../components/HealthGoal/HealthGoal';
 import Footer from '../../components/Footer/Footer';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
-import { Redirect } from 'react-router-dom';
 
 export const AdminEditShop = () => {
+
+  //state for modal
   const [openInfoEdit, setOpenInfoEdit] = useState(false);
   const [infoModalEdit, setInfoModalEdit] = useState({
     status: '',
@@ -91,8 +91,9 @@ export const AdminEditShop = () => {
     setOpenConfirmDel(true);
   }
 
+  //delete product if user confirm
   const handleDeleteProduct = () => {
-    // delProduct();
+    //close confirm modal
     handleCloseConfirmDel();
     axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
     .then(res => {
@@ -104,7 +105,6 @@ export const AdminEditShop = () => {
 
   const { id } = useParams();
   const [data, setData] = useState([]);
-  const [healthgoals, setHealthGoals] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Initial state of product that want to edit
