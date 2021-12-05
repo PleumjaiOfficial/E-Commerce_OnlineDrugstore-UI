@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import classes from './Cart.module.css';
 import Billing from '../../components/Billing/Billing';
@@ -24,8 +24,6 @@ const Cart = () => {
             <Billing />
           </div>
         </div>
-
-        
 
       </div>
       <Footer />

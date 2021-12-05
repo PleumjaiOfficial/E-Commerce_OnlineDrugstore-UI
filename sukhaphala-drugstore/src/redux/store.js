@@ -1,22 +1,22 @@
 import { createStore,applyMiddleware } from "redux";
-import thunk from "redux-thunk";
-//thunk มีparameter 2 สองตัวคือ dispath กับ Getstate ไว้เก็บพวก logic asyn และ sync ที่ได้จาก API
-//แล้วหลังจากนั้นจะส่งผ่าน dispatch action ใน MiddleWare ไปหา Reducer เอาไปเปลี่ยน state
+import thunk from "redux-thunk"; 
 import {persistStore} from 'redux-persist';
 import {composeWithDevTools} from 'redux-devtools-extension'
-import { cartReducer} from "./reducers/cartReducer"; 
 
-//Store คือที่เก็บข้อมูล ต้องมี reducer เข้ามาช่วย
-import reducersPowerRanger from "./reducersPowerRanger";
+// rootReducer represent all of reducer in website
+import rootReducers from "./rootReducers";
+
+/* thunk use for get login asyn and sync from API for sending action 
+   in middleware with dispatch to change state*/
 const middleWares = [thunk];
 
 
 export const store = createStore(
-    reducersPowerRanger,  //ถ้ามี reducer อื่นค่อยเปิดใช้งาน
-    // cartReducer,
+    rootReducers,  
     composeWithDevTools(applyMiddleware(...middleWares)),
   );
 
+// persister use for save state to localstorage
 export const persistor = persistStore(store);
 
 export default {store,persistor};

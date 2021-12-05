@@ -1,29 +1,29 @@
-import {CREATE_ORDER } from "../actions/orderAction";
-
+import {CREATE_ORDER, GET_ORDER} from "../actions/orderAction";
 
 const iniState = {
+    /* 
+        order must emply before placeorder
+        after placeOrder by cartReducer
+        cart will be reset and order will
+        overwrite by payload from placeOrder 
+    */
     order: [],
 };
 
 export const orderReducer = (state = iniState, action) => {
     switch (action.type) {
         case CREATE_ORDER:
-            // let currentOrder;
-            // // let feedback = action.payload;
-
-            // if(action.payload === "signal"){
-            //     currentOrder = iniState;
-            // } else{
-            //     currentOrder = state;
-            // }
-
-            // return {
-            //     ...state,
-            //     order:currentOrder
-            // }; 
             return {
                 order: action.payload
             }
+
+        case GET_ORDER:
+            // Order that user use to place order 
+            return {
+                ...state,
+                order: action.payload
+            };
+
         default:
             return state;
     }

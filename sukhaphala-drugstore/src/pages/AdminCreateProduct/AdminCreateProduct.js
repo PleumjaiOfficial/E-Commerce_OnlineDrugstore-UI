@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom';
-import Navbar from '../../../components/Navbar/Navbar';
-import classes from './AdminCreateProduct.module.css'
 import axios from 'axios';
-import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
-import Footer from '../../../components/Footer/Footer';
-import InfoModal from '../../../components/InfoModal/InfoModal';
+import Navbar from '../../components/Navbar/Navbar';
+import HealthGoal from '../../components/HealthGoal/HealthGoal';
+import Footer from '../../components/Footer/Footer';
+import InfoModal from '../../components/InfoModal/InfoModal';
+import classes from './AdminCreateProduct.module.css'
 
 const AdminCreateProduct = () => {
-  //modal state of 
+
+  //state for modal
   const [ openInfo, setOpenInfo ] = useState(false);
   const [infoModal, setInfoModal] = useState({
     status: '',
@@ -38,12 +38,11 @@ const AdminCreateProduct = () => {
         detail: 'Successfully add new product.'
       })
     }
-
     setOpenInfo(true);
   }
 
+  // Initial state of product that want to create
   const [data, setData] = useState({
-    // initial state
     ProductName: '',
 
     file: {
@@ -57,16 +56,15 @@ const AdminCreateProduct = () => {
     HealthGoal: []
   });
 
-  const [imagePreview, SetimagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const handleUploadImage = (e) => {
     const file = e.target.files[0]
-
     const reader = new FileReader();
+
     reader.onloadend = (readerEvent) => {
       let binaryString = readerEvent.target.result
-      console.log(readerEvent.target)
-      console.log(btoa(binaryString))
 
+      //overwrite to file in data state 
       setData({
         ...data,
         file: {
@@ -74,14 +72,13 @@ const AdminCreateProduct = () => {
           data: btoa(binaryString)
         }
       })
-      SetimagePreview(reader.result)
+      setImagePreview(reader.result)
     }
     reader.readAsDataURL(file)
   }
 
   const handleSubmit = () => {
     if (checkEmply() === false) {
-      // alert("Don't filled out");
       handleOpenInfo({
         type: 'FAIL',
         message: 'Please fill all required fields include: product name, price, remaining'
@@ -99,7 +96,6 @@ const AdminCreateProduct = () => {
             "healthGoal": data.HealthGoal
           }, { withCredentials: true })
           .then(res => { 
-            // console.log(res);
             handleOpenInfo(res.data);
             setData({
               ProductName: '',
@@ -152,7 +148,6 @@ const AdminCreateProduct = () => {
       <Navbar />
 
       <div className={classes["productdetail-container"]}>
-        {/* <form onSubmit={handleSubmit}>     */}
         <div className={classes["create-image"]}>
           <input type="file" onChange={handleUploadImage} />
           <img src={imagePreview ? imagePreview : 'http://localhost:5000/images/default-image.jpg'} />
@@ -160,6 +155,7 @@ const AdminCreateProduct = () => {
         </div>
 
         <div className={classes["create-content"]}>
+
           {/* Create Product Name */}
           <div className={classes["create-formgroup"]}>
 
@@ -279,31 +275,17 @@ const AdminCreateProduct = () => {
             </div>
           </div>
         </div>
-
-        {/* </form> */}
-
-        {/* Test space */}
-        {/* <p>
-        {data.ProductName}  <br />
-        {data.ProductDesc}  <br />
-        {data.Price}        <br />
-        {data.Remaining}    <br />
-        {data.HealthGoal}   <br />
-        {data.file.name}    <br />
-        {data.file.data}    <br />
-      </p> */}
-
-
       </div>
-      <InfoModal 
-        open={openInfo}
-        onClose={handleCloseInfo}
-        status= {infoModal.status}
-        title= {infoModal.title}
-        detail= {infoModal.detail}
-        buttonText='OK'
-        buttonAction={handleCloseInfo}
-      />
+
+        <InfoModal 
+          open={openInfo}
+          onClose={handleCloseInfo}
+          status= {infoModal.status}
+          title= {infoModal.title}
+          detail= {infoModal.detail}
+          buttonText='OK'
+          buttonAction={handleCloseInfo}
+        />
       <Footer />
     </>
   )

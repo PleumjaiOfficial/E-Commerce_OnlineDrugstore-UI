@@ -1,31 +1,33 @@
-import React, { useDebugValue, useEffect, useRef, useState } from 'react'
-import Navbar from '../../components/Navbar/Navbar';
-import classes from './ProductDetail.module.css';
+import React, { useEffect, useRef, useState } from 'react'
 import Axios from 'axios';
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { add2Cart, add2CartAsync, addCartError } from '../../redux/actions/cartActions'
-// import Button from 'react-bootstrap/Button';
 import Button from '@mui/material/Button';
+import Navbar from '../../components/Navbar/Navbar';
 import InfoModal from '../../components/InfoModal/InfoModal';
 import Footer from '../../components/Footer/Footer'
 import HealthGoalsList from '../../components/HealthGoalList/HealthGoalList';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { add2CartAsync, addCartError } from '../../redux/actions/cartActions'
+import classes from './ProductDetail.module.css';
 
 const ProductDetail = () => {
 
-  const { id } = useParams();
+  //useParam to get product that user want to explore the detail
+  const { id } = useParams(); 
+
+  //state for healthGoal
   const [data, setData] = useState({
     healthGoal: []
   });
-  const [numpack, setNumpack] = useState(1);
 
+  //state for get multiple product
+  const [numpack, setNumpack] = useState(1);
   const [add, setAdd] = useState(false);
 
-  //modal handler ----------------------------------------------
-  const cartError = useSelector((state) => state.cart.cartError);
-
+  //modal handler 
+  const cartError = useSelector((state) => state.carts.cartError);
   const [openInfo, setOpenInfo] = useState(false);
+
   //info modal state
   const [infoModal, setInfoModal] = useState({
     status: '',
@@ -40,7 +42,6 @@ const ProductDetail = () => {
   const mount = useRef(false);
   useEffect(() => {
     if (mount.current) {
-      // console.log("bara1 : ")
       if (cartError.type === 'FAIL') {
         setInfoModal({
           status: 'FAIL',
@@ -52,11 +53,7 @@ const ProductDetail = () => {
       }
     } else {
       mount.current = true;
-      // console.log("bara2 : ")
     }
-    // return () => {
-    //   dispatch(addCartError({}));
-    // }
   }, [cartError]);
 
   //if fail to add to cart then reset cartError
@@ -74,8 +71,8 @@ const ProductDetail = () => {
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     if (isLoading) {
-      simulateNetworkRequest().then(() => {
-        setLoading(false);
+      simulateNetworkRequest().then(() => { //if loading not finish yet, setLoading is logic true
+        setLoading(false); //Loading finish
       });
       setAdd(true);
     }
@@ -83,61 +80,24 @@ const ProductDetail = () => {
 
   const handleClick = () => {
     setLoading(true);
-    // setAdd(true);
-    dispatch(add2CartAsync({ ...data, amount: numpack }));
+    dispatch(add2CartAsync({ ...data, amount: numpack })); //overwrite data if use get product more than one
   }
-  console.log('loadding ' + isLoading)
 
   const handleNumpack = (event) => {
     setNumpack( + event.target.value )
   }
 
   const dispatch = useDispatch();
-
   useEffect(() => {
-    Axios.get('http://localhost:5000/products/' + id)
+    Axios.get('http://localhost:5000/products/' + id) //get data product that same id that get from useParam
       .then(res => {
-        console.log(res);
-        setData(res.data);
+        setData(res.data); 
       })
       .catch(err => {
         console.log(err)
       });
   }, [])
-  console.log(data);
-  console.log(data.healthGoal);
-  
 
-  // const mount = useRef(false);
-  // useEffect(() => {
-  //   if(mount.current) {
-  //     if (cartError.type === 'FAIL') {
-  //       setInfoModal({
-  //         status: 'FAIL',
-  //         title: 'Error',
-  //         detail: cartError.message
-  //       });
-  //       setOpenInfo(true);
-  //     }
-  //   } else {
-  //     mount.current = true;
-  //   }
-  // }, [cartError]);
-
-  // const cart = useSelector((state) => state.cart.cart);
-
-  // const mount = useRef(false);
-  // useEffect(() => {
-  //   if (mount.current) {
-  //     cart.forEach(cartitem => {
-  //       if (cartitem.productId === data._id) {
-  //         holdAdd();
-  //       }
-  //     })
-  //   } else {
-  //     mount.current = true;
-  //   }
-  // }, [cart]);
 
   
 
@@ -162,9 +122,6 @@ const ProductDetail = () => {
                   <HealthGoalsList 
                     healthGoals = {data.healthGoal}
                   />
-
-                  {/* {data.healthGoal} */}
-
                 </div>
 
               </div>
@@ -175,6 +132,12 @@ const ProductDetail = () => {
                 <p>Price :</p>
                 <div className={classes["price-value"]}>{data.price}</div>
                 <div className={classes["price-unit"]}>Bath</div>
+              </div>
+
+              <div className={classes["remain"]}>
+                <p>Remain :</p>
+                <div className={classes["remain-value"]}>{data.remain}</div>
+                <div className={classes["remain-unit"]}>pack</div>
               </div>
 
               <div className={classes["buy-qty"]}>
@@ -188,12 +151,6 @@ const ProductDetail = () => {
                 <div className={classes["buy-unit"]}>Pack</div>
               </div>
             </div>
-
-						{/* <button className={classes["btn"]} onClick={() => 
-							dispatch(add2CartAsync({ ...data, amount: numpack }))}>
-                Add to cart
-            </button>			 */}
-            
 
             <div className={classes["content-add-cart"]}>
               { add === false ?

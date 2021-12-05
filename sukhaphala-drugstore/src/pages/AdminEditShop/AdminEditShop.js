@@ -1,21 +1,19 @@
-import React, { Profiler, useEffect, useState, useRef } from 'react'
-import { useParams } from "react-router-dom";
-import { NavLink } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react'
+import { useParams,NavLink,Redirect } from "react-router-dom";
 import axios from 'axios';
-import Input from '@mui/material/Input';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
-import Navbar from '../../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import classes from './AdminEditShop.module.css';
-import HealthGoal from '../AdminComponent/HealthGoal/HealthGoal';
-import Footer from '../../../components/Footer/Footer';
-import InfoModal from '../../../components/InfoModal/InfoModal';
-import ConfirmModal from '../../../components/ConfirmModal/ConfirmModal';
-import { Redirect } from 'react-router-dom';
+import HealthGoal from '../../components/HealthGoal/HealthGoal';
+import Footer from '../../components/Footer/Footer';
+import InfoModal from '../../components/InfoModal/InfoModal';
+import ConfirmModal from '../../components/ConfirmModal/ConfirmModal';
 
 export const AdminEditShop = () => {
-  //modal edit product
+
+  //state for modal
   const [openInfoEdit, setOpenInfoEdit] = useState(false);
   const [infoModalEdit, setInfoModalEdit] = useState({
     status: '',
@@ -93,8 +91,9 @@ export const AdminEditShop = () => {
     setOpenConfirmDel(true);
   }
 
+  //delete product if user confirm
   const handleDeleteProduct = () => {
-    // delProduct();
+    //close confirm modal
     handleCloseConfirmDel();
     axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
     .then(res => {
@@ -106,10 +105,9 @@ export const AdminEditShop = () => {
 
   const { id } = useParams();
   const [data, setData] = useState([]);
-  const [healthgoals, setHealthGoals] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // //fix
+  // Initial state of product that want to edit
   const [product, setProduct] = useState({
     ProductName: '',
 
@@ -123,28 +121,25 @@ export const AdminEditShop = () => {
     Remaining: '',
     HealthGoal: []
   })
-  console.log(product)
 
   useEffect(() => {
     axios.get('http://localhost:5000/products/' + id)
       .then(res => {
-        // console.log(res);
-        setData(res.data);
-        console.log(res.data);
+          setData(res.data);
 
-        setProduct({
-          ProductName: res.data.name,
+          setProduct({
+            ProductName: res.data.name,
 
-          file: {
-            name: '',
-            data: '',
-          },
+            file: {
+              name: '',
+              data: '',
+            },
 
-          ProductDesc: res.data.description,
-          Price: res.data.price,
-          Remaining: res.data.remain,
-          HealthGoal: res.data.healthGoal
-        })
+            ProductDesc: res.data.description,
+            Price: res.data.price,
+            Remaining: res.data.remain,
+            HealthGoal: res.data.healthGoal
+          })
       })
 
       .catch(err => {
@@ -155,24 +150,13 @@ export const AdminEditShop = () => {
       });
   }, [])
 
-  console.log(data);
-  console.log(product);
-
-  // async function delProduct() {
-  //   try {
-  //     const res = await axios.delete('http://localhost:5000/products/' + id, { withCredentials: true })
-  //     console.log(res)
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }
-
-
   //submit edit shop
-  function handleSubmit(e) {
-    // e.preventDefault();
+  const handleSubmit = (e) => {
     if (product.HealthGoal.length === 0) {
-      alert(" เฮลโกลบ่ครบแน บักง่าว!!!")
+      handleOpenInfoEdit({
+        type: 'FAIL',
+        message: 'The product must have at least 1 healh goal'
+      });
     }
     else {
       async function updateProduct() {
@@ -193,7 +177,6 @@ export const AdminEditShop = () => {
             .catch(error => {
               handleOpenInfoEdit(error.response.data);
             });
-          // console.log(res)
         } catch (err) {
           console.log(err)
         }
@@ -262,9 +245,9 @@ export const AdminEditShop = () => {
     <>
       <Navbar />
       <div className={classes["productdetail-container"]}>
-        {/* <form onSubmit={handleSubmit}>     */}
         <div className={classes["edit-image"]}>
-          {/* <img src={data.image} /> */}
+          
+          {/* before add image show default image first */}
           <input type="file" onChange={handleUploadImage} />
           <img src={imagePreview ? imagePreview : data.image} />
         </div>
@@ -353,9 +336,6 @@ export const AdminEditShop = () => {
             <p>Heath Goal:</p>
             <div className={classes["healthgoal-list"]}>
               {product.HealthGoal.map(item =>
-                // <button key={item} onClick={handleDelHealthGoal} value={item}>
-                //   {item} x
-                // </button>
                 <Button
                   variant="outlined"
                   size="small"
@@ -387,8 +367,6 @@ export const AdminEditShop = () => {
               <div className={classes["submit-save"]}>
                 <Button
                   onClick={handleSubmit}
-                  // component={NavLink}
-                  // to='/AdminShop'
                   variant="contained"
                   size="large"
                   color="primary"
@@ -401,9 +379,6 @@ export const AdminEditShop = () => {
             <div className={classes["submit-remove"]}>
               <Button
                 onClick={handleDel}
-                // onClick={delProduct}
-                // component={NavLink}
-                // to='/AdminShop'
                 variant="contained"
                 size="large"
                 color="error"
@@ -435,7 +410,7 @@ export const AdminEditShop = () => {
         detail='Press confirm to remove a product'
         buttonConfirmText='Confirm'
         buttonCancelText='Cancel'
-        buttonConfirm={() => handleDeleteProduct()} //edit this later
+        buttonConfirm={() => handleDeleteProduct()} 
         buttonCancel={handleCloseConfirmDel}
       />
 

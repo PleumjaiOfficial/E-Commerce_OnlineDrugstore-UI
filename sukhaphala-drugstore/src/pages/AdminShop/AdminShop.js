@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import Axios from 'axios';
-import Navbar from '../../../components/Navbar/Navbar';
-import image from '../../../image/HeaderBackground.jpg';
-import Sidebar from '../../../components/Sidebar/Sidebar';
-import ProductAdmin from '../AdminComponent/ProductAdmin/ProductAdmin';
+import axios from 'axios';
+import Navbar from '../../components/Navbar/Navbar';
+import image from '../../image/HeaderBackground.jpg';
+import Sidebar from '../../components/Sidebar/Sidebar';
+import Product from '../../components/Product/Product';
 import classes from './AdminShop.module.css';
-import Footer from '../../../components/Footer/Footer';
+import Footer from '../../components/Footer/Footer';
 
 export const AdminShop = () => {
 
+  //state for data
   const [data, setData] = useState([]);
 
+
+  //get data from API
   useEffect(() => {
-    Axios.get('http://localhost:5000/products')
+    axios.get('http://localhost:5000/products')
       .then(res => {
-        console.log(res)
-        setData(res.data)
+        setData(res.data) //if get success set ti state Data
       })
       .catch(err => {
         console.log(err)
@@ -40,8 +42,9 @@ export const AdminShop = () => {
         </div>
         <div className={classes["shop-product"]}>
           {
+            // map data state that geted from API
             data.map(i=>(
-              <ProductAdmin 
+              <Product
                 id={i._id}
                 title={i.name}
                 price={i.price}

@@ -1,8 +1,8 @@
-import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_CART,UPDATE_SUB_CART, ADD_TO_CART_ERROR } from '../actions/cartActions';
+import {ADD_TO_CART,DELETE_CART,GET_CART,UPDATE_ADD_CART,UPDATE_SUB_CART, ADD_TO_CART_ERROR,CLEAR_CART} from '../actions/cartActions';
 import {CREATE_ORDER } from "../actions/orderAction";
-import axios from 'axios'
 
 const iniState = {
+    // cart and error cart must emply in first state
     cart: [],
     cartError: {}
 };
@@ -10,59 +10,49 @@ const iniState = {
 export const cartReducer = (state = iniState , action) => {
     switch(action.type){
         case GET_CART:
-
-            let myCart;
-            myCart = action.payload;
-             
             return {
                 ...state,
-                cart:myCart
+                cart: action.payload
             };
 
         case ADD_TO_CART:
 
             let addCart;
-            // let newItem = action.payload;
-
             const sameAddProduct = state.cart.find( (product) => product._id === action.payload._id);
 
-            //ของต่าง
+            // if different product overwirte product on cart
             if (!sameAddProduct) {
                 addCart = [...state.cart, action.payload];
             }
 
-            //อันเดียวกัน
+            // if same product
             else {
-                // addCart = state.cart.map( (product) => ({
-                //     ...product, //overwrite ค่าเดิม
-                //      amount: action.payload.amount
-                // }))
                 let updatedCart = { ...sameAddProduct, amount: action.payload.amount }
+                // map product and overwite new amount with update value 
                 addCart = state.cart.map( cart => updatedCart.productId === cart.productId ? updatedCart : cart);
             }
 
             return {
+                 //overwrite state
                 ...state,
-                cart: addCart //overwrite with updateState
+                cart: addCart
             }
 
-        case UPDATE_CART:
-        // case ADD_TO_CART:
+        case UPDATE_ADD_CART:
 
-            let updateCart; //ภายใน return แต่ละ case จะต้องเป็น state ใหม่ต้องใช้ let ...state คือ copy อันเดิมแล้วแทนที่ด้วยอันใหม่ได้จาก action อยํู่ใย payload
-            // let newItem = action.payload;
+            let updateCart; 
+            // use find to search product that want to update
             const sameProduct = state.cart.find( (product) => product._id === action.payload._id);
 
-            //ถ้าของคนละอย่างก็ add เข้ามาปกติ
+            // if different product add new product
             if(!sameProduct){
                 updateCart = [...state.cart, action.payload];
             }
 
-            //ถ้าของอย่างเดียวกัน 
+            // if same product change only amount 
             else{
                 updateCart = state.cart.map( (product) => ({
-                    ...product, //overwrite ค่าเดิม
-                    //ถ้าเป็น id เดียวกันเปลี่ยนแค่จำนวน ถ้าไม่ใช่ id เดียวกันเป็นจำนวนเดิม
+                    ...product, 
                     amount: product._id === sameProduct._id ? product.amount + 1 : product.amount
                 }))
             }
@@ -70,39 +60,33 @@ export const cartReducer = (state = iniState , action) => {
 
             return {
                 ...state,
-                cart: updateCart //overwrite with updateState
+                //overwrite with updateState
+                cart: updateCart 
             }
 
         case UPDATE_SUB_CART:
-            
-            // let subCart; //ภายใน return แต่ละ case จะต้องเป็น state ใหม่ต้องใช้ let ...state คือ copy อันเดิมแล้วแทนที่ด้วยอันใหม่ได้จาก action อยํู่ใย payload
-            let Item = action.payload;
-            let subCart
 
-            subCart = state.cart.map( (product) => ({
-                ...product, //overwrite ค่าเดิม
-                //ถ้าเป็น id เดียวกันเปลี่ยนแค่จำนวน ถ้าไม่ใช่ id เดียวกันเป็นจำนวนเดิม
-                amount: product._id === Item._id ?  product.amount - 1 : product.amount
+            let subCart = state.cart.map( (product) => ({
+                ...product, 
+                 // if same product change only amount 
+                amount: product._id === action.payload._id ?  product.amount - 1 : product.amount
                 })
             )
 
-             subCart = subCart.filter((product) => product.amount > 0)
+            // minimun amount of product is 1, if equal or less than equrt fiter that product out
+            subCart = subCart.filter((product) => product.amount > 0)
 
             return {
                 ...state,
-                cart: subCart //overwrite with updateState
+                //overwrite with updateState
+                cart: subCart 
             }
 
 
         case DELETE_CART:
-            
-            //https://stackoverflow.com/questions/34003553/redux-what-is-the-correct-way-to-filter-a-data-array-in-reducer
-            let byebyeItem = action.payload;
 
-            console.log(byebyeItem);
-
-            //เลือกเอาเฉพาะของที่ยังอยู๋เป็นอันที่ไม่ตรงกับอันที่กด
-            let deleteCart = state.cart.filter( (product) => product._id !== byebyeItem.cartId)    
+            // filter keep only product that don't want delete
+            let deleteCart = state.cart.filter( (product) => product._id !== action.payload.cartId)    
 
             return {
                 ...state,
@@ -110,8 +94,8 @@ export const cartReducer = (state = iniState , action) => {
             }
 
         case CREATE_ORDER:
-            
             if(action.payload.type !== "FAIL"){
+                // after placeorder cart will reset
                 return {
                     cart: [] 
                     }
@@ -124,6 +108,10 @@ export const cartReducer = (state = iniState , action) => {
                 ...state,
                 cartError: action.payload
             }
+        
+        case CLEAR_CART:
+            return iniState;
+
         default:
             //GET_CART
             return state;

@@ -15,6 +15,7 @@ const checkAmount = async (productId, amount) => {
 const getCustomerCarts = async (customerId) => {
   try {
     const carts = await Cart.find({ customerId: customerId });
+    //add product name and image to display on cart lists page
     const detailedCarts = await Promise.all(carts.map(async cart => {
       const { name, image } = await productInterface.getProduct(cart.productId);
       cart = cart._doc;
@@ -24,7 +25,10 @@ const getCustomerCarts = async (customerId) => {
     }));
     return detailedCarts;
   } catch (err) {
-    return null;
+    throw {
+      type: 'FAIL',
+      message: 'Cannot get this cart from database.'
+    }
   }
 };
 
@@ -34,7 +38,7 @@ const getCart = async (cartId) => {
     const cart = await Cart.findById(cartId);
     return cart._doc;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
       message: 'cannot get this cart'
     };
@@ -51,7 +55,7 @@ const createCart = async (cart) => {
       cart.amount = cart.amount + existCart.amount;
     }
     //check amount of that product
-    const isEnough = checkAmount(cart.productId, cart.amount);
+    const isEnough = await checkAmount(cart.productId, cart.amount);
     if (isEnough) {
       const newCart = await Cart.findOneAndUpdate(
         { productId: cart.productId },
@@ -61,8 +65,9 @@ const createCart = async (cart) => {
           price: cart.price,
           amount: cart.amount,
         },
-        { new: true, upsert: true}
+        { new: true, upsert: true} //set upsert true to create new one if the cart is not exist before
       );
+      //add name and image of product to display on cart lists page
       const { name, image } = await productInterface.getProduct(newCart.productId);
       const detailedNewCart = {
         ...newCart._doc,
@@ -72,19 +77,20 @@ const createCart = async (cart) => {
       return detailedNewCart;
     } else {
       //product amount in DB is not enough
-      return {
+      throw {
         type: 'FAIL',
         message: 'this product doesn\'t have enough amount'
       }
     }
   } catch (err) {
-    return null;
+    throw err;
   }
 }
 
 //update cart
 const updateCart = async (cartId, cart) => {
   try {
+    //replace the cart with new data
     const updatedCart = await Cart.findByIdAndUpdate(
       cartId,
       {
@@ -92,12 +98,16 @@ const updateCart = async (cartId, cart) => {
       },
       { new: true }
     );
+    //if amount of that product in cart is 0, this cart should be deleted
     if (updatedCart.amount === 0) {
       await Cart.findByIdAndDelete(updatedCart._id);
     }
     return updatedCart;
   } catch (err) {
-    return null;
+    throw {
+      type: 'FAIL',
+      message: `fail to update this cart: cart id (${cartId})`
+    }
   }
 };
 
@@ -111,10 +121,14 @@ const deleteCart = async (cartId) => {
       message: 'successfully removed cart'
     };
   } catch (err) {
-    return null;
+    throw {
+      type: 'FAIL',
+      message: `Cannot delete this cart from database: cart id (${cartId})`
+    }
   }
 };
 
+//delete all carts of particular customer
 const deleteAllCustomerCart = async (customerId) => {
   try {
     await Cart.deleteMany({customerId: customerId});
@@ -123,7 +137,10 @@ const deleteAllCustomerCart = async (customerId) => {
       message: 'successfully removed all carts' 
     };
   } catch (err) {
-    return null;
+    throw {
+      type: 'FAIL',
+      message: 'Cannot delete all carts.'
+    }
   }
 }
 

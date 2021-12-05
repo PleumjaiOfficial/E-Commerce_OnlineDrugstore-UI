@@ -1,34 +1,34 @@
 const Customer = require('../models/Customer');
 
+//get detail about the user by customer id
 const getCustomer = async (customerId) => {
   try {
     const targetCustomer = await Customer.findById(customerId);
     return targetCustomer._doc;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
-      customerId: customerId,
-      message: 'cannot get infomation about this customer'
+      message: `cannot get infomation about this customer (customer id: ${customerId})`
     };
   }
 };
 
+//get detail about the user by email
 const getCustomerByEmail = async (email) => {
   try {
     const targetCustomer = await Customer.findOne({email: email});
     return targetCustomer;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
-      email: email,
-      message: 'Cannot get information about this customer\'s email'
+      message: `Cannot get information about this customer\'s email (email: ${email})`
     };
   }
   
 }
- 
+
+//create new customer
 const createCustomer = async (customer) => {
-  //create new customer
   const newCustomer = new Customer({
     firstName: customer.firstname,
     lastName: customer.lastname,
@@ -47,7 +47,7 @@ const createCustomer = async (customer) => {
     const savedCustomer = await newCustomer.save();
     return savedCustomer;
   } catch (err) {
-    return {
+    throw {
       type: 'FAIL',
       message: 'cannot create new user'
     }

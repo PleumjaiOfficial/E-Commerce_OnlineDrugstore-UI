@@ -1,13 +1,8 @@
-//rafce
-import React, {Profiler, useEffect, useState} from 'react'
-import classes from './Register.module.css'
-import Avatar from '@mui/material/Avatar';
+import React, {useState} from 'react'
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -17,11 +12,14 @@ import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Navbar from '../../components/Navbar/Navbar';
-import DrugVdo from '../../Video/vdo-regis.mp4';
-import axios from 'axios';
 import InfoModal from '../../components/InfoModal/InfoModal';
 
+// theme for use on material UI
 const theme = createTheme({
   palette: {
     standard: {
@@ -33,13 +31,20 @@ const theme = createTheme({
 
 const Register = () =>  {
 
+  //state of basic information
   const [basicInfo,setBasicInfo] = useState({
     firstname:'',
     lastname: '',
     email:    '',
     phone:    '',
   })
+  //state error case of basic information
+  const [firstnameError,setFirstnameError] = useState(false)
+  const [lastnameError,setLastnameError] = useState(false)
+  const [emailError,setEmailError] = useState(false)
+  const [phoneError,setPhoneError] = useState(false)
 
+  //state of address information
   const [address,setAddress] = useState({
     location: '',
     district: '',
@@ -47,10 +52,14 @@ const Register = () =>  {
     postcode: '',
   });
 
+  //state of credential
   const [credential,setCredential] = useState({
     password: '',
     re_password: '',
   });
+  //state error case of credential
+  const [passwordError,setPasswordError] = useState(false)
+  const [rePasswordError,setRePasswordError] = useState(false)
 
   //state of modal: false -> close modal, true -> open modal
   const [ openInfo, setOpenInfo ] = useState(false);
@@ -75,59 +84,123 @@ const Register = () =>  {
   }
 
   const handleSubmit = () => {
-    //check 
 
-    const createCustomer = () => {
-      axios.post('http://localhost:5000/auth/register',
-      {
-        "firstname": basicInfo.firstname,
-        "lastname": basicInfo.lastname,
-        "password": credential.password,
-        "email": basicInfo.email,
-        "phone": basicInfo.phone,
-          "address": {
-              "location": address.location,
-              "district": address.district,
-              "country": address.country,
-              "postcode": address.postcode
-          }
-      })
-      .then(res => {
-        // console.log(res.data);
-        handleOpenInfo({
-          type: 'SUCCESS',
-          message: 'Successfully register your account, please login and get you medicines!'
-        })
-      })
-      .catch(error => {
-        handleOpenInfo(error.response.data);
-      })
+    //check basic-info error
+    //first all of textboxs are require
+    //if null, will set state error 'true'
+
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; //correct format of email
+    if(basicInfo.firstname == ''){ 
+      setFirstnameError(true)
+    } else {setFirstnameError(false)}
+
+    if(basicInfo.lastname == ''){ 
+      setLastnameError(true)
+    } else {setLastnameError(false)}
+
+    if(basicInfo.email == '' || !(basicInfo.email.match(mailformat))){ //not null and focus on format
+      setEmailError(true)
+    }else{
+      setEmailError(false)
     }
-    createCustomer();
+
+    if(basicInfo.phone == ''){ 
+      setPhoneError(true)
+    }else {
+      setPhoneError(false)
+    }
+
+    //check credential error
+    if(credential.password == ''){
+      setPasswordError(true)
+    } else {(setPasswordError(false))}
+
+    if(credential.re_password == ''){
+      setRePasswordError(true)
+    } else {setRePasswordError(false)}
+
+    //password should to same in re-writing password
+    if(credential.password !== credential.re_password){
+      setRePasswordError(true)
+       handleOpenInfo({
+          type: 'FAIL',
+          message: 'Password don\'t match'
+        })
+    } 
+    else {
+      setRePasswordError(false)
+      const createCustomer = () => {
+        axios.post('http://localhost:5000/auth/register', //post data in state to API
+        {
+          "firstname": basicInfo.firstname,
+          "lastname": basicInfo.lastname,
+          "password": credential.password,
+          "email": basicInfo.email,
+          "phone": basicInfo.phone,
+            "address": {
+                "location": address.location,
+                "district": address.district,
+                "country": address.country,
+                "postcode": address.postcode
+            }
+        })
+        .then(res => {
+          handleOpenInfo({
+            type: 'SUCCESS',
+            message: 'Successfully register your account, please login and get you medicines!'
+          })
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          handleOpenInfo(error.response.data);
+        })
+      }
+      createCustomer();
+    }
   };
 
+  //state for show password (eyeicon)
+  const [ showPassword, setShowPassword ] = useState(false);
+  const [ showRePassword, setShowRePassword ] = useState(false);
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
+  }
+  const handleClickShowPassword = () => {
+    setShowPassword(prev => !prev);
+  }
+  const handleClickShowRePassword = () => {
+    setShowRePassword(prev => !prev);
+  }
+
+  //phone must only 10 digit and focus on format (xxx)xxxxxxx
+  const handleChangePhone = (e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+    if (onlyNums.length < 10) {
+        setBasicInfo({...basicInfo, phone: onlyNums});
+    } else if (onlyNums.length === 10) {
+        const number = onlyNums.replace(
+            /(\d{3})(\d{3})(\d{4})/,
+            '($1) $2-$3'
+        );
+         setBasicInfo({...basicInfo, phone: number});
+    }
+  } 
+
+  //postcode only 5 digit
+  const handleChangePostcode = (e) => {
+    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+    if (onlyNums.length <= 5) {
+        const numsPostcode = onlyNums.replace(
+            /(\d{5})/,
+            '$1'
+        );
+         setAddress({...address, postcode: numsPostcode});
+    }
+  } 
 
   return (
     <>
-
       <Navbar />
-
-      <video
-        autoPlay
-        loop
-        muted
-        style={{
-            position: "absolute",
-            width: "100%",
-            height: "130%",
-            objectFit: "cover",
-            zIndex: "-1",
-            opacity: "20%"
-        }}
-      >
-        <source src={DrugVdo} type="video/mp4" />
-      </video>
-
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -139,10 +212,6 @@ const Register = () =>  {
               alignItems: 'center',
             }}
           >
-            
-            {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar> */}
 
             <Typography component="h2" variant="h3">
               Sign up
@@ -170,6 +239,8 @@ const Register = () =>  {
                     autoFocus
                     value={basicInfo.firstname}
                     onChange={e => setBasicInfo({...basicInfo, firstname: e.target.value})}
+                    error = {firstnameError}
+                    helperText= {firstnameError && "Invalid field"}
                   />
                 </Grid>
 
@@ -177,12 +248,14 @@ const Register = () =>  {
                   <TextField
                     required
                     fullWidth
-                    id="SURNAME"
-                    label="SURNAME"
-                    name="SURNAME"
+                    id="LASTNAME"
+                    label="LASTNAME"
+                    name="LASTNAME"
                     autoComplete="family-name"
                     value={basicInfo.lastname}
                     onChange={e => setBasicInfo({...basicInfo, lastname: e.target.value})}
+                    error = {lastnameError}
+                    helperText= {lastnameError && "Invalid field"}
                   />
                 </Grid>
 
@@ -196,6 +269,8 @@ const Register = () =>  {
                     autoComplete="email"
                     value={basicInfo.email}
                     onChange={e => setBasicInfo({...basicInfo, email: e.target.value})}
+                    error = {emailError}
+                    helperText={emailError && "user@mail"}
                   />
                 </Grid>
 
@@ -207,7 +282,9 @@ const Register = () =>  {
                     label="PHONE NUMBER"
                     name="PHONE NUMBER"
                     value={basicInfo.phone}
-                    onChange={e => setBasicInfo({...basicInfo, phone: e.target.value})}
+                    onChange={handleChangePhone}
+                    error = {phoneError}
+                    helperText= {phoneError && "Phone were number and 10-digit."}
                   />
                 </Grid>
               </Grid>
@@ -226,7 +303,6 @@ const Register = () =>  {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                    required
                     fullWidth
                     id="LOCATION"
                     label="LOCATION"
@@ -238,7 +314,6 @@ const Register = () =>  {
 
                 <Grid item xs={12}>
                   <TextField
-                    required
                     fullWidth
                     id="DISTRICT"
                     label="DISTRICT"
@@ -252,7 +327,6 @@ const Register = () =>  {
                   <FormControl sx={{ width: 400 }}>
                     <InputLabel id="demo-multiple-checkbox-label">COUNTRY</InputLabel>
                     <Select 
-                      required
                       fullWidth
                       labelId="select-label"
                       id="select"
@@ -267,13 +341,12 @@ const Register = () =>  {
 
                 <Grid item xs={12}>
                   <TextField
-                    required
                     fullWidth
                     id="POSTCODE"
                     label="POSTCODE"
                     name="POSTCODE"
                     value={address.postcode}
-                    onChange={e => setAddress({...address, postcode: e.target.value})}
+                    onChange={handleChangePostcode}
                   />
                 </Grid>
               </Grid>
@@ -295,12 +368,28 @@ const Register = () =>  {
                     fullWidth
                     name="PASSWORD"
                     label="PASSWORD"
-                    type="PASSWORD"
+                    type={showPassword ? "text" : "password"}
                     id="PASSWORD"
                     autoComplete="new-password"
                     value={credential.password}
                     onChange={e => setCredential({...credential, password: e.target.value})}
+                    error={passwordError}
+                    helperText= {passwordError && "Invalid field"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
+                  
                 </Grid>
 
                 <Grid item xs={12}>
@@ -309,17 +398,32 @@ const Register = () =>  {
                     fullWidth
                     name="RE-ENTER PASSWORD"
                     label="RE-ENTER PASSWORD"
-                    type="RE-ENTER PASSWORD"
+                    type={showRePassword ? "text" : "password"}
                     id="RE-ENTER PASSWORD"
                     autoComplete="re-new-password"
                     value={credential.re_password}
                     onChange={e => setCredential({...credential, re_password: e.target.value})}
+                    error={rePasswordError}
+                    helperText= {rePasswordError && "Password not match"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowRePassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showRePassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Grid>
               </Grid>
             </Box>
 
-              <Button
+            <Button
                 type="submit"
                 fullWidth
                 variant="contained"
@@ -328,25 +432,10 @@ const Register = () =>  {
                 onClick={handleSubmit}
               >
                 Sign Up
-              </Button>
+            </Button>
           </Box>
         </Container>
       </ThemeProvider>
-
-      <p>Check value</p>
-      <p>firstname = {basicInfo.firstname}</p>
-      <p>lastname = {basicInfo.lastname}</p>
-      <p>password = {basicInfo.password}</p>
-      <p>email = {basicInfo.email}</p>
-      <p>phone = {basicInfo.phone}</p>
-
-      <p>location = {address.location}</p>
-      <p>district = {address.district}</p>
-      <p>country = {address.country}</p>
-      <p>postcode = {address.postcode}</p>
-
-      <p>passaword = {credential.password}</p>
-      <p>checkpassword = {credential.re_password}</p>
       
       <InfoModal
           open={openInfo}

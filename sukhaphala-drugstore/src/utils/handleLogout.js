@@ -1,7 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { clearAuth } from '../../../redux/actions/authenAction';
-import {store} from '../../../redux/store';
+import { clearAuth } from '../redux/actions/authenAction';
+import { clearCart } from "../redux/actions/cartActions";
+import {store} from '../redux/store';
 
 const handleLogout = () => {
   // const dispatch = useDispatch();
@@ -11,10 +12,10 @@ const handleLogout = () => {
       console.log(res);
       if (res.data.type === 'SUCCESS') {
         Cookies.remove('token');
-        localStorage.removeItem('persist:root');
-        // dispatch(clearAuth());
+        // localStorage.removeItem('root');
         console.log('dispatch here');
         store.dispatch(clearAuth());
+        store.dispatch(clearCart());
       }
   })
 };

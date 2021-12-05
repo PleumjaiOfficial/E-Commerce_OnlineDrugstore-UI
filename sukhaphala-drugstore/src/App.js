@@ -9,9 +9,9 @@ import Card from './components/Card/Card';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
 import Cart from './pages/Cart/Cart';
 import CartList from './components/CartList/CartList';
-import AdminCreateProduct from './pages/Admin/AdminCreateProduct/AdminCreateProduct';
-import { AdminShop } from './pages/Admin/AdminShop/AdminShop';
-import AdminEditShop from './pages/Admin/AdminEditShop/AdminEditShop';
+import AdminCreateProduct from './pages/AdminCreateProduct/AdminCreateProduct';
+import { AdminShop } from './pages/AdminShop/AdminShop';
+import AdminEditShop from './pages/AdminEditShop/AdminEditShop';
 import { useSelector } from 'react-redux';
 
 const App = () => {
@@ -31,7 +31,7 @@ const App = () => {
           <Route path='/Navbar' component={Navbar} />
           <Route path='/Shop' component={Shop} />
           <Route path='/Login' component={Login} >
-            {/* { user.id ? <Redirect to='/Shop' /> : <Login /> } */}
+          {/* if successfully login, redirect to shop page */}
             { user.isAdmin ? <Redirect to='/AdminShop' /> : user.id ? <Redirect to='/Shop' /> : <Login />}
           </Route>
           <Route path='/Register' component={Register} />
